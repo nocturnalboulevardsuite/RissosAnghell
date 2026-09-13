@@ -2,27 +2,20 @@ import streamlit as st
 
 st.set_page_config(page_title="ANGHELL COLLECTION", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS: SHADER DE CINE, CALLEJÓN Y TEXTO VISIBLE ---
+# --- CSS: SHADER DE CINE, CALLEJÓN ROJO Y ESCALERA GRINGA ---
 css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* --- FONDO DE CALLEJÓN (ESTILO IMAGEN DE REFERENCIA) --- */
+/* --- FONDO GLOBAL OSCURO --- */
 .stApp {
-    /* Imagen de callejón oscuro de fondo con un overlay rojo muy denso para que el texto resalte */
-    background-image: 
-        linear-gradient(to bottom, rgba(15, 0, 0, 0.85), rgba(5, 0, 0, 0.95)),
-        url('https://images.unsplash.com/photo-1518063223847-50b55ec74127?q=80&w=2000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #ff4d4d; /* Texto base rojo claro y visible */
+    background-color: #080000;
+    color: #ff4d4d; /* Texto rojo claro y visible */
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px;
 }
 
-/* --- SHADER DE PELÍCULA (REC / DEAD SILENCE / SCARFACE) --- */
-/* Cubre toda la pantalla sin bloquear los clics (pointer-events: none) y usa mix-blend-mode para no ocultar el texto */
+/* --- SHADER DE PELÍCULA (FILM GRAIN GLOBAL) --- */
 .stApp::after {
     content: "";
     position: fixed;
@@ -31,7 +24,7 @@ css = """
     opacity: 0.25;
     pointer-events: none;
     z-index: 9999;
-    mix-blend-mode: overlay; /* Fundamental para que el texto brille a través del grano */
+    mix-blend-mode: overlay;
     animation: film-shader 0.15s steps(2) infinite;
 }
 
@@ -41,7 +34,7 @@ css = """
     100% { background-position: -10% -5%; }
 }
 
-/* --- TÍTULOS Y TEXTOS VISIBLES --- */
+/* --- TÍTULOS --- */
 h1, h2, h3 {
     font-family: 'Anton', sans-serif;
     color: #ff1a1a !important;
@@ -50,54 +43,49 @@ h1, h2, h3 {
     text-shadow: 2px 2px 5px rgba(0,0,0,0.9), 0px 0px 20px rgba(255, 26, 26, 0.6);
 }
 
-p, div {
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-}
+p, div { text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
 
-/* --- BARRA LATERAL (MENÚ) CORREGIDA --- */
+/* --- BARRA LATERAL --- */
 [data-testid="stSidebar"] {
     background-color: rgba(5, 0, 0, 0.95) !important;
     border-right: 2px solid #550000;
 }
-
-/* Forzar la visibilidad de los botones del menú */
 div[role="radiogroup"] > label {
-    background: rgba(20, 0, 0, 0.5) !important;
-    border: 1px solid #330000 !important;
-    padding: 15px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 10px 15px !important;
     margin-bottom: 5px;
     font-family: 'Anton', sans-serif !important;
-    font-size: 20px !important;
 }
 div[role="radiogroup"] > label p {
-    color: #ff3333 !important; /* Rojo brillante para que no desaparezca */
-    font-size: 22px !important;
+    color: #881111 !important; 
+    font-size: 20px !important;
+    transition: 0.3s;
 }
-div[role="radiogroup"] > label:hover {
-    background: rgba(255, 0, 0, 0.1) !important;
-    border-color: #ff1a1a !important;
-}
-div[role="radiogroup"] > label[data-checked="true"] {
-    background: rgba(100, 0, 0, 0.4) !important;
-    border-left: 5px solid #ff1a1a !important;
+div[role="radiogroup"] > label:hover p {
+    color: #ff1a1a !important;
 }
 div[role="radiogroup"] > label[data-checked="true"] p {
     color: #ffffff !important;
     text-shadow: 0 0 10px #ff1a1a;
 }
-
-/* Ocultar elementos UI nativos */
+div[role="radiogroup"] > label[data-checked="true"] {
+    border-left: 3px solid #ff1a1a !important;
+}
 header, footer { display: none !important; }
 
-/* --- ESCENOGRAFÍA: VENTANA EN LLAMAS Y ESCALERA ROTA --- */
+/* --- ESCENOGRAFÍA: CALLEJÓN ROJO Y ESCALERA GRINGA (FIRE ESCAPE) --- */
 .alley-scene {
     position: relative;
     width: 100%;
-    height: 400px;
-    background: url('https://www.transparenttextures.com/patterns/brick-wall-dark.png');
-    background-color: rgba(10, 0, 0, 0.6);
-    border: 2px solid #330000;
-    box-shadow: inset 0 0 50px #000;
+    height: 450px;
+    /* Fondo de ladrillos teñido fuertemente de rojo */
+    background: 
+        linear-gradient(to bottom, rgba(120, 0, 0, 0.4), rgba(10, 0, 0, 0.95)),
+        url('https://www.transparenttextures.com/patterns/brick-wall-dark.png');
+    background-color: #3a0000;
+    border: 1px solid #220000;
+    box-shadow: inset 0 0 80px #000;
     margin-top: 20px;
     margin-bottom: 40px;
     overflow: hidden;
@@ -106,74 +94,95 @@ header, footer { display: none !important; }
 /* La Ventana con Fuego */
 .fire-window {
     position: absolute;
-    top: 50px;
-    right: 80px;
-    width: 120px;
+    top: 60px;
+    right: 120px;
+    width: 140px;
     height: 180px;
-    border: 4px solid #111;
+    border: 6px solid #0a0a0a;
     background: #000;
-    box-shadow: 0 0 50px #ff3300, inset 0 0 20px #ff3300;
-    overflow: hidden;
+    box-shadow: 0 0 60px #ff3300, inset 0 0 25px #ff3300;
+    z-index: 1;
 }
 .fire-window::before {
     content: "";
     position: absolute;
-    bottom: -20px; left: -20px; right: -20px; height: 150%;
-    background: radial-gradient(circle at bottom, #ffea00 0%, #ff3300 40%, transparent 70%);
-    opacity: 0.8;
-    animation: flicker 0.1s infinite alternate;
+    bottom: -20px; left: -20px; right: -20px; height: 130%;
+    background: radial-gradient(circle at bottom, #ffea00 0%, #ff3300 50%, transparent 80%);
+    opacity: 0.85;
+    animation: flicker 0.12s infinite alternate;
 }
 .fire-window::after {
-    /* Barrotes de la ventana */
+    /* Barrotes estilo guillotina / Nueva York */
     content: "";
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background: 
-        linear-gradient(to right, transparent 48%, #111 48%, #111 52%, transparent 52%),
-        linear-gradient(to bottom, transparent 48%, #111 48%, #111 52%, transparent 52%);
+        linear-gradient(to right, transparent 48%, #0a0a0a 48%, #0a0a0a 52%, transparent 52%),
+        linear-gradient(to bottom, transparent 48%, #0a0a0a 48%, #0a0a0a 52%, transparent 52%);
     z-index: 2;
 }
-
 @keyframes flicker {
     0% { opacity: 0.7; transform: translateY(0); }
-    100% { opacity: 1; transform: translateY(-5px); }
+    100% { opacity: 1; transform: translateY(-3px); }
 }
 
-/* La Escalera Rota */
-.broken-stairs {
+/* --- FIRE ESCAPE (ESTILO DESTINO FINAL / NY) --- */
+.fire-escape-platform {
     position: absolute;
-    bottom: 0;
-    right: 140px;
-    width: 80px;
-    height: 250px;
-    background: 
-        repeating-linear-gradient(
-            to bottom,
-            transparent,
-            transparent 30px,
-            #222 30px,
-            #222 35px
-        );
-    border-left: 5px solid #1a1a1a;
-    border-right: 5px solid #1a1a1a;
-    transform: perspective(200px) rotateX(10deg) skewX(-5deg);
-    box-shadow: 10px 10px 20px rgba(0,0,0,0.9);
+    top: 240px;
+    right: 80px;
+    width: 220px;
+    height: 15px;
+    background: #111;
+    border-bottom: 5px solid #000;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.9);
+    z-index: 3;
 }
-.broken-stairs::after {
+.fire-escape-railing {
+    position: absolute;
+    bottom: 15px; /* Sube desde la plataforma */
+    left: 0;
+    width: 100%;
+    height: 70px;
+    /* Rejas verticales */
+    background: repeating-linear-gradient(to right, transparent, transparent 15px, #1a1a1a 15px, #1a1a1a 22px);
+    border-top: 6px solid #1a1a1a;
+    border-left: 6px solid #1a1a1a;
+    border-right: 6px solid #1a1a1a;
+    z-index: 4;
+}
+.fire-escape-ladder {
+    position: absolute;
+    top: 255px;
+    right: 240px; /* Colgando de un lado de la plataforma */
+    width: 45px;
+    height: 250px;
+    /* Escalones horizontales */
+    background: repeating-linear-gradient(to bottom, transparent, transparent 25px, #111 25px, #111 32px);
+    border-left: 5px solid #111;
+    border-right: 5px solid #111;
+    z-index: 2;
+    box-shadow: 15px 15px 20px rgba(0,0,0,0.8);
+    /* Inclinación rota/desprendida */
+    transform-origin: top;
+    transform: rotate(4deg) skewX(-2deg);
+}
+
+/* Efecto de rotura al final de la escalera */
+.fire-escape-ladder::after {
     content: "";
     position: absolute;
-    top: 100px; left: 0; width: 100%; height: 40px;
-    background: rgba(10, 0, 0, 0.9); /* Simula el tramo roto */
-    border: none;
+    bottom: -10px; left: -10px; width: 65px; height: 60px;
+    background: rgba(20, 0, 0, 0.95); /* Oculta la parte inferior fundiéndola con la sombra */
+    filter: blur(5px);
 }
 
-/* Contenedor de contenido tipo archivo */
+/* Contenedor de contenido */
 .content-box {
-    background: rgba(15, 0, 0, 0.85);
-    border-left: 3px solid #ff1a1a;
+    background: rgba(15, 0, 0, 0.6);
+    border-left: 2px solid #ff1a1a;
     padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
 }
 </style>
 """
@@ -181,8 +190,8 @@ st.markdown(css, unsafe_allow_html=True)
 
 # --- NAVEGACIÓN LATERAL ---
 st.sidebar.markdown("<h1 style='text-align: center; font-size: 3.5rem; margin-bottom: 0;'>ANGHELL</h1>", unsafe_allow_html=True)
-st.sidebar.markdown("<h3 style='text-align: center; color: #ff3333 !important; font-size: 1.2rem; margin-top: -10px; letter-spacing: 5px;'>COLLECTION</h3>", unsafe_allow_html=True)
-st.sidebar.markdown("<br>", unsafe_allow_html=True)
+st.sidebar.markdown("<h3 style='text-align: center; color: #ff3333 !important; font-size: 1rem; margin-top: -10px; letter-spacing: 5px;'>COLLECTION</h3>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><br>", unsafe_allow_html=True)
 
 opciones = [
     "EL CALLEJÓN (INICIO)", 
@@ -191,23 +200,27 @@ opciones = [
     "REFERENCIAS VISUALES"
 ]
 pagina = st.sidebar.radio("NAVEGACIÓN", opciones, label_visibility="collapsed")
-st.sidebar.markdown("<br><br><br><div style='text-align: center; font-family: Anton; color: #ff1a1a; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><br><br><br><br><div style='text-align: center; font-family: Anton; color: #ff1a1a; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
 
 # --- PÁGINAS ---
 
 if pagina == "EL CALLEJÓN (INICIO)":
     st.markdown("<h1 style='font-size: 4rem;'>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
     
-    # Escena del callejón con CSS puro
+    # Escena del callejón rojo + escalera gringa
     st.markdown("""
     <div class="alley-scene">
         <div class="fire-window"></div>
-        <div class="broken-stairs"></div>
-        <div style="position: absolute; bottom: 20px; left: 30px; width: 50%;">
-            <h2 style="font-size: 2rem; background: rgba(0,0,0,0.7); display: inline-block; padding: 5px 15px;">ZONA CERO</h2>
-            <p style="background: rgba(0,0,0,0.7); padding: 15px; font-weight: bold; border-left: 2px solid #ff1a1a;">
+        <div class="fire-escape-platform">
+            <div class="fire-escape-railing"></div>
+        </div>
+        <div class="fire-escape-ladder"></div>
+        
+        <div style="position: absolute; bottom: 30px; left: 40px; width: 55%; z-index: 5;">
+            <h2 style="font-size: 2.2rem; background: rgba(5,0,0,0.85); display: inline-block; padding: 5px 15px; margin-bottom: 0;">ZONA CERO</h2>
+            <p style="background: rgba(5,0,0,0.85); padding: 15px; font-weight: bold; border-left: 2px solid #ff1a1a; font-size: 20px; color: #ff6666;">
             Este es mi rincón. Fuera del sistema.<br>
-            La escalera está rota y el edificio de al lado está en llamas, pero el servidor sigue encendido.
+            La escalera de emergencia está colapsando y el edificio de al lado está en llamas, pero el servidor sigue encendido.
             </p>
         </div>
     </div>
@@ -272,7 +285,7 @@ elif pagina == "FRECUENCIAS (AUDIO)":
         st.markdown("""
         <div class="content-box">
         <h3>RADIO EXTERNA</h3>
-        <iframe style="border-radius:0; border: none; filter: grayscale(50%) contrast(200%) sepia(50%) hue-rotate(320deg);" 
+        <iframe style="border-radius:0; border: none; filter: grayscale(30%) contrast(150%) sepia(80%) hue-rotate(330deg);" 
         src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
         width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
@@ -299,10 +312,10 @@ elif pagina == "REFERENCIAS VISUALES":
     </div>
     
     <div class="content-box">
-    <h3 style="font-size: 2rem;">CLOVERFIELD (2008) / SCARFACE (1983)</h3>
+    <h3 style="font-size: 2rem;">FINAL DESTINATION / SCARFACE</h3>
     <p style='font-size: 22px;'>
-    De Cloverfield: La escala del monstruo y la destrucción urbana vista a nivel del suelo, a través de una lente sucia. <br>
-    De Scarface: Los contrastes neón, la agresividad de la tipografía y esa atmósfera densa de los ochenta.
+    De Destino Final: Las callejuelas traseras, las escaleras de emergencia oxidadas, lo macabro en lo urbano. <br>
+    De Scarface: Los contrastes neón, la agresividad de la tipografía y esa atmósfera densa, sangrienta y nocturna.
     </p>
     </div>
     """, unsafe_allow_html=True)
