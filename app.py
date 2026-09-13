@@ -1,205 +1,275 @@
 import streamlit as st
+import time
 
-st.set_page_config(page_title="BASE DE DATOS_anomala", page_icon="👁️", layout="wide")
+# Configuración inicial de la página
+st.set_page_config(page_title="SYS.ERR // DIRECTORIO_ROJO", page_icon="🩸", layout="wide")
 
-# --- CSS: SCP + WEIRDCORE ---
+# --- INICIALIZACIÓN DE VARIABLES SECRETAS (DINÁMICAS) ---
+if 'corazon_explotado' not in st.session_state:
+    st.session_state.corazon_explotado = False
+if 'zona_secreta' not in st.session_state:
+    st.session_state.zona_secreta = False
+if 'glitch_activo' not in st.session_state:
+    st.session_state.glitch_activo = False
+
+# Función para desbloquear zona secreta
+def desbloquear_secreto():
+    st.session_state.zona_secreta = True
+
+# Función para hacer explotar el corazón
+def explotar_corazon():
+    st.session_state.corazon_explotado = True
+
+# --- CSS: RED SCP + WEIRDCORE + WINDOWS ANTIGUO ---
 css = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Silkscreen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* Efecto Monitor CRT y Scanlines */
+/* Fondo General: Oscuro, sangriento, scanlines */
 .stApp {
-    background-color: #050505;
-    background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 2px, 3px 100%;
-    color: #e0e0e0;
+    background-color: #080000;
+    background-image: 
+        repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.03) 0px, rgba(255, 0, 0, 0.03) 1px, transparent 1px, transparent 2px),
+        radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+    color: #ff3333;
     font-family: 'Courier Prime', monospace;
 }
 
-/* Ocultar elementos por defecto */
-header {visibility: hidden;}
-footer {visibility: hidden;}
+/* Ocultar elementos de Streamlit */
+header, footer {visibility: hidden;}
 
-/* Barra Lateral (Terminal Segura) */
-[data-testid="stSidebar"] {
-    background-color: #000000 !important;
-    border-right: 2px solid #555555;
-    box-shadow: inset -5px 0 15px rgba(255,255,255,0.05);
-}
-[data-testid="stSidebar"] * {
-    color: #a0a0a0 !important;
-    font-family: 'Courier Prime', monospace;
+/* Estilo Windows 95 / SCP Terminal */
+.win95-box {
+    background-color: #0a0000;
+    border: 3px solid;
+    border-color: #ff6666 #330000 #330000 #ff6666;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 4px 4px 0px #220000;
 }
 
-/* Títulos Clínicos SCP pero que glitchean a Weirdcore */
+/* Títulos con efecto Creepypasta */
 h1, h2, h3 {
-    font-family: 'Silkscreen', cursive;
+    font-family: 'VT323', monospace;
+    color: #ff0000 !important;
     text-transform: uppercase;
-    color: #ffffff !important;
-    border-bottom: 2px solid #ffffff;
-    padding-bottom: 5px;
-    letter-spacing: 2px;
-}
-h1:hover {
-    animation: weirdGlitch 0.3s infinite;
-    color: #ff00ff !important; /* Toque weirdcore magenta */
+    text-shadow: 2px 2px 0px #330000, -1px -1px 0px #ffaaaa;
+    border-bottom: 2px dashed #660000;
 }
 
-@keyframes weirdGlitch {
-    0% { transform: translate(0) skew(0deg); text-shadow: 2px 0 blue, -2px 0 red; }
-    20% { transform: translate(-2px, 2px) skew(5deg); text-shadow: -2px 0 blue, 2px 0 red; }
-    40% { transform: translate(-2px, -2px) skew(-5deg); text-shadow: 2px 0 blue, -2px 0 red; }
-    60% { transform: translate(2px, 2px) skew(5deg); text-shadow: -2px 0 blue, 2px 0 red; }
-    80% { transform: translate(2px, -2px) skew(-5deg); text-shadow: 2px 0 blue, -2px 0 red; }
-    100% { transform: translate(0) skew(0deg); text-shadow: none; }
+/* Animación del Corazón Latiendo */
+@keyframes latido {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.3); text-shadow: 0 0 20px red; }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.3); text-shadow: 0 0 20px red; }
+    60% { transform: scale(1); }
+}
+.corazon {
+    font-size: 100px;
+    text-align: center;
+    animation: latido 1.2s infinite;
+    cursor: pointer;
 }
 
-/* Efecto de texto censurado (REDACTED) */
-.redacted {
-    background-color: #e0e0e0;
-    color: #e0e0e0;
-    padding: 0 4px;
-    cursor: crosshair;
-    transition: 0.2s;
-}
-.redacted:active {
-    background-color: transparent;
-    color: #ff0000;
+/* Efecto de explosión de sangre */
+.sangre-explosion {
+    background-image: url('https://media.giphy.com/media/3o7aD2e1EoW6yXqV9K/giphy.gif'); /* GIF de estática/sangre roja */
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    background-color: #550000;
+    color: white !important;
+    padding: 30px;
+    border: 5px solid red;
+    box-shadow: inset 0 0 50px black;
+    animation: shake 0.5s;
 }
 
-/* Estilo de Pestañas (Archivos de Sistema Antiguo) */
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+/* Pestañas (Sub-blogs) estilo carpetas corrompidas */
 .stTabs [data-baseweb="tab-list"] {
-    background-color: #000000;
-    border-bottom: 2px solid #555555;
+    background-color: #110000;
+    border-bottom: 2px solid #ff0000;
 }
 .stTabs [data-baseweb="tab"] {
-    color: #888888;
-    background-color: #111111;
-    border: 1px solid #333333;
-    font-family: 'Silkscreen', cursive;
+    color: #aa0000;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    background-color: #050000;
+    border: 1px solid #330000;
 }
 .stTabs [aria-selected="true"] {
-    background-color: #ffffff !important;
+    background-color: #aa0000 !important;
     color: #000000 !important;
+    box-shadow: inset 2px 2px 0px #ffcccc;
 }
 
-/* Contenedores de texto (Documentos SCP) */
-.stMarkdown {
-    background-color: rgba(255, 255, 255, 0.02);
-    padding: 15px;
-    border-left: 4px solid #ffffff;
+/* Botones genéricos de la terminal */
+div.stButton > button {
+    background-color: #1a0000;
+    color: #ff3333;
+    border: 2px solid #ff0000;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    border-radius: 0;
+    transition: 0.1s;
+}
+div.stButton > button:hover {
+    background-color: #ff0000;
+    color: #000000;
+    border: 2px solid #ffffff;
 }
 
-/* Elemento Weirdcore Flotante (Un ojo que te sigue lentamente) */
-.floating-eye {
+/* Botón Ojo (Invisible/Weirdcore) */
+.ojo-secreto {
     position: fixed;
-    font-size: 60px;
-    opacity: 0.3;
-    z-index: 9999;
-    pointer-events: none;
-    animation: drift 20s infinite alternate linear;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.1;
+    transition: 0.3s;
 }
-@keyframes drift {
-    0% { top: 10%; left: 5%; transform: scale(1); filter: hue-rotate(0deg); }
-    50% { top: 80%; left: 80%; transform: scale(1.5); filter: hue-rotate(90deg); }
-    100% { top: 40%; left: 90%; transform: scale(0.8); filter: hue-rotate(180deg); }
+.ojo-secreto:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px red);
 }
 </style>
-<div class="floating-eye">👁️</div>
 """
 st.markdown(css, unsafe_allow_html=True)
 
-# --- SISTEMA DE NAVEGACIÓN (TERMINAL) ---
-st.sidebar.markdown("## SISTEMA O.S. SECURE")
-st.sidebar.markdown("---")
-st.sidebar.write("**USUARIO:** <span class='redacted'>███████</span>", unsafe_allow_html=True)
-st.sidebar.write("**NIVEL DE ACCESO:** 4 (CLASIFICADO)")
+# --- BARRA LATERAL (DIRECTORIO WINDOWS 95) ---
+st.sidebar.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+st.sidebar.markdown("## C:\\RISSOS_SYS>")
 st.sidebar.markdown("---")
 
-pagina = st.sidebar.radio(
-    "ACCEDER A DIRECTORIO:",
-    ["[1] PROTOCOLO_INICIAL.exe", "[2] REGISTROS_ANOMALOS", "[3] ARCHIVOS_MEMETICOS.wav", "[4] ENTIDAD_AUTORA"]
-)
+opciones_menu = ["[01] INICIO.exe", "[02] ARCHIVOS_SCP", "[03] FRECUENCIAS.wav", "[04] SOBRE_MI.dll"]
+if st.session_state.zona_secreta:
+    opciones_menu.append("[??] EL_ABISMO.sys")
 
+pagina = st.sidebar.radio("SELECCIONAR RUTA:", opciones_menu)
 st.sidebar.markdown("---")
-st.sidebar.write("¿estás seguro de que estás solo en tu habitación?")
+st.sidebar.write("ESTADO: AISLADO")
+
+# El ojo secreto camuflado en la barra lateral
+col_vacia, col_ojo = st.sidebar.columns([4, 1])
+with col_ojo:
+    if st.button("👁️", key="btn_ojo", help="No lo mires"):
+        desbloquear_secreto()
+        st.rerun()
+
+st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
 # --- RUTEO DE PÁGINAS ---
 
-if pagina == "[1] PROTOCOLO_INICIAL.exe":
-    st.title("ÍTEM #: R-666 (EL RINCÓN)")
-    st.write("**CLASE DE OBJETO:** EUCLID / ESPACIO LIMINAL")
+if pagina == "[01] INICIO.exe":
+    st.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+    st.title("BIENVENIDO AL RINCÓN")
+    st.write("Has accedido a un servidor no indexado. La estética que ves no es una elección de diseño, es la degradación del código por la exposición a [DATOS BORRADOS].")
     
-    st.write("""
-    **Procedimientos Especiales de Contención:**
-    El acceso a esta base de datos debe ser monitoreado. Los sujetos expuestos a los textos o frecuencias de *El Rincón del Rissos* suelen reportar sensación de paranoia, distorsión temporal y la visión de <span class="redacted">ojos en las paredes</span>.
+    st.markdown("### REGLAS DE NAVEGACIÓN:")
+    st.write("- No confíes en los enlaces rotos.")
+    st.write("- Si escuchas estática, baja el volumen inmediatamente.")
+    st.write("- Hay puertas aquí que no deberían abrirse. *(Pista: Algunas miradas devuelven la mirada)*.")
     
-    **Descripción:**
-    Estás interactuando con una anomalía digital. Este no es un blog normal. Es un espacio que se reescribe a sí mismo. Haz clic sobre los textos en bloque blanco para revelar información clasificada. (MANTÉN PRESIONADO EL CLICK).
-    
-    *Nostalgia... es solo un error en tu cerebro.*
-    """)
-    
-    st.image("https://upload.wikimedia.org/wikipedia/commons/e/ec/SMPTE_Color_Bars.svg", caption="SEÑAL PERDIDA", width=400)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/3/30/Red_solid_screen.jpg", caption="████████", width=200)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-elif pagina == "[2] REGISTROS_ANOMALOS":
-    st.title("REGISTROS DE INCIDENTES")
-    st.write("ADVERTENCIA: RIESGO DE CORRUPCIÓN COGNITIVA.")
+elif pagina == "[02] ARCHIVOS_SCP":
+    st.title("BASE DE DATOS ANÓMALA")
+    st.write("Directorio de entidades, objetos liminales y registros recuperados.")
     
-    tab1, tab2, tab3 = st.tabs(["LOG_01", "LOG_02", "LOG_03 (CORRUPTO)"])
+    tab1, tab2, tab3 = st.tabs(["[ ÍTEM: R-01 ]", "[ ÍTEM: R-02 ]", "[ EXPEDIENTES PERDIDOS ]"])
     
     with tab1:
-        st.subheader("INCIDENTE: El Reflejo")
-        st.write("FECHA: 13/09/2026 | UBICACIÓN: <span class='redacted'>Puente Alto</span>", unsafe_allow_html=True)
-        st.write("""
-        Todo empezó cuando noté que mi reflejo en el espejo del baño parpadeaba un segundo después que yo. 
-        Al principio pensé que era el cansancio... pero luego el reflejo me sonrió, aunque yo estaba serio.
-        *(Inserta aquí tu historia...)*
-        """)
-        
+        st.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+        st.subheader("ÍTEM R-01: El Reflejo Incorrecto")
+        st.write("**Clase:** Euclid")
+        st.write("**Descripción:** Una entidad memética que se adhiere a los espejos de la comuna de Puente Alto. Se manifiesta parpadeando a destiempo del observador original.")
+        st.write("*(Aquí va tu historia principal o creepypasta)*")
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with tab2:
-        st.subheader("INCIDENTE: La Escalera Infinita")
-        st.write("El sujeto reportó bajar las escaleras de su edificio durante 4 horas. Nunca llegó al primer piso. Afirma que el olor a ozono se hacía más fuerte en cada nivel.")
+        st.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+        st.subheader("ÍTEM R-02: La Estación Vacía")
+        st.write("**Clase:** Safe / Dreamcore")
+        st.write("**Descripción:** Un espacio que se asemeja a una estación de metro chilena a las 3:00 AM. Los letreros están escritos en un idioma incomprensible. El olor a ozono es persistente.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
     with tab3:
-        st.subheader("e r r o r r r r r r r")
-        st.markdown("<h2 style='color:#ff00ff; text-transform:lowercase;'>¿te acuerdas de este lugar? tú estuviste aquí antes.</h2>", unsafe_allow_html=True)
-        st.write("no despiertes no despiertes no despiertes no despiertes")
+        st.error("ERROR 404: ARCHIVO CORROMPIDO. DEMASIADA SANGRE EN EL DISCO DURO.")
 
-elif pagina == "[3] ARCHIVOS_MEMETICOS.wav":
-    st.title("PELIGROS AUDITIVOS")
+elif pagina == "[03] FRECUENCIAS.wav":
+    st.title("AISLAMIENTO ACÚSTICO")
     
     col1, col2 = st.columns(2)
-    
     with col1:
-        st.subheader("EXTRACCIONES LOCALES")
-        st.write("Archivos recuperados de los discos duros de la Entidad Rissos.")
-        st.write("⚠️ *Advertencia: Riesgo de parálisis del sueño.*")
-        
-        # st.audio("frecuencia_anomala.wav", format="audio/wav")
-        # st.audio("ruido_blanco_voces.wav", format="audio/wav")
-        st.info("Directorio vacío. Sube los archivos .wav al servidor y descomenta el código.")
+        st.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+        st.subheader("ARCHIVOS LOCALES (.WAV)")
+        st.write("Pistas creadas por la entidad Rissos.")
+        # st.audio("tu_cancion.wav")
+        st.write("*(Esperando carga de archivos desde el directorio raíz...)*")
+        st.markdown("</div>", unsafe_allow_html=True)
 
     with col2:
-        st.subheader("TRANSMISIÓN EXTERNA (SPOTIFY)")
-        st.write("Señales interceptadas de la red de streaming.")
-        
+        st.markdown("<div class='win95-box'>", unsafe_allow_html=True)
+        st.subheader("TRANSMISIÓN SPOTIFY")
         spotify_embed = """
-        <iframe style="border-radius:0px; border: 2px solid white;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe style="border-radius:0px; border: 1px solid #ff0000; filter: contrast(150%) sepia(100%) hue-rotate(300deg);" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         """
         import streamlit.components.v1 as components
         components.html(spotify_embed, height=400)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-elif pagina == "[4] ENTIDAD_AUTORA":
-    st.title("ENTIDAD: R I S S O S")
+elif pagina == "[04] SOBRE_MI.dll":
+    st.title("INFORMACIÓN DEL SISTEMA / AUTOR")
+    
+    if not st.session_state.corazon_explotado:
+        st.write("EXTRAYENDO DATOS ORGÁNICOS...")
+        st.markdown("<div class='corazon'>🫀</div>", unsafe_allow_html=True)
+        st.write("---")
+        
+        # Botón gigante debajo del corazón animado
+        if st.button("PUNZAR EL TEJIDO (HAZ CLIC AQUÍ)", use_container_width=True):
+            explotar_corazon()
+            st.rerun()
+    else:
+        # Estado cuando el corazón ha explotado
+        st.markdown("<div class='sangre-explosion'>", unsafe_allow_html=True)
+        st.markdown("<h2 style='color: white; text-shadow: 2px 2px black;'>████ DESANGRE COMPLETADO ████</h2>", unsafe_allow_html=True)
+        st.write("""
+        **ALIAS:** RISSOS  
+        **UBICACIÓN:** PUENTE ALTO, RM.  
+        **ESTADO:** ASIMILADO POR LA RED.
+        
+        Soy un productor musical, escritor y recopilador de anomalías web. 
+        Este espacio fue diseñado para almacenar el "Horror Core" que brota de mi cabeza.
+        Música, textos, y código moribundo. 
+        
+        *Gracias por donar tu sangre al sistema.*
+        """)
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        if st.button("RECONSTRUIR TEJIDO (VOLVER)", use_container_width=True):
+            st.session_state.corazon_explotado = False
+            st.rerun()
+
+elif pagina == "[??] EL_ABISMO.sys" and st.session_state.zona_secreta:
+    st.markdown("<div style='background-color: red; padding: 50px; text-align: center;'>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: black !important; font-size: 80px; text-shadow: none;'>LO ENCONTRASTE</h1>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
     
     st.write("""
-    **ALIAS:** Rissos  
-    **CLASIFICACIÓN:** Creador / Vector de Anomalías  
-    **ESTADO:** <span class="redacted">MONITOREADO</span>
+    Nadie debería estar aquí.  
+    Este es el cuarto trasero (Backroom) del Rincón del Rissos.  
+    Aquí se archivan los borradores que me dieron tanto miedo que decidí no publicar.
+    """)
+    st.write("... *Próximamente contenido exclusivo* ...")
     
-    **Notas del Investigador:**
-    El sujeto se dedica a crear contenido "Horror Core" y música electrónica/oscura. Su nivel de influencia sobre la red está creciendo. Ha creado esta interfaz para recopilar sus creaciones bajo la apariencia de un simple portafolio web.
-    
-    *No le mires directamente a los ojos si llegas a encontrarlo en Puente Alto.*
-    """, unsafe_allow_html=True)
+    st.image("https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Eyes_icon.svg/512px-Eyes_icon.svg.png", width=150)
