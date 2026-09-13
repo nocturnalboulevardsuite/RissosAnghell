@@ -1,4 +1,4 @@
-# 🩸 El Rincón del Rissos - 'Anghell Collection' 🕷️
+# 🕷️ El Rincón del Rissos 🩸 'Anghell Collection' 🕷️
 
 <div align="center">
   <img src="header.svg" alt="Header Anghell Collection" />
