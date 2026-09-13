@@ -1,241 +1,242 @@
 import streamlit as st
 
-st.set_page_config(page_title="Anghell Collection | Rissos", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="ANGHELL // 血", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS: VAMPÍRICO DE LOS 80s, DEAD SILENCE & FILM GRAIN ---
+# --- CSS: RED ROOM JAPONÉS 2000s + CREEPYPASTA ---
 css = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Special+Elite&display=swap');
+/* Importar fuente de sistema antigua para el estilo 2000s */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-/* Fondo base: Negro asfalto profundo, no totalmente opaco para el contraste */
+/* Fondo base: Rojo Vino / Sangre coagulada */
 .stApp {
-    background-color: #080303;
-    color: #e3d5ca; /* Blanco hueso mucho más claro para mejor lectura */
-    font-family: 'Special Elite', monospace;
-    font-size: 18px;
+    background-color: #240000;
+    background-image: 
+        radial-gradient(circle, #3a0000 0%, #120000 100%),
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,0,0,0.03) 2px, rgba(255,0,0,0.03) 4px);
+    color: #ff3333; /* Texto rojo vívido */
+    font-family: 'MS Gothic', 'Courier New', monospace; /* Estilo foro japonés 2000 */
+    font-size: 16px;
 }
 
-/* OVERLAY GRANULADO DEAD SILENCE (Film Grain & Scanlines Suaves) */
-.stApp::after {
+/* Efecto de ruido de fondo estilo web antigua */
+.stApp::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.05) 4px),
-        url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
-    background-size: 100% 4px, 300px;
-    opacity: 0.15; /* Bajamos la opacidad para que no oscurezca la web */
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: url('https://www.transparenttextures.com/patterns/diagmonds-light.png');
+    opacity: 0.1;
     pointer-events: none;
-    z-index: 9999;
-    animation: grain 0.5s steps(1) infinite;
+    z-index: 0;
 }
 
-@keyframes grain {
-    0%, 100% { background-position: 0 0, 0 0; }
-    50% { background-position: 0 2px, 15px 15px; }
-}
-
-/* Títulos (Rojo Vivo / The Lost Boys Neon Blood) */
+/* Títulos: Rojo Sangre Neón con glitch sutil */
 h1, h2, h3 {
-    font-family: 'Cinzel', serif;
-    color: #ff1a1a !important; /* Rojo sangre brillante */
+    font-family: 'Times New Roman', serif;
+    color: #ff0000 !important;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    text-shadow: 0px 0px 15px rgba(255, 26, 26, 0.6), 2px 2px 0px #330000;
-    border-bottom: 1px solid rgba(255, 26, 26, 0.3);
-    padding-bottom: 10px;
-    margin-bottom: 25px;
+    text-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8), 2px 2px 0px #000000;
+    border-bottom: 2px double #ff0000;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
 }
 
-/* Estilo del Sidebar */
+/* Estilo del Sidebar - Estilo menú maldito */
 [data-testid="stSidebar"] {
-    background-color: #030000 !important;
-    border-right: 1px solid #cc0000; /* Borde rojo vivo */
-    box-shadow: 5px 0 20px rgba(204, 0, 0, 0.1);
+    background-color: #140000 !important;
+    border-right: 3px double #ff0000;
+    box-shadow: 5px 0 20px rgba(255, 0, 0, 0.2);
 }
 [data-testid="stSidebar"] * {
-    font-family: 'Cinzel', serif;
-    color: #d4c5bd !important;
+    font-family: 'MS Gothic', monospace;
+    color: #ff4d4d !important;
     font-weight: bold;
 }
 
 /* Ocultar UI nativa */
 header, footer {visibility: hidden;}
 
-/* Pestañas (Subcategorías) */
+/* Pestañas (Estilo botones 2000s) */
 .stTabs [data-baseweb="tab-list"] {
-    background-color: transparent;
-    border-bottom: 1px solid rgba(255, 26, 26, 0.3);
+    background-color: #140000;
+    border: 1px solid #ff0000;
 }
 .stTabs [data-baseweb="tab"] {
-    color: #e3d5ca;
-    font-family: 'Special Elite', monospace;
+    color: #cc0000;
     background-color: transparent;
-    border: none;
-    letter-spacing: 1px;
-    font-size: 16px;
+    border-right: 1px solid #ff0000;
 }
 .stTabs [aria-selected="true"] {
-    background-color: rgba(255, 26, 26, 0.1) !important;
-    color: #ff1a1a !important;
-    border-bottom: 2px solid #ff1a1a !important;
-    text-shadow: 0 0 8px rgba(255, 26, 26, 0.5);
+    background-color: #ff0000 !important;
+    color: #140000 !important;
+    box-shadow: inset 0 0 10px #000;
 }
 
-/* Cajas de contenido (Efecto cristal oscuro con bordes sangrientos) */
-.content-box {
-    background: linear-gradient(135deg, rgba(20, 2, 2, 0.8) 0%, rgba(5, 0, 0, 0.9) 100%);
-    border-left: 4px solid #ff1a1a; /* Borde brillante */
-    border-top: 1px solid rgba(255, 26, 26, 0.2);
-    padding: 25px;
+/* Cajas de contenido: Peligrosas y marcadas */
+.danger-box {
+    background-color: #1a0000;
+    border: 1px solid #ff0000;
+    border-left: 5px solid #ff0000;
+    padding: 20px;
     margin-bottom: 25px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.9), inset 0 0 30px rgba(255, 0, 0, 0.03);
-    color: #e3d5ca;
-    line-height: 1.7;
+    box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.1);
+    color: #ff6666;
+    line-height: 1.6;
 }
 
-/* Texto resaltado */
-.blood-text {
-    color: #ff3333;
-    font-family: 'Cinzel', serif;
+/* Texto de advertencia / parpadeo */
+.blink-text {
+    animation: blinker 1.5s linear infinite;
+    color: #ff0000;
     font-weight: bold;
-    letter-spacing: 1px;
+    text-shadow: 0 0 5px red;
+}
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Enlaces estilo web 1.0 */
+a {
+    color: #ff0000;
+    text-decoration: underline dashed;
+}
+a:hover {
+    background-color: #ff0000;
+    color: #000;
 }
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
 # --- NAVEGACIÓN LATERAL ---
-st.sidebar.markdown("<h2 style='text-align: center; border: none; font-size: 1.5rem; text-shadow: 0 0 20px red;'>ANGHELL COLLECTION</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("<div style='text-align: center; color: #ff1a1a; opacity: 0.5;'>━━━━━━━━━━━━━━</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; font-size: 1.8rem;'>【ＡＮＧＨＥＬＬ】</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<div style='text-align: center; color: #ff0000; letter-spacing: 2px;'>C O L L E C T I O N</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
 opciones = [
-    "I. LA ESENCIA", 
-    "II. RELATOS Y TEXTOS", 
-    "III. FRECUENCIAS (.WAV)", 
-    "IV. CATÁLOGO VISUAL",
-    "V. EL ABISMO"
+    "➤ [01] 概要 (LA ESENCIA)", 
+    "➤ [02] 物語 (RELATOS)", 
+    "➤ [03] 音声 (FRECUENCIAS)", 
+    "➤ [04] 視覚 (CATÁLOGO)",
+    "➤ [05] 深淵 (EL ABISMO)"
 ]
-pagina = st.sidebar.radio("CINTAS DISPONIBLES", opciones, label_visibility="collapsed")
-st.sidebar.markdown("<div style='text-align: center; color: #ff1a1a; opacity: 0.5;'>━━━━━━━━━━━━━━</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<p style='text-align: center; font-size: 12px; font-family: monospace; color: #555 !important;'>REC [ O ] 19:87</p>", unsafe_allow_html=True)
+pagina = st.sidebar.radio("DIRECTORIO", opciones, label_visibility="collapsed")
+st.sidebar.markdown("<br><br><br><br>", unsafe_allow_html=True)
+st.sidebar.markdown("<p style='text-align: center; font-size: 12px;' class='blink-text'>Do you like the red room?</p>", unsafe_allow_html=True)
 
 # --- RUTEO DE PÁGINAS ---
 
-if pagina == "I. LA ESENCIA":
-    st.markdown("<h1>El Rincón de Rissos</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='border: none; color: #cc0000 !important; margin-top: -15px;'>'Anghell Collection'</h3>", unsafe_allow_html=True)
+if pagina == "➤ [01] 概要 (LA ESENCIA)":
+    st.markdown("<h1>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
+    st.markdown("<h3>>> ANGHELL_COLLECTION.exe</h3>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="content-box" style="font-size: 19px;">
-    Este es un blog personal. Un rincón analógico en una red sobresaturada.
+    <div class="danger-box">
+    <b>ADVERTENCIA DE SISTEMA:</b> Este es un blog personal. Un rincón analógico en una red sobresaturada.<br><br>
+    
+    Lo creé porque hay cosas que de verdad <span style='color: #ff0000; font-weight: bold; font-size: 18px;'>NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR</span>. 
     <br><br>
-    Lo creé porque hay cosas que de verdad <span class="blood-text">no sé dónde colocar, ni cómo catalogar</span>. 
-    Historias viscerales que he escrito en las madrugadas, música y pistas que he producido pero que no encajan en 
-    ningún álbum, recomendaciones de películas de culto, series, animes, y recuerdos fragmentados.
-    <br><br>
-    Cosas que necesito postear para no perder esa esencia, ese momento exacto en el tiempo. 
-    Aquí no hay un orden lógico. Solo lo que considero digno de ser preservado en la oscuridad.
+    Historias viscerales que he escrito en las madrugadas, música y pistas de audio que he producido y que 
+    suenan demasiado perturbadoras para un lanzamiento normal. Recomendaciones de películas de culto, series, animes, 
+    y recuerdos fragmentados que me niego a perder.<br><br>
+    
+    Cosas que necesito postear para no perder su esencia. No busques un orden lógico aquí. 
+    Solo entra, lee y vete antes de que el servidor colapse.
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "II. RELATOS Y TEXTOS":
-    st.markdown("<h1>Archivo de Relatos</h1>", unsafe_allow_html=True)
-    st.write("Historias originales. Sangre seca sobre papel digital.")
+elif pagina == "➤ [02] 物語 (RELATOS)":
+    st.markdown("<h1>ARCHIVO DE TEXTOS // 血</h1>", unsafe_allow_html=True)
+    st.write(">> No creas todo lo que está escrito aquí. O hazlo. Da igual.")
     
-    tab1, tab2 = st.tabs(["[ HORROR CORE ]", "[ REFLEXIONES ]"])
+    tab1, tab2 = st.tabs(["[ ARCHIVO_01 ]", "[ ARCHIVO_02 ]"])
     
     with tab1:
         st.write("<br>", unsafe_allow_html=True)
         st.markdown("""
-        <div class="content-box">
-        <h3 style='font-size: 24px; border:none; margin-bottom: 10px;'>30 Días en Puente Alto</h3>
-        La primera noche que las luces de la calle parpadearon y se apagaron al unísono, pensamos que era un simple corte. 
-        Pero el frío que entró por las ventanas no era de invierno. Olía a cobre viejo y a tierra removida. 
-        <br><br>
-        Cuando miré por la persiana, vi siluetas esperando pacientemente en las esquinas. No caminaban. 
-        Simplemente nos observaban.
-        <br><br>
-        <span style="color: #ff1a1a; font-family: 'Cinzel', serif;">[ CONTINUARÁ... ]</span>
+        <div class="danger-box">
+        <h3 style='font-size: 20px; border:none;'>La Chica del Fotolog (2006)</h3>
+        Recuerdo cuando la internet chilena estaba dominada por fondos negros y letras fucsias. 
+        Había una cuenta, <i>@Anghell_Tears</i>, que subía fotos diarias. Siempre en el mismo ángulo, 
+        siempre en la misma habitación oscura.<br><br>
+        El problema fue cuando la habitación en sus fotos empezó a parecerse demasiado a la mía. 
+        Y el ángulo... era desde adentro de mi propio armario.<br><br>
+        <span class="blink-text">[ LEYENDO DATOS... ]</span>
         </div>
         """, unsafe_allow_html=True)
 
     with tab2:
         st.write("<br>", unsafe_allow_html=True)
         st.markdown("""
-        <div class="content-box">
-        <h3 style='font-size: 24px; border:none; margin-bottom: 10px;'>Vampirismo Urbano</h3>
-        La ciudad es un ente parasitario. A veces, a las 4 AM, cuando no hay autos ni voces, 
-        puedes escucharla respirar a través de los ductos de ventilación.
+        <div class="danger-box">
+        <h3 style='font-size: 20px; border:none;'>Asfalto y Sangre</h3>
+        Vampirismo urbano en Puente Alto. No hay castillos, solo paraderos de micro vacíos a las 4 AM y 
+        ojos que brillan al fondo de los pasajes oscuros.
         </div>
         """, unsafe_allow_html=True)
 
-elif pagina == "III. FRECUENCIAS (.WAV)":
-    st.markdown("<h1>Frecuencias Acústicas</h1>", unsafe_allow_html=True)
-    st.write("Composiciones de mi autoría y curaduría externa.")
+elif pagina == "➤ [03] 音声 (FRECUENCIAS)":
+    st.markdown("<h1>FRECUENCIAS ACÚSTICAS</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("""
-        <div class="content-box">
-        <h3 style='font-size: 20px; border:none;'>ARCHIVOS LOCALES (.WAV)</h3>
-        Música que he creado. Pistas huérfanas y experimentos sonoros.
+        <div class="danger-box">
+        <h3 style='font-size: 18px; border:none;'>/LOCAL_AUDIO/</h3>
+        Pistas creadas por mí. Frecuencias diseñadas para alterar tu ritmo cardíaco.
         <br><br>
-        <span style="color:#777; font-family: monospace;">> Esperando integración de archivos...</span>
+        <p style='color: #ff0000;'>[ ERROR DE REPRODUCCIÓN: ARCHIVOS NO ENCONTRADOS EN EL DISCO ]</p>
         </div>
         """, unsafe_allow_html=True)
         
     with col2:
         st.markdown("""
-        <div class="content-box" style="padding: 10px;">
-        <h3 style='font-size: 20px; border:none; padding-left: 10px;'>CURADURÍA SPOTIFY</h3>
-        <iframe style="border-radius:0; border: 1px solid #330000;" 
+        <div class="danger-box" style="padding: 5px;">
+        <h3 style='font-size: 18px; border:none; padding-left: 15px;'>/SPOTIFY_EMBED/</h3>
+        <iframe style="border-radius:0; border: 1px solid #ff0000; filter: contrast(120%) saturate(150%);" 
         src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
-        width="100%" height="300" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        width="100%" height="280" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         """, unsafe_allow_html=True)
 
-elif pagina == "IV. CATÁLOGO VISUAL":
-    st.markdown("<h1>Recomendaciones</h1>", unsafe_allow_html=True)
-    st.write("Películas de culto, series y animes que comparten esta misma estética.")
+elif pagina == "➤ [04] 視覚 (CATÁLOGO)":
+    st.markdown("<h1>CATÁLOGO VISUAL</h1>", unsafe_allow_html=True)
+    st.write(">> Medios audiovisuales para consumir en la oscuridad.")
     
     st.markdown("""
-    <div class="content-box">
-    <h3 style='border: none;'>Cine: The Lost Boys (1987)</h3>
-    Vampiros motociclistas en una ciudad costera. La mezcla perfecta entre neón, sangre y rock oscuro. 
-    Una influencia directa en la manera en que visualizo la noche.
-    <br><br>
-    <hr style='border: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(255, 26, 26, 0.5), transparent);'>
-    <br>
-    <h3 style='border: none;'>Cine: Dead Silence (2007)</h3>
-    Esa paleta de colores desaturada, azulada y carmesí. La textura granulada del celuloide viejo y 
-    la sensación constante de que algo de plástico o madera te está observando.
-    <br><br>
-    <hr style='border: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(255, 26, 26, 0.5), transparent);'>
-    <br>
-    <h3 style='border: none;'>Cine: 30 Días de Oscuridad (2007)</h3>
-    Depredadores implacables y nieve manchada de sangre. El vampirismo alejado del romance y 
-    devuelto a su estado más animal y visceral.
+    <div class="danger-box">
+    <h3 style='border: none; font-size: 18px;'>[ PELÍCULA ] The Lost Boys (1987)</h3>
+    Estética vampírica pura. Cuero, sangre, noches eternas de los 80. Define exactamente el color 
+    rojo vivo y la oscuridad que busco transmitir en este espacio.
+    <br><br><hr style='border: 1px dashed #ff0000;'>
+    <h3 style='border: none; font-size: 18px;'>[ ANIME ] Serial Experiments Lain (1998)</h3>
+    La desconexión total. El ruido estático de los cables de tensión japoneses. Si este blog tuviera 
+    un estado mental, sería la red de Lain.
+    <br><br><hr style='border: 1px dashed #ff0000;'>
+    <h3 style='border: none; font-size: 18px;'>[ JUEGO ] Fears to Fathom</h3>
+    El terror de estar solo en casa narrado a través de gráficos de PS1 y filtros VHS. 
+    La tensión de saber que alguien te está mirando.
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "V. EL ABISMO":
-    st.markdown("<h1>El Abismo</h1>", unsafe_allow_html=True)
+elif pagina == "➤ [05] 深淵 (EL ABISMO)":
+    st.markdown("<h1>EL ABISMO // 死</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="content-box" style="text-align: center; border-left: none; border-top: 4px solid #ff1a1a;">
+    <div class="danger-box" style="text-align: center; background-color: #000000;">
     <br><br>
-    <h2 style='border: none; color: #ff1a1a !important; letter-spacing: 5px;'>MEMORIAS NO CATALOGADAS</h2>
+    <h2 class="blink-text" style='border: none;'>MEMORIAS CORROMPIDAS</h2>
     <br>
-    <p style="font-size: 20px;">
-    Hay cosas que no encajan en ninguna otra pestaña.<br>
-    Ideas sueltas, sueños febriles, y estática visual.<br>
-    Aquí es donde entierro lo que no quiero perder, pero tampoco sé explicar.
+    <p style="font-size: 18px; color: #cc0000;">
+    Hay cosas que no encajan en ninguna otra parte.<br>
+    Imágenes residuales de las madrugadas.<br>
+    Aquí es donde caen cuando nadie más quiere verlas.
     </p>
-    <br><br><br>
+    <br>
+    <div style="font-family: 'Times New Roman'; font-size: 40px; color: #ff0000; letter-spacing: 10px;">
+    見えないで
+    </div>
+    <br><br>
     </div>
     """, unsafe_allow_html=True)
