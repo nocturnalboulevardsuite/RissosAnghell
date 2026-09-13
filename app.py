@@ -1,172 +1,179 @@
 import streamlit as st
 
-# Configuración inicial de la página
-st.set_page_config(page_title="El Rincón del Rissos", page_icon="🩸", layout="centered")
+# 1. CONFIGURACIÓN DE PÁGINA (Debe ser la primera línea)
+st.set_page_config(page_title="El Rincón del Rissos", page_icon="👁️", layout="wide")
 
-# --- CSS BASE: ESTÉTICA VHS, MATRIX SANGRIENTO Y ARAÑAS ---
-css_global = """
+# 2. CSS PARA ESTÉTICA "HORROR WEB 2005 / USERNAME 666"
+css = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap');
-
-/* Fondo base estilo Error de Sistema / VHS */
+/* Fondo general sangriento/visceral y fuente clásica de web antigua */
 .stApp {
-    background-color: #030000;
-    color: #ff0000;
-    font-family: 'VT323', monospace;
-    font-size: 24px;
-    background-image: 
-        repeating-linear-gradient(
-            0deg,
-            rgba(255, 0, 0, 0.05),
-            rgba(255, 0, 0, 0.05) 1px,
-            transparent 1px,
-            transparent 2px
-        );
+    background-color: #0a0000;
+    /* Un patrón CSS oscuro para simular textura si no tienes una imagen de fondo */
+    background-image: radial-gradient(#3a0000 1px, transparent 1px), radial-gradient(#3a0000 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    color: #cccccc;
+    font-family: 'Times New Roman', Times, serif;
 }
 
-/* Efecto Glitch y Aberración para Títulos */
+/* Ocultar el header por defecto de Streamlit para más inmersión */
+header {visibility: hidden;}
+
+/* Estilo de la Barra Lateral (Menú de Navegación) */
+[data-testid="stSidebar"] {
+    background-color: #110000 !important;
+    border-right: 4px double #8b0000;
+}
+[data-testid="stSidebar"] * {
+    color: #ffb3b3 !important;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Títulos estilo web antigua corrompida */
 h1, h2, h3 {
-    font-family: 'Creepster', cursive;
-    text-shadow: 2px 0 0 rgba(255,0,0,0.8), -2px 0 0 rgba(100,0,0,0.8);
+    color: #ff0000 !important;
+    text-shadow: 2px 2px 4px #000000;
+    border-bottom: 1px solid #8b0000;
+    padding-bottom: 5px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: -1px;
+}
+
+/* Estilo de las pestañas (Sub-blogs de historias) */
+.stTabs [data-baseweb="tab-list"] {
+    background-color: #1a0000;
+    border-bottom: 2px solid #550000;
+}
+.stTabs [data-baseweb="tab"] {
     color: #aa0000;
-    text-align: center;
-    animation: glitch 1.5s infinite;
+    border: 1px solid #330000;
+    background-color: #050000;
+}
+.stTabs [aria-selected="true"] {
+    background-color: #550000 !important;
+    color: #ffffff !important;
 }
 
-@keyframes glitch {
-    0% { text-shadow: 2px 0 0 red, -2px 0 0 darkred; }
-    50% { text-shadow: -2px 0 0 red, 2px 0 0 darkred; }
-    100% { text-shadow: 2px 0 0 red, -2px 0 0 darkred; }
+/* Contenedores de texto / Cajas estilo foro antiguo */
+.stMarkdown {
+    background-color: rgba(20, 0, 0, 0.7);
+    padding: 10px;
+    border-left: 3px solid #8b0000;
+    margin-bottom: 10px;
 }
 
-/* Botones Sangrientos Neón */
-div.stButton > button:first-child {
-    background-color: #110000;
-    color: #ff0000;
-    border: 2px solid #8a0000;
-    font-family: 'VT323', monospace;
-    font-size: 26px;
-    width: 100%;
-    box-shadow: 0 0 15px #ff0000;
-    transition: 0.3s;
+/* Botones */
+div.stButton > button {
+    background-color: #330000;
+    color: white;
+    border: 1px solid #ff0000;
+    border-radius: 0px;
 }
-div.stButton > button:first-child:hover {
-    background-color: #4a0000;
-    color: #ffffff;
-    box-shadow: 0 0 30px #ff0000;
-    border: 2px solid #ff0000;
-}
-
-/* Animación de la araña caminando por la pantalla */
-@keyframes crawl {
-    0% { top: -50px; left: 10%; transform: rotate(180deg); }
-    100% { top: 110vh; left: 30%; transform: rotate(190deg); }
-}
-.spider {
-    position: fixed;
-    font-size: 50px;
-    animation: crawl 10s linear infinite;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.8;
+div.stButton > button:hover {
+    background-color: #ff0000;
+    color: black;
+    border: 1px solid #ffffff;
 }
 </style>
-<div class="spider">🕷️</div>
 """
+st.markdown(css, unsafe_allow_html=True)
 
-# --- CSS ESPECÍFICOS PARA CADA HISTORIA ---
+# 3. BARRA DE NAVEGACIÓN (SIDEBAR)
+st.sidebar.markdown("## 🩸 MENÚ PRINCIPAL")
+st.sidebar.markdown("---")
+# Usamos un radio button en el sidebar para navegar entre las páginas principales
+pagina = st.sidebar.radio(
+    "SELECCIONA UN DIRECTORIO:",
+    ["[01] ¿Qué es esta página?", "[02] Archivo de Historias", "[03] Frecuencias (Música)", "[04] Sobre mí"]
+)
+st.sidebar.markdown("---")
+st.sidebar.write("Visitante N°: 00666")
 
-# Historia 1: Dinosaurios (Verde pantano, reptiliano)
-css_dino = """
-<style>
-.stApp { background-color: #001100; color: #77ff77; }
-h1, h2 { color: #22aa22; text-shadow: 2px 2px #000000; animation: none; }
-div.stButton > button:first-child { border: 2px solid #22aa22; box-shadow: 0 0 15px #22aa22; color: #22aa22; }
-div.stButton > button:first-child:hover { background-color: #004400; color: white; box-shadow: 0 0 30px #22aa22; border-color: #77ff77;}
-</style>
-"""
+# 4. RUTEO DE PÁGINAS
 
-# Historia 2: Misterio (Azul oscuro, paranormal)
-css_mystery = """
-<style>
-.stApp { background-color: #050515; color: #aaddff; }
-h1, h2 { color: #5599cc; text-shadow: 2px 2px #ffffff; font-family: 'VT323', monospace; animation: none;}
-div.stButton > button:first-child { border: 2px solid #5599cc; box-shadow: 0 0 15px #5599cc; color: #5599cc; }
-div.stButton > button:first-child:hover { background-color: #001144; color: white; box-shadow: 0 0 30px #5599cc; border-color: #aaddff;}
-</style>
-"""
-
-# --- SISTEMA DE NAVEGACIÓN (PÁGINAS) ---
-if 'pagina_actual' not in st.session_state:
-    st.session_state.pagina_actual = 'inicio'
-
-def cambiar_pagina(nueva_pagina):
-    st.session_state.pagina_actual = nueva_pagina
-
-# --- RENDERIZADO DE LAS INTERFAZ ---
-
-if st.session_state.pagina_actual == 'inicio':
-    # Inyectar CSS global (Rojo, negro, arañas)
-    st.markdown(css_global, unsafe_allow_html=True)
+# PÁGINA 1: ¿QUÉ ES ESTO?
+if pagina == "[01] ¿Qué es esta página?":
+    st.title("👁️ ADVERTENCIA AL USUARIO")
+    st.write("""
+    **El Rincón del Rissos** no es un blog convencional. 
     
-    st.markdown("<h1>EL RINCÓN DEL RISSOS</h1>", unsafe_allow_html=True)
-    st.markdown("<h3>🩸 'Anghell Collection' 🩸</h3>", unsafe_allow_html=True)
-    st.markdown("---")
+    Estás ingresando a un archivo recuperado. Todo lo que leas, escuches o veas aquí está bajo tu propio riesgo.
+    Este espacio fue creado para documentar las anomalías, los textos perdidos y las frecuencias auditivas que he ido recopilando y creando.
     
-    st.write("> **SYSTEM ERROR: CINTAS RECUPERADAS DESDE EL VACÍO.**")
-    st.write("Selecciona una de las historias restauradas. No nos hacemos responsables de lo que leas a continuación...")
+    Navega usando el panel izquierdo... si la conexión no se corta antes.
+    """)
+    # Puedes poner una imagen aterradora aquí
+    # st.image("tu_imagen_creepy.png")
+
+# PÁGINA 2: HISTORIAS (Sub-blogs)
+elif pagina == "[02] Archivo de Historias":
+    st.title("📜 REGISTROS Y RELATOS")
+    st.write("Selecciona una sub-categoría para explorar los textos:")
     
-    st.write("<br>", unsafe_allow_html=True)
+    # Creamos "Sub-blogs" usando pestañas (Tabs)
+    tab1, tab2, tab3 = st.tabs(["📂 Creepypastas", "📂 Experiencias Reales", "📂 Diarios Encontrados"])
     
-    # Grid de historias
+    with tab1:
+        st.subheader("El Reflejo Incorrecto")
+        st.write("Publicado: 13/09/2026 | Autor: Rissos")
+        st.write("""
+        Todo empezó cuando noté que mi reflejo en el espejo del baño parpadeaba un segundo después que yo. 
+        Al principio pensé que era el cansancio... *(Aquí va el texto completo de tu historia)*.
+        """)
+        st.button("Leer más...", key="btn_creepy1")
+
+    with tab2:
+        st.subheader("Lo que vi en Puente Alto")
+        st.write("Publicado: Archivo Desconocido")
+        st.write("Un relato sobre algo que presencié de madrugada. Nadie me cree, pero las marcas en la puerta siguen ahí.")
+
+    with tab3:
+        st.subheader("Entrada #44 - La estática")
+        st.write("No dejo de escuchar el ruido blanco. Incluso cuando la tele está desenchufada.")
+
+# PÁGINA 3: MÚSICA (Spotify y .wav)
+elif pagina == "[03] Frecuencias (Música)":
+    st.title("🎵 FRECUENCIAS Y RUIDO")
+    
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("📼 Play: Terror Jurásico"):
-            cambiar_pagina('historia_dino')
-            st.rerun()
-            
+        st.subheader("Mis Composiciones (.wav)")
+        st.write("Pistas exportadas directamente desde mi DAW. Se recomienda usar audífonos.")
+        
+        # Reproductor de audio local (Asegúrate de tener un archivo .wav en la misma carpeta)
+        # Descomenta las líneas de abajo cuando tengas tus archivos de audio:
+        
+        # st.write("▶️ Pista 1: Ansiedad.wav")
+        # st.audio("ansiedad.wav", format="audio/wav")
+        
+        # st.write("▶️ Pista 2: El_Sotano.wav")
+        # st.audio("el_sotano.wav", format="audio/wav")
+        
+        st.info("*(Coloca tus archivos .wav en la misma carpeta del app.py y usa st.audio('nombre.wav') para que suenen aquí)*")
+
     with col2:
-        if st.button("📼 Play: El Misterio del Sótano"):
-            cambiar_pagina('historia_misterio')
-            st.rerun()
+        st.subheader("Playlist de Inspiración (Spotify)")
+        st.write("La música que escucho mientras el mundo se cae a pedazos.")
+        
+        # Para poner tu playlist de Spotify: 
+        # Ve a Spotify > Click derecho en tu playlist > Compartir > Insertar playlist (Embed) > Copia el código
+        spotify_embed = """
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        """
+        # st.components.v1.html te permite meter cualquier iframe o HTML externo
+        import streamlit.components.v1 as components
+        components.html(spotify_embed, height=400)
 
-elif st.session_state.pagina_actual == 'historia_dino':
-    # Inyectar CSS global + CSS específico de dinosaurios
-    st.markdown(css_global + css_dino, unsafe_allow_html=True)
-    
-    st.markdown("<h1>Terror Jurásico</h1>", unsafe_allow_html=True)
-    
+# PÁGINA 4: SOBRE MÍ
+elif pagina == "[04] Sobre mí":
+    st.title("💀 ACERCA DEL AUTOR")
     st.write("""
-    *(Estética de jungla tóxica cargada...)*
+    **Alias:** Rissos  
+    **Ubicación:** Desconocida (Región Metropolitana)  
+    **Estado:** Activo  
     
-    El sonido de las hojas rompiéndose en la oscuridad me heló la sangre. 
-    No era un animal normal. El olor a humedad y reptil inundó la cabaña...
-    
-    *(Aquí puedes pegar todo el texto de tu historia sobre dinosaurios o monstruos)*.
+    Soy un creador de contenido enfocado en el horror core, la producción musical oscura y la escritura visceral.
+    Si llegaste hasta aquí, probablemente ya estemos conectados de alguna forma.
     """)
-    
-    st.markdown("---")
-    if st.button("🔙 Eject: Volver al Archivo Principal"):
-        cambiar_pagina('inicio')
-        st.rerun()
-
-elif st.session_state.pagina_actual == 'historia_misterio':
-    # Inyectar CSS global + CSS específico de misterio
-    st.markdown(css_global + css_mystery, unsafe_allow_html=True)
-    
-    st.markdown("<h1>El Misterio del Sótano</h1>", unsafe_allow_html=True)
-    
-    st.write("""
-    *(Estética paranormal oscura cargada...)*
-    
-    La puerta siempre estuvo cerrada con llave. Mi abuelo me advirtió que nunca bajara. 
-    Pero anoche, escuché susurros provenientes desde las escaleras...
-    
-    *(Aquí puedes pegar todo el texto de tu historia de misterio y suspenso)*.
-    """)
-    
-    st.markdown("---")
-    if st.button("🔙 Eject: Volver al Archivo Principal"):
-        cambiar_pagina('inicio')
-        st.rerun()
