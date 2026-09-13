@@ -1,275 +1,308 @@
 import streamlit as st
 
-# Configuración de página rompiendo el estándar
 st.set_page_config(page_title="ANGHELL COLLECTION", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS: CINEMÁTICO 80s, SCARFACE, THE LOST BOYS, FILM GRAIN PROFESIONAL ---
+# --- CSS: SHADER DE CINE, CALLEJÓN Y TEXTO VISIBLE ---
 css = """
 <style>
-/* Fuentes: Anton (Títulos agresivos estilo Scarface) / Cormorant (Textos estilo Lost Boys) */
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* FONDO ROJO OSCURO PROFUNDO Y TEXTO ROJO CLARO */
+/* --- FONDO DE CALLEJÓN (ESTILO IMAGEN DE REFERENCIA) --- */
 .stApp {
-    background-color: #120000; /* Rojo casi negro */
-    background-image: radial-gradient(circle at center, #240000 0%, #0a0000 100%);
-    color: #ff6666; /* Rojo claro / Salmón sangriento para lectura */
+    /* Imagen de callejón oscuro de fondo con un overlay rojo muy denso para que el texto resalte */
+    background-image: 
+        linear-gradient(to bottom, rgba(15, 0, 0, 0.85), rgba(5, 0, 0, 0.95)),
+        url('https://images.unsplash.com/photo-1518063223847-50b55ec74127?q=80&w=2000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #ff4d4d; /* Texto base rojo claro y visible */
     font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
+    font-size: 22px;
 }
 
-/* EFECTO DE CINE PROFESIONAL: Viñeta (Bordes oscuros) + Film Grain Animado */
-.stApp::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    box-shadow: inset 0 0 150px rgba(0,0,0,0.95);
-    pointer-events: none;
-    z-index: 9998;
-}
-
+/* --- SHADER DE PELÍCULA (REC / DEAD SILENCE / SCARFACE) --- */
+/* Cubre toda la pantalla sin bloquear los clics (pointer-events: none) y usa mix-blend-mode para no ocultar el texto */
 .stApp::after {
     content: "";
     position: fixed;
-    top: -50%; left: -50%; width: 200%; height: 200%;
+    top: 0; left: 0; width: 100vw; height: 100vh;
     background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
-    opacity: 0.12; /* Granulado sutil pero presente */
+    opacity: 0.25;
     pointer-events: none;
     z-index: 9999;
-    animation: film-grain 1.5s steps(4) infinite;
+    mix-blend-mode: overlay; /* Fundamental para que el texto brille a través del grano */
+    animation: film-shader 0.15s steps(2) infinite;
 }
 
-@keyframes film-grain {
-    0% { transform: translate(0, 0); }
-    10% { transform: translate(-1%, -1%); }
-    20% { transform: translate(1%, 1%); }
-    30% { transform: translate(-2%, 2%); }
-    40% { transform: translate(2%, -2%); }
-    50% { transform: translate(-1%, 1%); }
-    60% { transform: translate(1%, -1%); }
-    70% { transform: translate(2%, 2%); }
-    80% { transform: translate(-2%, -2%); }
-    90% { transform: translate(1%, 1%); }
-    100% { transform: translate(0, 0); }
+@keyframes film-shader {
+    0% { background-position: 0 0; }
+    50% { background-position: 10% 10%; }
+    100% { background-position: -10% -5%; }
 }
 
-/* TÍTULOS CINEMÁTICOS */
+/* --- TÍTULOS Y TEXTOS VISIBLES --- */
 h1, h2, h3 {
     font-family: 'Anton', sans-serif;
-    color: #ff1a1a !important; /* Rojo puro e intenso */
+    color: #ff1a1a !important;
     text-transform: uppercase;
     letter-spacing: 4px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 0px #330000, -1px -1px 15px rgba(255, 26, 26, 0.4);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.9), 0px 0px 20px rgba(255, 26, 26, 0.6);
 }
 
-/* ESCONDER LA INTERFAZ ABURRIDA DE STREAMLIT */
-header, footer { display: none !important; }
-div[data-testid="stDecoration"] { display: none !important; }
+p, div {
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
 
-/* BARRA LATERAL (ESTILO CINTA DE CINE) */
+/* --- BARRA LATERAL (MENÚ) CORREGIDA --- */
 [data-testid="stSidebar"] {
-    background-color: #080000 !important;
-    border-right: 2px dashed #ff1a1a;
+    background-color: rgba(5, 0, 0, 0.95) !important;
+    border-right: 2px solid #550000;
 }
 
-/* BOTONES DE NAVEGACIÓN ESTILO GLITCH/PELÍCULA */
+/* Forzar la visibilidad de los botones del menú */
 div[role="radiogroup"] > label {
-    background: transparent !important;
-    border: none !important;
-    border-bottom: 1px solid #330000 !important;
-    padding: 15px 10px !important;
+    background: rgba(20, 0, 0, 0.5) !important;
+    border: 1px solid #330000 !important;
+    padding: 15px !important;
+    margin-bottom: 5px;
     font-family: 'Anton', sans-serif !important;
+    font-size: 20px !important;
+}
+div[role="radiogroup"] > label p {
+    color: #ff3333 !important; /* Rojo brillante para que no desaparezca */
     font-size: 22px !important;
-    color: #883333 !important;
-    letter-spacing: 3px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: crosshair;
 }
 div[role="radiogroup"] > label:hover {
-    color: #ff1a1a !important;
-    transform: skewX(-10deg) scale(1.05);
-    text-shadow: 2px 0px 5px rgba(255, 0, 0, 0.8);
-    background: rgba(255, 0, 0, 0.05) !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+    border-color: #ff1a1a !important;
 }
 div[role="radiogroup"] > label[data-checked="true"] {
+    background: rgba(100, 0, 0, 0.4) !important;
+    border-left: 5px solid #ff1a1a !important;
+}
+div[role="radiogroup"] > label[data-checked="true"] p {
     color: #ffffff !important;
-    border-bottom: 2px solid #ff1a1a !important;
-    text-shadow: 0 0 10px #ff1a1a, 0 0 20px #ff1a1a;
-    transform: translateX(10px);
-}
-div[role="radiogroup"] circle, div[role="radiogroup"] label div:first-child {
-    display: none;
+    text-shadow: 0 0 10px #ff1a1a;
 }
 
-/* CONTENEDOR FUERA DEL SISTEMA (CORTES DE PELÍCULA) */
-.film-cut {
+/* Ocultar elementos UI nativos */
+header, footer { display: none !important; }
+
+/* --- ESCENOGRAFÍA: VENTANA EN LLAMAS Y ESCALERA ROTA --- */
+.alley-scene {
     position: relative;
-    padding: 40px;
-    background: rgba(15, 0, 0, 0.7);
-    border-top: 1px solid #ff1a1a;
-    border-bottom: 1px solid #ff1a1a;
-    margin: 30px 0;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.8);
-    transition: transform 0.5s ease;
-}
-.film-cut:hover {
-    transform: scale(1.01);
-}
-.film-cut::before, .film-cut::after {
-    content: "■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■";
-    position: absolute;
-    left: 0;
     width: 100%;
-    color: #330000;
-    font-size: 10px;
-    letter-spacing: 8px;
-    text-align: center;
+    height: 400px;
+    background: url('https://www.transparenttextures.com/patterns/brick-wall-dark.png');
+    background-color: rgba(10, 0, 0, 0.6);
+    border: 2px solid #330000;
+    box-shadow: inset 0 0 50px #000;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    overflow: hidden;
 }
-.film-cut::before { top: -15px; }
-.film-cut::after { bottom: -15px; }
 
-/* TEXTO CONFIDENCIAL / CENSURADO */
-.censored {
-    background-color: #ff1a1a;
-    color: #ff1a1a;
-    transition: 0.2s;
-    cursor: help;
+/* La Ventana con Fuego */
+.fire-window {
+    position: absolute;
+    top: 50px;
+    right: 80px;
+    width: 120px;
+    height: 180px;
+    border: 4px solid #111;
+    background: #000;
+    box-shadow: 0 0 50px #ff3300, inset 0 0 20px #ff3300;
+    overflow: hidden;
 }
-.censored:hover {
-    background-color: transparent;
-    color: #ff6666;
+.fire-window::before {
+    content: "";
+    position: absolute;
+    bottom: -20px; left: -20px; right: -20px; height: 150%;
+    background: radial-gradient(circle at bottom, #ffea00 0%, #ff3300 40%, transparent 70%);
+    opacity: 0.8;
+    animation: flicker 0.1s infinite alternate;
+}
+.fire-window::after {
+    /* Barrotes de la ventana */
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+        linear-gradient(to right, transparent 48%, #111 48%, #111 52%, transparent 52%),
+        linear-gradient(to bottom, transparent 48%, #111 48%, #111 52%, transparent 52%);
+    z-index: 2;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.7; transform: translateY(0); }
+    100% { opacity: 1; transform: translateY(-5px); }
+}
+
+/* La Escalera Rota */
+.broken-stairs {
+    position: absolute;
+    bottom: 0;
+    right: 140px;
+    width: 80px;
+    height: 250px;
+    background: 
+        repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 30px,
+            #222 30px,
+            #222 35px
+        );
+    border-left: 5px solid #1a1a1a;
+    border-right: 5px solid #1a1a1a;
+    transform: perspective(200px) rotateX(10deg) skewX(-5deg);
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.9);
+}
+.broken-stairs::after {
+    content: "";
+    position: absolute;
+    top: 100px; left: 0; width: 100%; height: 40px;
+    background: rgba(10, 0, 0, 0.9); /* Simula el tramo roto */
+    border: none;
+}
+
+/* Contenedor de contenido tipo archivo */
+.content-box {
+    background: rgba(15, 0, 0, 0.85);
+    border-left: 3px solid #ff1a1a;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
 }
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
-# --- NAVEGACIÓN LATERAL CINEMÁTICA ---
-st.sidebar.markdown("<h1 style='text-align: center; font-size: 3rem; margin-bottom: 0;'>ANGHELL</h1>", unsafe_allow_html=True)
-st.sidebar.markdown("<h3 style='text-align: center; color: #ff6666 !important; font-family: \"Cormorant Garamond\"; letter-spacing: 5px; font-size: 1.2rem; margin-top: -10px;'>COLLECTION</h3>", unsafe_allow_html=True)
+# --- NAVEGACIÓN LATERAL ---
+st.sidebar.markdown("<h1 style='text-align: center; font-size: 3.5rem; margin-bottom: 0;'>ANGHELL</h1>", unsafe_allow_html=True)
+st.sidebar.markdown("<h3 style='text-align: center; color: #ff3333 !important; font-size: 1.2rem; margin-top: -10px; letter-spacing: 5px;'>COLLECTION</h3>", unsafe_allow_html=True)
 st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
 opciones = [
-    "REEL 01: EL MANIFIESTO", 
-    "REEL 02: HISTORIAS", 
-    "REEL 03: AUDIO", 
-    "REEL 04: CATÁLOGO VISUAL",
-    "REEL 05: ESTÁTICA"
+    "EL CALLEJÓN (INICIO)", 
+    "CINTAS ENCONTRADAS", 
+    "FRECUENCIAS (AUDIO)", 
+    "REFERENCIAS VISUALES"
 ]
 pagina = st.sidebar.radio("NAVEGACIÓN", opciones, label_visibility="collapsed")
-st.sidebar.markdown("<br><br><br><div style='text-align: center; font-family: Anton; color: #330000; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><br><br><div style='text-align: center; font-family: Anton; color: #ff1a1a; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
 
+# --- PÁGINAS ---
 
-# --- RUTAS DE CINTA (PÁGINAS) ---
-
-if pagina == "REEL 01: EL MANIFIESTO":
-    st.markdown("<div style='text-align: center;'><h1 style='font-size: 5rem;'>EL RINCÓN DE RISSOS</h1></div>", unsafe_allow_html=True)
+if pagina == "EL CALLEJÓN (INICIO)":
+    st.markdown("<h1 style='font-size: 4rem;'>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
+    
+    # Escena del callejón con CSS puro
+    st.markdown("""
+    <div class="alley-scene">
+        <div class="fire-window"></div>
+        <div class="broken-stairs"></div>
+        <div style="position: absolute; bottom: 20px; left: 30px; width: 50%;">
+            <h2 style="font-size: 2rem; background: rgba(0,0,0,0.7); display: inline-block; padding: 5px 15px;">ZONA CERO</h2>
+            <p style="background: rgba(0,0,0,0.7); padding: 15px; font-weight: bold; border-left: 2px solid #ff1a1a;">
+            Este es mi rincón. Fuera del sistema.<br>
+            La escalera está rota y el edificio de al lado está en llamas, pero el servidor sigue encendido.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="film-cut">
-    <h2 style='font-size: 2rem;'>SINOPSIS: ANGHELL_COLLECTION</h2>
-    <p style='font-size: 24px; line-height: 1.6; color: #ff8080;'>
-    Este es un blog personal. Un carrete de película olvidado en una red sobresaturada.
+    <div class="content-box">
+    <p style='font-size: 24px; line-height: 1.6;'>
+    Lo creé porque hay cosas que de verdad <strong>NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR.</strong> 
     <br><br>
-    Lo creé porque hay cosas que de verdad <span style="font-family: Anton; font-size: 26px; color: #ff1a1a; letter-spacing: 1px;">NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR.</span> 
+    Historias viscerales que he escrito en las madrugadas. Frecuencias de audio que suenan a estática y sirenas a lo lejos. 
+    Recomendaciones de películas de culto, metraje encontrado y recuerdos que la ciudad devoró.
     <br><br>
-    Historias viscerales que he escrito en las madrugadas. Frecuencias y pistas de audio que he producido pero que se sienten 
-    demasiado hostiles para un álbum normal. Recomendaciones de películas de culto, series, animes, y recuerdos 
-    fragmentados de la ciudad.
-    <br><br>
-    Cosas que necesito proyectar para no perder esa esencia, ese momento exacto en el tiempo. <br>
-    No hay un orden lógico. <span class="censored">Solo lo que sobrevive al corte final.</span>
+    No hay interfaz limpia ni diseño corporativo aquí. Es ladrillo, fuego y cinta magnética.
     </p>
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "REEL 02: HISTORIAS":
-    st.markdown("<h1>[ ARCHIVOS DE GUION ]</h1>", unsafe_allow_html=True)
+elif pagina == "CINTAS ENCONTRADAS":
+    st.markdown("<h1>[ ARCHIVOS DE TEXTO ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="film-cut">
-    <h3>TOMA 1: EL PERRO SIN ROSTRO</h3>
+    <div class="content-box">
+    <h3>TAPE_01: EL PERRO SIN ROSTRO</h3>
     <p style='font-size: 22px;'>
-    <strong>EXT. PUENTE ALTO - NOCHE (3:15 AM)</strong><br><br>
-    La niebla es espesa. Las luces de la calle parpadean. <br>
+    Puente Alto. 3:15 AM.<br><br>
+    La niebla es tan espesa que las luces de los postes parecen linternas muriendo. 
     Una silueta canina busca en la basura. Haces un sonido para llamarlo.<br><br>
     El animal se gira. El área donde debería estar su rostro es plana. Como piel tensada sobre un cráneo liso. 
-    No tiene ojos, pero la atmósfera pesa. Sabes que te está mirando.
+    No tiene ojos, pero la atmósfera pesa tanto que sabes que te está mirando directamente al centro del pecho.
     </p>
     </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="film-cut">
-    <h3>TOMA 2: VAMPIRISMO DE ASFALTO</h3>
+    
+    <div class="content-box">
+    <h3>TAPE_02: VAMPIRISMO DE ASFALTO</h3>
     <p style='font-size: 22px;'>
-    La ciudad drena. No usa colmillos, usa horarios y concreto. <br>
-    A las 4 AM, los paraderos de micro están vacíos, pero si te quedas mirando fijo a las esquinas, 
-    las sombras tienen una densidad distinta. Pesada. Viva.
+    La ciudad drena. No usa colmillos, usa horarios, boletos de micro y concreto armado. <br>
+    A las 4 AM, los paraderos están vacíos, pero si te quedas mirando fijo a las esquinas, 
+    las sombras tienen una densidad distinta. Huelen a ozono y a sangre vieja.
     </p>
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "REEL 03: AUDIO":
-    st.markdown("<h1>[ BANDA SONORA ORIGINAL ]</h1>", unsafe_allow_html=True)
+elif pagina == "FRECUENCIAS (AUDIO)":
+    st.markdown("<h1>[ BANDA SONORA DEL CALLEJÓN ]</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns([1, 1])
     
     with col1:
         st.markdown("""
-        <div class="film-cut" style="padding: 20px;">
+        <div class="content-box">
         <h3>PISTAS .WAV</h3>
-        <p>Sonido crudo. Mezclas que nunca pasaron por un proceso de masterización limpio. 
-        Puro ruido y bajo.</p>
-        <div style="width: 100%; height: 50px; border: 1px solid #ff1a1a; display: flex; align-items: center; justify-content: center; font-family: Anton; color: #ff1a1a;">
-        PLAY ▶
+        <p>Sonido crudo. Mezclas que nunca pasaron por un estudio. 
+        Ruido blanco, bajos distorsionados y el zumbido de los cables de alta tensión.</p>
+        <div style="margin-top: 20px; padding: 15px; border: 1px solid #ff1a1a; text-align: center; font-family: Anton; font-size: 24px; cursor: pointer;">
+        ▶ REPRODUCIR CINTA
         </div>
         </div>
         """, unsafe_allow_html=True)
         
     with col2:
         st.markdown("""
-        <div class="film-cut" style="padding: 20px;">
-        <h3>PLAYLIST EXTERNA</h3>
-        <iframe style="border-radius:0; border: none; filter: sepia(100%) hue-rotate(320deg) saturate(200%) contrast(150%);" 
+        <div class="content-box">
+        <h3>RADIO EXTERNA</h3>
+        <iframe style="border-radius:0; border: none; filter: grayscale(50%) contrast(200%) sepia(50%) hue-rotate(320deg);" 
         src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
         width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         """, unsafe_allow_html=True)
 
-elif pagina == "REEL 04: CATÁLOGO VISUAL":
-    st.markdown("<h1>[ REFERENCIAS VISUALES ]</h1>", unsafe_allow_html=True)
+elif pagina == "REFERENCIAS VISUALES":
+    st.markdown("<h1>[ INFLUENCIAS DIRECTAS ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="film-cut">
-    <h3 style="font-size: 2rem;">THE LOST BOYS (1987)</h3>
+    <div class="content-box">
+    <h3 style="font-size: 2rem;">[ REC ] (2007)</h3>
     <p style='font-size: 22px;'>
-    Vampiros en motocicleta, chaquetas de cuero y playas californianas en la noche. 
-    La mezcla perfecta entre terror y rebeldía. Esta es la paleta de colores de mi mente.
+    El terror de estar encerrado en tu propio edificio. La cámara al hombro, la oscuridad en las escaleras, 
+    el caos realista. La sensación de que no hay salida y todo está siendo grabado.
     </p>
     </div>
     
-    <div class="film-cut">
-    <h3 style="font-size: 2rem;">SCARFACE (1983)</h3>
+    <div class="content-box">
+    <h3 style="font-size: 2rem;">DEAD SILENCE (2007)</h3>
     <p style='font-size: 22px;'>
-    El neón rojo, los excesos y la tragedia operística. La agresividad visual de los títulos 
-    y la música de sintetizador que te mantiene tenso.
+    Paletas de colores desaturadas donde el único color que resalta es el rojo carmesí. 
+    Teatros abandonados, silencio absoluto y la sensación de que algo de madera y porcelana te observa.
     </p>
     </div>
-    """, unsafe_allow_html=True)
-
-elif pagina == "REEL 05: ESTÁTICA":
-    st.markdown("<h1 style='text-align: center; font-size: 6rem; opacity: 0.3;'>ESTÁTICA</h1>", unsafe_allow_html=True)
     
-    st.markdown("""
-    <div style="text-align: center; margin-top: 100px;">
-    <p style="font-size: 30px; color: #ff1a1a; font-family: Anton;">
-    IMÁGENES RESIDUALES. <br>
-    PENSAMIENTOS INTRUSIVOS.<br>
-    ESCENAS ELIMINADAS.
-    </p>
-    <p style="font-size: 20px; color: #ff6666;">
-    Vuelve más tarde. El carrete se está revelando.
+    <div class="content-box">
+    <h3 style="font-size: 2rem;">CLOVERFIELD (2008) / SCARFACE (1983)</h3>
+    <p style='font-size: 22px;'>
+    De Cloverfield: La escala del monstruo y la destrucción urbana vista a nivel del suelo, a través de una lente sucia. <br>
+    De Scarface: Los contrastes neón, la agresividad de la tipografía y esa atmósfera densa de los ochenta.
     </p>
     </div>
     """, unsafe_allow_html=True)
