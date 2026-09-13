@@ -1,259 +1,275 @@
 import streamlit as st
 
+# Configuración de página rompiendo el estándar
 st.set_page_config(page_title="ANGHELL COLLECTION", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS: VHS + DEAD SILENCE + ARMY OF TWO UI ---
+# --- CSS: CINEMÁTICO 80s, SCARFACE, THE LOST BOYS, FILM GRAIN PROFESIONAL ---
 css = """
 <style>
-/* Importar fuentes: 
-   Bebas Neue (Menú Táctico Army of Two)
-   Cinzel (Elegancia macabra estilo Dead Silence)
-   Share Tech Mono (Textos técnicos/VHS)
-*/
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;700&family=Share+Tech+Mono&display=swap');
+/* Fuentes: Anton (Títulos agresivos estilo Scarface) / Cormorant (Textos estilo Lost Boys) */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* Fondo base oscuro abisal */
+/* FONDO ROJO OSCURO PROFUNDO Y TEXTO ROJO CLARO */
 .stApp {
-    background-color: #030000;
-    color: #c4b5b5;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 18px;
+    background-color: #120000; /* Rojo casi negro */
+    background-image: radial-gradient(circle at center, #240000 0%, #0a0000 100%);
+    color: #ff6666; /* Rojo claro / Salmón sangriento para lectura */
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
 }
 
-/* OVERLAY VHS & FILM GRAIN (Fears to Fathom / VHS 80s) */
-.stApp::after {
+/* EFECTO DE CINE PROFESIONAL: Viñeta (Bordes oscuros) + Film Grain Animado */
+.stApp::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background-image: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 0, 0.04) 2px, rgba(0, 0, 0, 0.05) 4px),
-        url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
-    background-size: 100% 4px, 250px;
-    opacity: 0.25;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.95);
+    pointer-events: none;
+    z-index: 9998;
+}
+
+.stApp::after {
+    content: "";
+    position: fixed;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png');
+    opacity: 0.12; /* Granulado sutil pero presente */
     pointer-events: none;
     z-index: 9999;
-    animation: vhs-flicker 0.15s infinite;
+    animation: film-grain 1.5s steps(4) infinite;
 }
 
-@keyframes vhs-flicker {
-    0% { opacity: 0.25; }
-    50% { opacity: 0.28; }
-    100% { opacity: 0.25; }
+@keyframes film-grain {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-1%, -1%); }
+    20% { transform: translate(1%, 1%); }
+    30% { transform: translate(-2%, 2%); }
+    40% { transform: translate(2%, -2%); }
+    50% { transform: translate(-1%, 1%); }
+    60% { transform: translate(1%, -1%); }
+    70% { transform: translate(2%, 2%); }
+    80% { transform: translate(-2%, -2%); }
+    90% { transform: translate(1%, 1%); }
+    100% { transform: translate(0, 0); }
 }
 
-/* Títulos principales (Dead Silence - Rojo Vivo) */
+/* TÍTULOS CINEMÁTICOS */
 h1, h2, h3 {
-    font-family: 'Cinzel', serif;
-    color: #ff0a0a !important; /* Rojo sangre hiper-vívido */
+    font-family: 'Anton', sans-serif;
+    color: #ff1a1a !important; /* Rojo puro e intenso */
     text-transform: uppercase;
-    text-shadow: 0px 0px 12px rgba(255, 10, 10, 0.6), 3px 3px 0px #220000;
-    border-bottom: 1px solid rgba(255, 10, 10, 0.4);
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px #330000, -1px -1px 15px rgba(255, 26, 26, 0.4);
 }
 
-/* --- MENÚ LATERAL ESTILO ARMY OF TWO --- */
+/* ESCONDER LA INTERFAZ ABURRIDA DE STREAMLIT */
+header, footer { display: none !important; }
+div[data-testid="stDecoration"] { display: none !important; }
+
+/* BARRA LATERAL (ESTILO CINTA DE CINE) */
 [data-testid="stSidebar"] {
-    background-color: #050101 !important;
-    border-right: 2px solid #330000;
-    box-shadow: 10px 0 30px rgba(255, 0, 0, 0.05);
+    background-color: #080000 !important;
+    border-right: 2px dashed #ff1a1a;
 }
 
-/* Estilizar el Radio Button de Streamlit para que parezca un menú de juego */
-div[role="radiogroup"] {
-    gap: 5px;
-}
+/* BOTONES DE NAVEGACIÓN ESTILO GLITCH/PELÍCULA */
 div[role="radiogroup"] > label {
-    background: linear-gradient(90deg, #110000 0%, transparent 100%);
-    border-left: 4px solid #330000;
-    padding: 15px 20px !important;
-    margin-bottom: 5px;
-    font-family: 'Bebas Neue', sans-serif !important;
-    font-size: 26px !important;
-    color: #665555 !important;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #330000 !important;
+    padding: 15px 10px !important;
+    font-family: 'Anton', sans-serif !important;
+    font-size: 22px !important;
+    color: #883333 !important;
+    letter-spacing: 3px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: crosshair;
 }
 div[role="radiogroup"] > label:hover {
-    border-left: 4px solid #8a0303;
-    color: #ff0a0a !important;
-    background: linear-gradient(90deg, rgba(255, 10, 10, 0.05) 0%, transparent 100%);
+    color: #ff1a1a !important;
+    transform: skewX(-10deg) scale(1.05);
+    text-shadow: 2px 0px 5px rgba(255, 0, 0, 0.8);
+    background: rgba(255, 0, 0, 0.05) !important;
 }
 div[role="radiogroup"] > label[data-checked="true"] {
-    border-left: 8px solid #ff0a0a !important; /* Marca táctica gruesa */
-    color: #ffffff !important; /* Blanco para alto contraste Army of Two */
-    background: linear-gradient(90deg, rgba(255, 10, 10, 0.2) 0%, transparent 100%);
-    text-shadow: 0 0 10px rgba(255, 10, 10, 0.8);
-    transform: translateX(5px); /* Efecto de selección hacia adelante */
+    color: #ffffff !important;
+    border-bottom: 2px solid #ff1a1a !important;
+    text-shadow: 0 0 10px #ff1a1a, 0 0 20px #ff1a1a;
+    transform: translateX(10px);
 }
-
-/* Ocultar los círculos nativos del radio button */
-div[role="radiogroup"] circle {
-    display: none;
-}
-div[role="radiogroup"] label div:first-child {
+div[role="radiogroup"] circle, div[role="radiogroup"] label div:first-child {
     display: none;
 }
 
-/* Ocultar UI nativa de Streamlit */
-header, footer {visibility: hidden;}
-
-/* Cajas de contenido (Efecto Táctico/VHS) */
-.tactical-box {
-    background: rgba(10, 2, 2, 0.85);
-    border: 1px solid #330000;
-    border-left: 3px solid #ff0a0a;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,1);
+/* CONTENEDOR FUERA DEL SISTEMA (CORTES DE PELÍCULA) */
+.film-cut {
     position: relative;
+    padding: 40px;
+    background: rgba(15, 0, 0, 0.7);
+    border-top: 1px solid #ff1a1a;
+    border-bottom: 1px solid #ff1a1a;
+    margin: 30px 0;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+    transition: transform 0.5s ease;
 }
-.tactical-box::before {
-    content: "[ REC ]";
+.film-cut:hover {
+    transform: scale(1.01);
+}
+.film-cut::before, .film-cut::after {
+    content: "■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■";
     position: absolute;
-    top: 5px; right: 10px;
-    font-size: 12px;
-    color: #ff0a0a;
-    animation: blinker 2s linear infinite;
+    left: 0;
+    width: 100%;
+    color: #330000;
+    font-size: 10px;
+    letter-spacing: 8px;
+    text-align: center;
 }
+.film-cut::before { top: -15px; }
+.film-cut::after { bottom: -15px; }
 
-@keyframes blinker {
-    50% { opacity: 0; }
+/* TEXTO CONFIDENCIAL / CENSURADO */
+.censored {
+    background-color: #ff1a1a;
+    color: #ff1a1a;
+    transition: 0.2s;
+    cursor: help;
 }
-
-.blood-text {
-    color: #ff0a0a;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(255, 10, 10, 0.5);
+.censored:hover {
+    background-color: transparent;
+    color: #ff6666;
 }
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
-# --- NAVEGACIÓN LATERAL (UI TÁCTICA) ---
-st.sidebar.markdown("<h2 style='font-family: \"Bebas Neue\", sans-serif; text-align: center; font-size: 2.5rem; text-shadow: 0 0 15px red; border:none;'>ANGHELL<br>COLLECTION</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("<div style='text-align: center; color: #ff0a0a; font-family: monospace;'>// SYS.OVERRIDE_ACTIVATED</div><br>", unsafe_allow_html=True)
+# --- NAVEGACIÓN LATERAL CINEMÁTICA ---
+st.sidebar.markdown("<h1 style='text-align: center; font-size: 3rem; margin-bottom: 0;'>ANGHELL</h1>", unsafe_allow_html=True)
+st.sidebar.markdown("<h3 style='text-align: center; color: #ff6666 !important; font-family: \"Cormorant Garamond\"; letter-spacing: 5px; font-size: 1.2rem; margin-top: -10px;'>COLLECTION</h3>", unsafe_allow_html=True)
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
 
 opciones = [
-    "01. LA ESENCIA", 
-    "02. ARCHIVO_RELATOS", 
-    "03. FRECUENCIAS_AUDIO", 
-    "04. CATÁLOGO_VISUAL",
-    "05. EL_ABISMO"
+    "REEL 01: EL MANIFIESTO", 
+    "REEL 02: HISTORIAS", 
+    "REEL 03: AUDIO", 
+    "REEL 04: CATÁLOGO VISUAL",
+    "REEL 05: ESTÁTICA"
 ]
-pagina = st.sidebar.radio("MAIN MENU", opciones, label_visibility="collapsed")
+pagina = st.sidebar.radio("NAVEGACIÓN", opciones, label_visibility="collapsed")
+st.sidebar.markdown("<br><br><br><div style='text-align: center; font-family: Anton; color: #330000; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
 
-st.sidebar.markdown("<br><br><br><div style='text-align: center; color: #444; font-family: \"Bebas Neue\"; font-size: 20px;'>STATUS: DISCONNECTED</div>", unsafe_allow_html=True)
 
-# --- RUTEO DE PÁGINAS ---
+# --- RUTAS DE CINTA (PÁGINAS) ---
 
-if pagina == "01. LA ESENCIA":
-    st.markdown("<h1>El Rincón de Rissos</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='border: none; color: #aa0000 !important; font-family: \"Share Tech Mono\"; margin-top: -15px;'>[ ARCHIVO CLASIFICADO: 'ANGHELL COLLECTION' ]</h3>", unsafe_allow_html=True)
+if pagina == "REEL 01: EL MANIFIESTO":
+    st.markdown("<div style='text-align: center;'><h1 style='font-size: 5rem;'>EL RINCÓN DE RISSOS</h1></div>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="tactical-box" style="font-size: 19px; line-height: 1.8;">
-    Este es un blog personal. Un rincón analógico en una red sobresaturada.
+    <div class="film-cut">
+    <h2 style='font-size: 2rem;'>SINOPSIS: ANGHELL_COLLECTION</h2>
+    <p style='font-size: 24px; line-height: 1.6; color: #ff8080;'>
+    Este es un blog personal. Un carrete de película olvidado en una red sobresaturada.
     <br><br>
-    Lo creé porque hay cosas que de verdad <span class="blood-text">no sé dónde colocar, ni cómo catalogar</span>. 
-    Historias viscerales que he escrito en las madrugadas, música y pistas que he producido pero que no encajan en 
-    ningún álbum estructurado, recomendaciones de películas de terror, series, animes, y recuerdos fragmentados.
+    Lo creé porque hay cosas que de verdad <span style="font-family: Anton; font-size: 26px; color: #ff1a1a; letter-spacing: 1px;">NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR.</span> 
     <br><br>
-    Son fragmentos que necesito postear para no perder esa esencia, ese recuerdo, ese momento exacto en el tiempo. 
-    Aquí no hay un orden lógico. Solo lo que sobrevive a la estática.
+    Historias viscerales que he escrito en las madrugadas. Frecuencias y pistas de audio que he producido pero que se sienten 
+    demasiado hostiles para un álbum normal. Recomendaciones de películas de culto, series, animes, y recuerdos 
+    fragmentados de la ciudad.
+    <br><br>
+    Cosas que necesito proyectar para no perder esa esencia, ese momento exacto en el tiempo. <br>
+    No hay un orden lógico. <span class="censored">Solo lo que sobrevive al corte final.</span>
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "02. ARCHIVO_RELATOS":
-    st.markdown("<h1>Archivos de Texto</h1>", unsafe_allow_html=True)
-    st.write("> ACCEDIENDO A SECTOR DE FICCIÓN/REALIDAD...")
+elif pagina == "REEL 02: HISTORIAS":
+    st.markdown("<h1>[ ARCHIVOS DE GUION ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="tactical-box">
-    <h3 style='font-size: 24px; border:none; margin-bottom: 10px;'>[ CASO: EL PERRO SIN ROSTRO ]</h3>
-    Puente Alto, 3:15 AM. La niebla era tan espesa que las luces del alumbrado parecían estática. 
-    Pensé que era un perro callejero buscando comida en la basura. Hice el típico sonido para llamarlo. 
-    <br><br>
-    Cuando se dio la vuelta, el área donde debía estar su rostro era plana, como piel tensada sobre un cráneo liso. 
-    No tenía ojos, pero supe que me estaba mirando.
-    <br><br>
-    <span style="color: #ff0a0a; font-family: 'Bebas Neue', sans-serif; font-size: 20px;">[ FIN DE TRANSMISIÓN ]</span>
+    <div class="film-cut">
+    <h3>TOMA 1: EL PERRO SIN ROSTRO</h3>
+    <p style='font-size: 22px;'>
+    <strong>EXT. PUENTE ALTO - NOCHE (3:15 AM)</strong><br><br>
+    La niebla es espesa. Las luces de la calle parpadean. <br>
+    Una silueta canina busca en la basura. Haces un sonido para llamarlo.<br><br>
+    El animal se gira. El área donde debería estar su rostro es plana. Como piel tensada sobre un cráneo liso. 
+    No tiene ojos, pero la atmósfera pesa. Sabes que te está mirando.
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div class="tactical-box">
-    <h3 style='font-size: 24px; border:none; margin-bottom: 10px;'>[ CASO: ESTÁTICA EN LA PARED ]</h3>
-    A veces, el silencio de la madrugada pesa tanto que zumba en los oídos. Pero otras veces, 
-    el zumbido no está en tu cabeza, viene de detrás de la pintura de tu habitación.
+    <div class="film-cut">
+    <h3>TOMA 2: VAMPIRISMO DE ASFALTO</h3>
+    <p style='font-size: 22px;'>
+    La ciudad drena. No usa colmillos, usa horarios y concreto. <br>
+    A las 4 AM, los paraderos de micro están vacíos, pero si te quedas mirando fijo a las esquinas, 
+    las sombras tienen una densidad distinta. Pesada. Viva.
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "03. FRECUENCIAS_AUDIO":
-    st.markdown("<h1>Frecuencias de Audio</h1>", unsafe_allow_html=True)
+elif pagina == "REEL 03: AUDIO":
+    st.markdown("<h1>[ BANDA SONORA ORIGINAL ]</h1>", unsafe_allow_html=True)
     
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1])
     
     with col1:
         st.markdown("""
-        <div class="tactical-box">
-        <h3 style='font-size: 20px; border:none; color:#ff0a0a !important;'>[ PISTAS MAESTRAS .WAV ]</h3>
-        Audios corrompidos, bases rítmicas oscuras y frecuencias que he compuesto a lo largo de los años.
-        <br><br>
-        <span style="color:#555; font-family: monospace;">>> CONECTANDO CON SERVIDOR LOCAL... FAIL.</span>
+        <div class="film-cut" style="padding: 20px;">
+        <h3>PISTAS .WAV</h3>
+        <p>Sonido crudo. Mezclas que nunca pasaron por un proceso de masterización limpio. 
+        Puro ruido y bajo.</p>
+        <div style="width: 100%; height: 50px; border: 1px solid #ff1a1a; display: flex; align-items: center; justify-content: center; font-family: Anton; color: #ff1a1a;">
+        PLAY ▶
+        </div>
         </div>
         """, unsafe_allow_html=True)
         
     with col2:
         st.markdown("""
-        <div class="tactical-box" style="padding: 10px;">
-        <h3 style='font-size: 20px; border:none; padding-left: 10px; color:#ff0a0a !important;'>[ SPOTIFY OVERRIDE ]</h3>
-        <iframe style="border-radius:0; border: 1px solid #ff0a0a; filter: grayscale(50%) contrast(150%);" 
+        <div class="film-cut" style="padding: 20px;">
+        <h3>PLAYLIST EXTERNA</h3>
+        <iframe style="border-radius:0; border: none; filter: sepia(100%) hue-rotate(320deg) saturate(200%) contrast(150%);" 
         src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
-        width="100%" height="280" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         """, unsafe_allow_html=True)
 
-elif pagina == "04. CATÁLOGO_VISUAL":
-    st.markdown("<h1>Catálogo Visual</h1>", unsafe_allow_html=True)
-    st.write("> RECOPILANDO RECOMENDACIONES CLASIFICADAS...")
+elif pagina == "REEL 04: CATÁLOGO VISUAL":
+    st.markdown("<h1>[ REFERENCIAS VISUALES ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="tactical-box">
-    <h3 style='border: none; font-family: "Bebas Neue"; font-size: 28px;'>TARGET 01: THE LOST BOYS (1987)</h3>
-    La cumbre de la estética vampírica. Cuero, sangre, noches interminables y una banda sonora perfecta. 
-    Es el molde exacto del estilo de vida que respira esta colección.
-    <br><br>
-    <hr style='border: 1px solid #330000;'>
-    <br>
-    <h3 style='border: none; font-family: "Bebas Neue"; font-size: 28px;'>TARGET 02: DEAD SILENCE (2007)</h3>
-    Esa paleta de colores desaturada donde solo resalta la sangre. La sensación macabra de los objetos antiguos, 
-    la madera y el terror silencioso. Pura inspiración.
-    <br><br>
-    <hr style='border: 1px solid #330000;'>
-    <br>
-    <h3 style='border: none; font-family: "Bebas Neue"; font-size: 28px;'>TARGET 03: FEARS TO FATHOM</h3>
-    El terror de la rutina. La estética granulada y el miedo irracional a mirar por la ventana en medio de la noche 
-    y ver que alguien te devuelve la mirada.
+    <div class="film-cut">
+    <h3 style="font-size: 2rem;">THE LOST BOYS (1987)</h3>
+    <p style='font-size: 22px;'>
+    Vampiros en motocicleta, chaquetas de cuero y playas californianas en la noche. 
+    La mezcla perfecta entre terror y rebeldía. Esta es la paleta de colores de mi mente.
+    </p>
+    </div>
+    
+    <div class="film-cut">
+    <h3 style="font-size: 2rem;">SCARFACE (1983)</h3>
+    <p style='font-size: 22px;'>
+    El neón rojo, los excesos y la tragedia operística. La agresividad visual de los títulos 
+    y la música de sintetizador que te mantiene tenso.
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
-elif pagina == "05. EL_ABISMO":
-    st.markdown("<h1>El Abismo</h1>", unsafe_allow_html=True)
+elif pagina == "REEL 05: ESTÁTICA":
+    st.markdown("<h1 style='text-align: center; font-size: 6rem; opacity: 0.3;'>ESTÁTICA</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="tactical-box" style="text-align: center; border: 2px dashed #ff0a0a; background: #050000;">
-    <br><br>
-    <h2 style='border: none; font-family: "Bebas Neue"; font-size: 50px; color: #ff0a0a !important; letter-spacing: 5px; text-shadow: 0 0 20px red;'>DATA FRAGMENTADA</h2>
-    <br>
-    <p style="font-size: 20px; font-family: 'Share Tech Mono';">
-    Cosas que no son historias, ni música, ni películas.<br>
-    Pensamientos intrusivos, ruido blanco y estática pura.<br>
-    Todo lo que no sé dónde poner, cae aquí.
+    <div style="text-align: center; margin-top: 100px;">
+    <p style="font-size: 30px; color: #ff1a1a; font-family: Anton;">
+    IMÁGENES RESIDUALES. <br>
+    PENSAMIENTOS INTRUSIVOS.<br>
+    ESCENAS ELIMINADAS.
     </p>
-    <br><br><br>
+    <p style="font-size: 20px; color: #ff6666;">
+    Vuelve más tarde. El carrete se está revelando.
+    </p>
     </div>
     """, unsafe_allow_html=True)
