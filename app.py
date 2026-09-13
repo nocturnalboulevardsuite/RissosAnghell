@@ -2,27 +2,26 @@ import streamlit as st
 
 st.set_page_config(page_title="ANGHELL COLLECTION", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS: SHADER DE CINE, CALLEJÓN Y TEXTO VISIBLE ---
+# --- CSS: SHADER DE CINE, FONDO DE LADRILLOS ROJOS Y ESCALERA GRINGA ---
 css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* --- FONDO DE CALLEJÓN (ESTILO IMAGEN DE REFERENCIA) --- */
+/* --- FONDO GLOBAL DE LADRILLOS ROJOS --- */
 .stApp {
-    /* Imagen de callejón oscuro de fondo con un overlay rojo muy denso para que el texto resalte */
+    /* Fondo de ladrillos aplicado a toda la página con un tinte rojo oscuro */
     background-image: 
-        linear-gradient(to bottom, rgba(15, 0, 0, 0.85), rgba(5, 0, 0, 0.95)),
-        url('https://images.unsplash.com/photo-1518063223847-50b55ec74127?q=80&w=2000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
+        linear-gradient(to bottom, rgba(80, 0, 0, 0.7), rgba(10, 0, 0, 0.98)),
+        url('https://www.transparenttextures.com/patterns/brick-wall-dark.png');
+    background-repeat: repeat;
     background-attachment: fixed;
-    color: #ff4d4d; /* Texto base rojo claro y visible */
+    background-color: #2a0000;
+    color: #ff4d4d; 
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px;
 }
 
-/* --- SHADER DE PELÍCULA (REC / DEAD SILENCE / SCARFACE) --- */
-/* Cubre toda la pantalla sin bloquear los clics (pointer-events: none) y usa mix-blend-mode para no ocultar el texto */
+/* --- SHADER DE PELÍCULA --- */
 .stApp::after {
     content: "";
     position: fixed;
@@ -31,7 +30,7 @@ css = """
     opacity: 0.25;
     pointer-events: none;
     z-index: 9999;
-    mix-blend-mode: overlay; /* Fundamental para que el texto brille a través del grano */
+    mix-blend-mode: overlay; 
     animation: film-shader 0.15s steps(2) infinite;
 }
 
@@ -41,7 +40,7 @@ css = """
     100% { background-position: -10% -5%; }
 }
 
-/* --- TÍTULOS Y TEXTOS VISIBLES --- */
+/* --- TÍTULOS Y TEXTOS --- */
 h1, h2, h3 {
     font-family: 'Anton', sans-serif;
     color: #ff1a1a !important;
@@ -54,13 +53,12 @@ p, div {
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
 }
 
-/* --- BARRA LATERAL (MENÚ) CORREGIDA --- */
+/* --- BARRA LATERAL --- */
 [data-testid="stSidebar"] {
     background-color: rgba(5, 0, 0, 0.95) !important;
     border-right: 2px solid #550000;
 }
 
-/* Forzar la visibilidad de los botones del menú */
 div[role="radiogroup"] > label {
     background: rgba(20, 0, 0, 0.5) !important;
     border: 1px solid #330000 !important;
@@ -70,7 +68,7 @@ div[role="radiogroup"] > label {
     font-size: 20px !important;
 }
 div[role="radiogroup"] > label p {
-    color: #ff3333 !important; /* Rojo brillante para que no desaparezca */
+    color: #ff3333 !important; 
     font-size: 22px !important;
 }
 div[role="radiogroup"] > label:hover {
@@ -86,16 +84,14 @@ div[role="radiogroup"] > label[data-checked="true"] p {
     text-shadow: 0 0 10px #ff1a1a;
 }
 
-/* Ocultar elementos UI nativos */
 header, footer { display: none !important; }
 
-/* --- ESCENOGRAFÍA: VENTANA EN LLAMAS Y ESCALERA ROTA --- */
+/* --- ESCENOGRAFÍA: VENTANA EN LLAMAS Y ESCALERA TIPO EEUU --- */
 .alley-scene {
     position: relative;
     width: 100%;
-    height: 400px;
-    background: url('https://www.transparenttextures.com/patterns/brick-wall-dark.png');
-    background-color: rgba(10, 0, 0, 0.6);
+    height: 450px; /* Un poco más alto para la escalera */
+    background: rgba(10, 0, 0, 0.4); /* Transparente para dejar ver el ladrillo global */
     border: 2px solid #330000;
     box-shadow: inset 0 0 50px #000;
     margin-top: 20px;
@@ -107,13 +103,13 @@ header, footer { display: none !important; }
 .fire-window {
     position: absolute;
     top: 50px;
-    right: 80px;
-    width: 120px;
+    right: 120px;
+    width: 130px;
     height: 180px;
     border: 4px solid #111;
     background: #000;
     box-shadow: 0 0 50px #ff3300, inset 0 0 20px #ff3300;
-    overflow: hidden;
+    z-index: 1;
 }
 .fire-window::before {
     content: "";
@@ -124,7 +120,6 @@ header, footer { display: none !important; }
     animation: flicker 0.1s infinite alternate;
 }
 .fire-window::after {
-    /* Barrotes de la ventana */
     content: "";
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -139,32 +134,51 @@ header, footer { display: none !important; }
     100% { opacity: 1; transform: translateY(-5px); }
 }
 
-/* La Escalera Rota */
-.broken-stairs {
+/* --- FIRE ESCAPE (ESTILO DESTINO FINAL / NY) --- */
+.fire-escape-platform {
     position: absolute;
-    bottom: 0;
-    right: 140px;
-    width: 80px;
-    height: 250px;
-    background: 
-        repeating-linear-gradient(
-            to bottom,
-            transparent,
-            transparent 30px,
-            #222 30px,
-            #222 35px
-        );
-    border-left: 5px solid #1a1a1a;
-    border-right: 5px solid #1a1a1a;
-    transform: perspective(200px) rotateX(10deg) skewX(-5deg);
-    box-shadow: 10px 10px 20px rgba(0,0,0,0.9);
+    top: 230px;
+    right: 80px;
+    width: 220px;
+    height: 15px;
+    background: #111;
+    border-bottom: 5px solid #000;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.9);
+    z-index: 3;
 }
-.broken-stairs::after {
+.fire-escape-railing {
+    position: absolute;
+    bottom: 15px; 
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: repeating-linear-gradient(to right, transparent, transparent 15px, #1a1a1a 15px, #1a1a1a 22px);
+    border-top: 6px solid #1a1a1a;
+    border-left: 6px solid #1a1a1a;
+    border-right: 6px solid #1a1a1a;
+    z-index: 4;
+}
+.fire-escape-ladder {
+    position: absolute;
+    top: 245px;
+    right: 240px; 
+    width: 45px;
+    height: 250px;
+    background: repeating-linear-gradient(to bottom, transparent, transparent 25px, #111 25px, #111 32px);
+    border-left: 5px solid #111;
+    border-right: 5px solid #111;
+    z-index: 2;
+    box-shadow: 15px 15px 20px rgba(0,0,0,0.8);
+    transform-origin: top;
+    transform: rotate(4deg) skewX(-2deg);
+}
+
+.fire-escape-ladder::after {
     content: "";
     position: absolute;
-    top: 100px; left: 0; width: 100%; height: 40px;
-    background: rgba(10, 0, 0, 0.9); /* Simula el tramo roto */
-    border: none;
+    bottom: -10px; left: -10px; width: 65px; height: 60px;
+    background: rgba(10, 0, 0, 0.95); 
+    filter: blur(5px);
 }
 
 /* Contenedor de contenido tipo archivo */
@@ -194,62 +208,66 @@ pagina = st.sidebar.radio("NAVEGACIÓN", opciones, label_visibility="collapsed")
 st.sidebar.markdown("<br><br><br><div style='text-align: center; font-family: Anton; color: #ff1a1a; font-size: 1.5rem;'>REC 🔴</div>", unsafe_allow_html=True)
 
 # --- PÁGINAS ---
+# IMPORTANTE: El HTML de abajo NO tiene espacios de sangría a la izquierda. 
+# Esto evita que Streamlit se buguee y lo renderice como código en vez de diseño.
 
 if pagina == "EL CALLEJÓN (INICIO)":
     st.markdown("<h1 style='font-size: 4rem;'>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
     
-    # Escena del callejón con CSS puro
     st.markdown("""
-    <div class="alley-scene">
-        <div class="fire-window"></div>
-        <div class="broken-stairs"></div>
-        <div style="position: absolute; bottom: 20px; left: 30px; width: 50%;">
-            <h2 style="font-size: 2rem; background: rgba(0,0,0,0.7); display: inline-block; padding: 5px 15px;">ZONA CERO</h2>
-            <p style="background: rgba(0,0,0,0.7); padding: 15px; font-weight: bold; border-left: 2px solid #ff1a1a;">
-            Este es mi rincón. Fuera del sistema.<br>
-            La escalera está rota y el edificio de al lado está en llamas, pero el servidor sigue encendido.
-            </p>
-        </div>
+<div class="alley-scene">
+    <div class="fire-window"></div>
+    <div class="fire-escape-platform">
+        <div class="fire-escape-railing"></div>
     </div>
-    """, unsafe_allow_html=True)
+    <div class="fire-escape-ladder"></div>
+    <div style="position: absolute; bottom: 20px; left: 30px; width: 55%; z-index: 5;">
+        <h2 style="font-size: 2rem; background: rgba(0,0,0,0.8); display: inline-block; padding: 5px 15px;">ZONA CERO</h2>
+        <p style="background: rgba(0,0,0,0.8); padding: 15px; font-weight: bold; border-left: 2px solid #ff1a1a;">
+        Este es mi rincón. Fuera del sistema.<br>
+        La escalera está rota y el edificio de al lado está en llamas, pero el servidor sigue encendido.
+        </p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="content-box">
-    <p style='font-size: 24px; line-height: 1.6;'>
-    Lo creé porque hay cosas que de verdad <strong>NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR.</strong> 
-    <br><br>
-    Historias viscerales que he escrito en las madrugadas. Frecuencias de audio que suenan a estática y sirenas a lo lejos. 
-    Recomendaciones de películas de culto, metraje encontrado y recuerdos que la ciudad devoró.
-    <br><br>
-    No hay interfaz limpia ni diseño corporativo aquí. Es ladrillo, fuego y cinta magnética.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="content-box">
+<p style='font-size: 24px; line-height: 1.6;'>
+Lo creé porque hay cosas que de verdad <strong>NO SÉ DÓNDE COLOCAR, NI CÓMO CATALOGAR.</strong> 
+<br><br>
+Historias viscerales que he escrito en las madrugadas. Frecuencias de audio que suenan a estática y sirenas a lo lejos. 
+Recomendaciones de películas de culto, metraje encontrado y recuerdos que la ciudad devoró.
+<br><br>
+No hay interfaz limpia ni diseño corporativo aquí. Es ladrillo, fuego y cinta magnética.
+</p>
+</div>
+""", unsafe_allow_html=True)
 
 elif pagina == "CINTAS ENCONTRADAS":
     st.markdown("<h1>[ ARCHIVOS DE TEXTO ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="content-box">
-    <h3>TAPE_01: EL PERRO SIN ROSTRO</h3>
-    <p style='font-size: 22px;'>
-    Puente Alto. 3:15 AM.<br><br>
-    La niebla es tan espesa que las luces de los postes parecen linternas muriendo. 
-    Una silueta canina busca en la basura. Haces un sonido para llamarlo.<br><br>
-    El animal se gira. El área donde debería estar su rostro es plana. Como piel tensada sobre un cráneo liso. 
-    No tiene ojos, pero la atmósfera pesa tanto que sabes que te está mirando directamente al centro del pecho.
-    </p>
-    </div>
-    
-    <div class="content-box">
-    <h3>TAPE_02: VAMPIRISMO DE ASFALTO</h3>
-    <p style='font-size: 22px;'>
-    La ciudad drena. No usa colmillos, usa horarios, boletos de micro y concreto armado. <br>
-    A las 4 AM, los paraderos están vacíos, pero si te quedas mirando fijo a las esquinas, 
-    las sombras tienen una densidad distinta. Huelen a ozono y a sangre vieja.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="content-box">
+<h3>TAPE_01: EL PERRO SIN ROSTRO</h3>
+<p style='font-size: 22px;'>
+Puente Alto. 3:15 AM.<br><br>
+La niebla es tan espesa que las luces de los postes parecen linternas muriendo. 
+Una silueta canina busca en la basura. Haces un sonido para llamarlo.<br><br>
+El animal se gira. El área donde debería estar su rostro es plana. Como piel tensada sobre un cráneo liso. 
+No tiene ojos, pero la atmósfera pesa tanto que sabes que te está mirando directamente al centro del pecho.
+</p>
+</div>
+
+<div class="content-box">
+<h3>TAPE_02: VAMPIRISMO DE ASFALTO</h3>
+<p style='font-size: 22px;'>
+La ciudad drena. No usa colmillos, usa horarios, boletos de micro y concreto armado. <br>
+A las 4 AM, los paraderos están vacíos, pero si te quedas mirando fijo a las esquinas, 
+las sombras tienen una densidad distinta. Huelen a ozono y a sangre vieja.
+</p>
+</div>
+""", unsafe_allow_html=True)
 
 elif pagina == "FRECUENCIAS (AUDIO)":
     st.markdown("<h1>[ BANDA SONORA DEL CALLEJÓN ]</h1>", unsafe_allow_html=True)
@@ -258,51 +276,51 @@ elif pagina == "FRECUENCIAS (AUDIO)":
     
     with col1:
         st.markdown("""
-        <div class="content-box">
-        <h3>PISTAS .WAV</h3>
-        <p>Sonido crudo. Mezclas que nunca pasaron por un estudio. 
-        Ruido blanco, bajos distorsionados y el zumbido de los cables de alta tensión.</p>
-        <div style="margin-top: 20px; padding: 15px; border: 1px solid #ff1a1a; text-align: center; font-family: Anton; font-size: 24px; cursor: pointer;">
-        ▶ REPRODUCIR CINTA
-        </div>
-        </div>
-        """, unsafe_allow_html=True)
+<div class="content-box">
+<h3>PISTAS .WAV</h3>
+<p>Sonido crudo. Mezclas que nunca pasaron por un estudio. 
+Ruido blanco, bajos distorsionados y el zumbido de los cables de alta tensión.</p>
+<div style="margin-top: 20px; padding: 15px; border: 1px solid #ff1a1a; text-align: center; font-family: Anton; font-size: 24px; cursor: pointer;">
+▶ REPRODUCIR CINTA
+</div>
+</div>
+""", unsafe_allow_html=True)
         
     with col2:
         st.markdown("""
-        <div class="content-box">
-        <h3>RADIO EXTERNA</h3>
-        <iframe style="border-radius:0; border: none; filter: grayscale(50%) contrast(200%) sepia(50%) hue-rotate(320deg);" 
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
-        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-        """, unsafe_allow_html=True)
+<div class="content-box">
+<h3>RADIO EXTERNA</h3>
+<iframe style="border-radius:0; border: none; filter: grayscale(50%) contrast(200%) sepia(50%) hue-rotate(320deg);" 
+src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZtZ8vUCzche?utm_source=generator&theme=0" 
+width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+""", unsafe_allow_html=True)
 
 elif pagina == "REFERENCIAS VISUALES":
     st.markdown("<h1>[ INFLUENCIAS DIRECTAS ]</h1>", unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="content-box">
-    <h3 style="font-size: 2rem;">[ REC ] (2007)</h3>
-    <p style='font-size: 22px;'>
-    El terror de estar encerrado en tu propio edificio. La cámara al hombro, la oscuridad en las escaleras, 
-    el caos realista. La sensación de que no hay salida y todo está siendo grabado.
-    </p>
-    </div>
-    
-    <div class="content-box">
-    <h3 style="font-size: 2rem;">DEAD SILENCE (2007)</h3>
-    <p style='font-size: 22px;'>
-    Paletas de colores desaturadas donde el único color que resalta es el rojo carmesí. 
-    Teatros abandonados, silencio absoluto y la sensación de que algo de madera y porcelana te observa.
-    </p>
-    </div>
-    
-    <div class="content-box">
-    <h3 style="font-size: 2rem;">CLOVERFIELD (2008) / SCARFACE (1983)</h3>
-    <p style='font-size: 22px;'>
-    De Cloverfield: La escala del monstruo y la destrucción urbana vista a nivel del suelo, a través de una lente sucia. <br>
-    De Scarface: Los contrastes neón, la agresividad de la tipografía y esa atmósfera densa de los ochenta.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
+<div class="content-box">
+<h3 style="font-size: 2rem;">[ REC ] (2007)</h3>
+<p style='font-size: 22px;'>
+El terror de estar encerrado en tu propio edificio. La cámara al hombro, la oscuridad en las escaleras, 
+el caos realista. La sensación de que no hay salida y todo está siendo grabado.
+</p>
+</div>
+
+<div class="content-box">
+<h3 style="font-size: 2rem;">DEAD SILENCE (2007)</h3>
+<p style='font-size: 22px;'>
+Paletas de colores desaturadas donde el único color que resalta es el rojo carmesí. 
+Teatros abandonados, silencio absoluto y la sensación de que algo de madera y porcelana te observa.
+</p>
+</div>
+
+<div class="content-box">
+<h3 style="font-size: 2rem;">CLOVERFIELD (2008) / SCARFACE (1983)</h3>
+<p style='font-size: 22px;'>
+De Cloverfield: La escala del monstruo y la destrucción urbana vista a nivel del suelo, a través de una lente sucia. <br>
+De Scarface: Los contrastes neón, la agresividad de la tipografía y esa atmósfera densa de los ochenta.
+</p>
+</div>
+""", unsafe_allow_html=True)
