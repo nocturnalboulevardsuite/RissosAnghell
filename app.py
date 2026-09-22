@@ -5,7 +5,7 @@ from datetime import datetime
 # Configuración inicial oculta
 st.set_page_config(page_title="V H S _ V A M P I R E", layout="wide", initial_sidebar_state="expanded")
 
-# --- INYECCIÓN DE SONIDOS (RE OUTBREAK + OBSCURE) ---
+# --- INYECCIÓN DE SONIDOS Y ATMÓSFERA AMBIENTAL (RE OUTBREAK + OBSCURE + RUIDO BLANCO + CRUJIDOS) ---
 re_sound_js = """
 <script>
 const parentDoc = window.parent.document;
@@ -17,10 +17,57 @@ if (!parentDoc.getElementById('sfx_initialized')) {
 
     // SFX Botones (RE Outbreak)
     const btnSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3';
-    // SFX Tracks Menú Lateral (Obscure - Eco metálico y oscuro)
+    // SFX Tracks Menú Lateral (Obscure - Eco metálico)
     const trackSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2864/2864-preview.mp3'; 
-    
+    // SFX Crujido de dientes / hueso / estática terrorífica
+    const crunchSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2458/2458-preview.mp3';
+
+    let audioCtx = null;
+    let ambientStarted = false;
+
+    // Generador Web Audio API de Ruido Blanco Analógico
+    function startAmbientAudio() {
+        if (ambientStarted) return;
+        ambientStarted = true;
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const bufferSize = audioCtx.sampleRate * 2;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            const whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            // Filtro de frecuencia oscura tipo TV vieja
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 350;
+            filter.Q.value = 0.6;
+
+            const gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0.025; // Volumen de fondo muy sutil
+
+            whiteNoise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            whiteNoise.start(0);
+
+            // Disparador aleatorio de crujido cada ~30 segundos
+            setInterval(() => {
+                let crunch = new Audio(crunchSoundUrl);
+                crunch.volume = 0.45;
+                crunch.play().catch(e => console.log('Crunch audio error:', e));
+            }, 30000);
+        } catch(e) { 
+            console.log('Audio Context error:', e); 
+        }
+    }
+
     parentDoc.addEventListener('mousedown', function(e) {
+        startAmbientAudio();
         let target = e.target;
         
         // Si clickea en los TRACKS del menú lateral
@@ -41,7 +88,7 @@ if (!parentDoc.getElementById('sfx_initialized')) {
 """
 st.components.v1.html(re_sound_js, height=0, width=0)
 
-# --- CSS EXTREMO: SHADER TV CRT ROJO Y GLITCH ROJO/NEGRO ---
+# --- CSS EXTREMO: SHADER TV CRT ROJO Y GLITCH ROJO/NEGRO + ESTILOS CASSETTE ---
 css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&family=Share+Tech+Mono&display=swap');
@@ -54,7 +101,7 @@ css_vhs = """
     font-size: 28px;
 }
 
-/* EFECTO TV ANTIGUA 1: Viñeta cóncava CRT + Parpadeo sutil de tubocatódico */
+/* EFECTO TV ANTIGUA 1: Viñeta cóncava CRT + Parpadeo sutil de tubo catódico */
 .stApp::before {
     content: "";
     position: fixed;
@@ -78,9 +125,7 @@ css_vhs = """
     position: fixed;
     top: 0; left: 0; bottom: 0; right: 0;
     background: 
-        /* Interferencia estática fractal */
         url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E'),
-        /* Líneas de escaneo horizontales de TV */
         repeating-linear-gradient(
             0deg,
             rgba(0, 0, 0, 0.65),
@@ -88,7 +133,6 @@ css_vhs = """
             transparent 1px,
             transparent 3px
         ),
-        /* Filtro de tinte rojo oscuro analógico */
         linear-gradient(180deg, rgba(80, 0, 0, 0.2) 0%, rgba(10, 0, 0, 0.5) 100%);
     background-size: auto, 100% 3px, auto;
     opacity: 0.42;
@@ -111,12 +155,11 @@ css_vhs = """
     100% { transform: translate(1px, 1px); }
 }
 
-/* LETRAS BLANCAS EFECTO GLITCH ROJO Y NEGRO (EXCLUSIVO ROJO/NEGRO) */
+/* LETRAS BLANCAS EFECTO GLITCH ROJO Y NEGRO */
 p, .vcr-text, div[data-baseweb="input"] input, div[data-baseweb="select"] {
     font-family: 'Share Tech Mono', monospace !important;
     color: #ffffff !important;
     letter-spacing: 1.5px;
-    /* Sombras únicamente en tonos de rojo brillante, rojo oscuro y negro */
     text-shadow: 
         3px 0px 0px rgba(255, 0, 0, 0.9), 
         -3px 0px 0px rgba(40, 0, 0, 0.95),
@@ -193,7 +236,7 @@ div[role="radiogroup"] > label {
 }
 
 div[role="radiogroup"] > label p { 
-    color: #888888 !important; /* Texto inactivo apagado */
+    color: #888888 !important;
     font-size: 22px !important; 
     line-height: 1.2 !important;
     white-space: nowrap !important;
@@ -241,6 +284,74 @@ button:hover {
     margin: 15px 0;
     box-shadow: inset 0 0 20px #000;
 }
+
+/* ========================================= */
+/* ESTILOS REPRODUCTOR CASSETTE INTERACTIVO   */
+/* ========================================= */
+.cassette-card {
+    border: 2px solid #550000;
+    background: radial-gradient(circle at center, #180202 0%, #050000 100%);
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: inset 0 0 15px #000, 0 0 10px rgba(255,0,0,0.2);
+    border-radius: 4px;
+}
+
+.cassette-body {
+    border: 2px solid #880000;
+    background: #0a0000;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.cassette-label-box {
+    background: linear-gradient(90deg, #300, #600, #300);
+    border: 1px solid #ff2222;
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+}
+
+.cassette-reels-window {
+    width: 220px;
+    height: 70px;
+    background: #000;
+    border: 2px solid #440000;
+    border-radius: 35px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    padding: 0 10px;
+}
+
+.cassette-reel {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px dashed #ff3333;
+    background: radial-gradient(circle, #220000 35%, #880000 100%);
+    box-shadow: 0 0 6px #ff0000;
+}
+
+.cassette-reels-window.spinning .cassette-reel {
+    animation: reel_spin 1.8s linear infinite;
+}
+
+@keyframes reel_spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+audio {
+    width: 100%;
+    filter: invert(100%) hue-rotate(180deg) drop-shadow(0 0 4px #ff0000);
+    outline: none;
+}
 </style>
 """
 st.markdown(css_vhs, unsafe_allow_html=True)
@@ -257,7 +368,7 @@ st.sidebar.markdown("<br><p style='color: #ff0000; font-family: VT323; font-size
 # --- 1. SECCIÓN HISTORIA ---
 if eleccion == "[ TRACK 1 ] Biblioteca Sangrienta":
     st.markdown("<h1>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='vcr-text'>'ANGHELL' COLLECTION...</p>", unsafe_allow_html=True)
+    st.markdown("<p class='vcr-text'>'ANGHELL' COLLECTION....</p>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
@@ -299,25 +410,53 @@ elif eleccion == "[ TRACK 2 ] Archivos Encontrados":
     with col2:
         st.markdown("<div class='vhs-box' style='height: 300px; display: flex; align-items: center; justify-content: center;'><h3 style='color:#aa0000;'>STATIC.MP4</h3></div>", unsafe_allow_html=True)
 
-# --- 3. SECCIÓN AUDIOLOGÍA ---
+# --- 3. SECCIÓN AUDIOLOGÍA (REPRODUCTORES INTERACTIVOS DE CASSETTE) ---
 elif eleccion == "[ TRACK 3 ] Psicofonías":
     st.markdown("<h1>FRECUENCIAS MUERTAS</h1>", unsafe_allow_html=True)
     st.markdown("<p class='vcr-text'>CINTAS DE CASSETTE ENCONTRADAS EN EL SÓTANO.</p>", unsafe_allow_html=True)
     
+    # Cassette A
     st.markdown("""
-    <div class='vhs-box'>
-        <h3>CINTA A: Lluvia y Neón</h3>
-        <p style='color:#ff5555 !important; animation: none; text-shadow: none;'>TRACKING...</p>
-        <div style="width:100%; background:#1a0000; border:1px solid #550000; height:15px;">
-            <div style="width:15%; height:100%; background: linear-gradient(90deg, #880000, #ff0000);"></div>
+    <div class="cassette-card">
+        <div class="cassette-body">
+            <div class="cassette-label-box">
+                <h3 style="margin:0; font-size: 26px; color:#ffaaaa;">CINTA A: Lluvia y Neón</h3>
+                <span style="font-size:14px; color:#ff6666;">[ REGISTRO ANALÓGICO 1994 // EVIDENCIA #01 ]</span>
+            </div>
+            <div class="cassette-reels-window" id="reels-tape-a">
+                <div class="cassette-reel"></div>
+                <span style="color:#880000; font-family:'Share Tech Mono'; font-weight:bold; font-size:16px;">PLAYING</span>
+                <div class="cassette-reel"></div>
+            </div>
+            <audio controls 
+                   onplay="document.getElementById('reels-tape-a').classList.add('spinning')"
+                   onpause="document.getElementById('reels-tape-a').classList.remove('spinning')"
+                   onended="document.getElementById('reels-tape-a').classList.remove('spinning')">
+                <source src="https://assets.mixkit.co/active_storage/sfx/2689/2689-preview.mp3" type="audio/mp3">
+            </audio>
         </div>
     </div>
-    <br>
-    <div class='vhs-box'>
-        <h3>CINTA B: Tema Principal (Distorsionado)</h3>
-        <p style='color:#ff5555 !important; animation: none; text-shadow: none;'>TRACKING...</p>
-        <div style="width:100%; background:#1a0000; border:1px solid #550000; height:15px;">
-            <div style="width:45%; height:100%; background: linear-gradient(90deg, #880000, #ff0000);"></div>
+    """, unsafe_allow_html=True)
+    
+    # Cassette B
+    st.markdown("""
+    <div class="cassette-card">
+        <div class="cassette-body">
+            <div class="cassette-label-box">
+                <h3 style="margin:0; font-size: 26px; color:#ffaaaa;">CINTA B: Tema Principal (Distorsionado)</h3>
+                <span style="font-size:14px; color:#ff6666;">[ REGISTRO ANALÓGICO 1998 // EVIDENCIA #02 ]</span>
+            </div>
+            <div class="cassette-reels-window" id="reels-tape-b">
+                <div class="cassette-reel"></div>
+                <span style="color:#880000; font-family:'Share Tech Mono'; font-weight:bold; font-size:16px;">PLAYING</span>
+                <div class="cassette-reel"></div>
+            </div>
+            <audio controls 
+                   onplay="document.getElementById('reels-tape-b').classList.add('spinning')"
+                   onpause="document.getElementById('reels-tape-b').classList.remove('spinning')"
+                   onended="document.getElementById('reels-tape-b').classList.remove('spinning')">
+                <source src="https://assets.mixkit.co/active_storage/sfx/2864/2864-preview.mp3" type="audio/mp3">
+            </audio>
         </div>
     </div>
     """, unsafe_allow_html=True)
