@@ -5,7 +5,7 @@ from datetime import datetime
 # Configuración inicial oculta
 st.set_page_config(page_title="V H S _ V A M P I R E", layout="wide", initial_sidebar_state="expanded")
 
-# --- CSS EXTREMO: ESTÉTICA VHS, VAMPIRESCA Y SLASHER 80s (Puro Rojo y Negro) ---
+# --- CSS EXTREMO: SHADER VHS, GRANULADO Y ANIMACIÓN CIRCULAR ---
 css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap');
@@ -22,17 +22,38 @@ css_vhs = """
     font-size: 28px;
 }
 
-/* Efecto Scanlines (Líneas de TV antigua - Solo tonos rojos y oscuros) */
+/* VFX SHADER: Ruido VHS / Granulado (Film Grain) + Scanlines */
 .stApp::before {
     content: " ";
     display: block;
     position: fixed;
     top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), 
+    /* Líneas de escaneo rojas y oscuras */
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.5) 50%), 
                 linear-gradient(90deg, rgba(255, 0, 0, 0.08), rgba(50, 0, 0, 0.04), rgba(150, 0, 0, 0.05));
-    z-index: 9999;
-    background-size: 100% 5px, 4px 100%;
+    background-size: 100% 4px, 4px 100%;
+    z-index: 9998;
     pointer-events: none;
+}
+
+.stApp::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    /* Generador de ruido fractal en SVG puro codificado */
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    opacity: 0.12;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: color-dodge; /* Se mezcla con los rojos y negros dándole un toque vintage */
+    animation: noise_flicker 0.2s infinite;
+}
+
+@keyframes noise_flicker {
+    0% { transform: translate(0, 0); opacity: 0.10; }
+    50% { transform: translate(1px, -1px); opacity: 0.14; }
+    100% { transform: translate(-1px, 1px); opacity: 0.10; }
 }
 
 /* Títulos con efecto Sangriento y tamaños aumentados */
@@ -45,8 +66,8 @@ h1, h2, h3 {
     color: #cc0000 !important;
     text-transform: uppercase;
     letter-spacing: 5px;
-    text-shadow: 4px 0 0 rgba(255,0,0,0.8), -3px 0 0 rgba(60,0,0,0.9);
-    animation: glitch_blood 2.5s infinite;
+    /* Animación circular suave en lugar de glitch */
+    animation: blood_orbit 4s infinite ease-in-out;
 }
 
 /* Títulos secundarios estilo VCR (Fecha/Hora) */
@@ -58,18 +79,27 @@ h1, h2, h3 {
     letter-spacing: 2px;
 }
 
-/* Glitch Animation - Exclusivo Rojo/Negro */
-@keyframes glitch_blood {
-    0% { text-shadow: 3px 0 0 #ff0000, -3px 0 0 #4a0000; }
-    10% { text-shadow: -3px 0 0 #ff0000, 3px 0 0 #2a0000; }
-    20% { text-shadow: 3px 0 0 #cc0000, -3px 0 0 #000000; }
-    30% { text-shadow: 3px 0 0 #ff0000, -3px 0 0 #4a0000; }
-    40% { text-shadow: -3px 0 0 #ff0000, 3px 0 0 #2a0000; }
-    50% { text-shadow: 3px 0 0 #8b0000, -3px 0 0 #000000; }
-    60% { text-shadow: 4px 0 0 #ff0000, -4px 0 0 #4a0000; transform: translate(2px, 2px); }
-    70% { text-shadow: -4px 0 0 #ff0000, 4px 0 0 #000000; transform: translate(-2px, -2px); }
-    80% { text-shadow: 3px 0 0 #cc0000, -3px 0 0 #2a0000; }
-    100% { text-shadow: 3px 0 0 #ff0000, -3px 0 0 #4a0000; }
+/* Animación Dinámica Profesional: Órbita de Sangre */
+@keyframes blood_orbit {
+    0% { text-shadow: 0px -4px 6px rgba(255,0,0,0.8), 0px 4px 6px rgba(50,0,0,0.9); transform: scale(1); }
+    25% { text-shadow: 4px 0px 6px rgba(255,0,0,0.8), -4px 0px 6px rgba(50,0,0,0.9); }
+    50% { text-shadow: 0px 4px 6px rgba(255,0,0,0.8), 0px -4px 6px rgba(50,0,0,0.9); transform: scale(1.02); }
+    75% { text-shadow: -4px 0px 6px rgba(255,0,0,0.8), 4px 0px 6px rgba(50,0,0,0.9); }
+    100% { text-shadow: 0px -4px 6px rgba(255,0,0,0.8), 0px 4px 6px rgba(50,0,0,0.9); transform: scale(1); }
+}
+
+/* Sobreescribir las barras de progreso azules de Streamlit a Rojo Sangre */
+[data-testid="stProgressBar"] > div > div {
+    background-color: #8b0000 !important;
+    background-image: linear-gradient(90deg, #4a0000, #ff0000, #4a0000) !important;
+    background-size: 200% 100%;
+    box-shadow: 0 0 15px rgba(255,0,0,0.6);
+    animation: blood_flow 3s infinite linear;
+}
+
+@keyframes blood_flow {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
 }
 
 /* Barra Lateral: Sangrienta y Oscura */
@@ -88,13 +118,14 @@ button {
     font-size: 26px !important;
     text-transform: uppercase;
     padding: 10px 20px !important;
-    transition: 0.1s;
+    transition: 0.2s ease-in-out;
 }
 button:hover {
-    background: #aa0000 !important;
+    background: #550000 !important;
     color: #ffffff !important;
-    box-shadow: 0 0 15px #ff0000;
+    box-shadow: 0 0 20px rgba(255,0,0,0.8);
     border-color: #ff0000 !important;
+    transform: scale(1.05);
 }
 
 /* Opciones de Menú (Radio Buttons) */
@@ -104,8 +135,10 @@ div[role="radiogroup"] > label {
     padding: 15px !important;
     margin-bottom: 8px;
     font-family: 'VT323', monospace !important;
+    transition: all 0.3s ease;
 }
 div[role="radiogroup"] > label p { color: #dd0000 !important; font-size: 26px !important; }
+div[role="radiogroup"] > label:hover { border-left: 5px solid #ff4444 !important; background: rgba(30, 0, 0, 0.9) !important; }
 div[role="radiogroup"] > label[data-checked="true"] { border-left: 5px solid #ff0000 !important; background: rgba(60, 0, 0, 0.9) !important; }
 div[role="radiogroup"] > label[data-checked="true"] p { color: #ffffff !important; text-shadow: 0 0 8px #ff0000; font-size: 28px !important; }
 
@@ -116,6 +149,8 @@ div[role="radiogroup"] > label[data-checked="true"] p { color: #ffffff !importan
     padding: 30px;
     margin: 15px 0;
     box-shadow: inset 0 0 30px #000;
+    position: relative;
+    overflow: hidden;
 }
 p { font-size: 1.4rem; line-height: 1.6; }
 </style>
@@ -129,7 +164,7 @@ st.sidebar.markdown("<hr style='border: 1px solid #770000;'>", unsafe_allow_html
 
 menu = ["[ TRACK 1 ] Biblioteca Sangrienta", "[ TRACK 2 ] Archivos Encontrados", "[ TRACK 3 ] Psicofonías", "[ TRACK 4 ] Videoclub de Culto", "[ TRACK 5 ] Pacto de Sangre"]
 eleccion = st.sidebar.radio("CANALES", menu, label_visibility="collapsed")
-st.sidebar.markdown("<br><br><p style='color: #ff0000; font-family: VT323; font-size: 32px; text-align: center; animation: glitch_blood 2s infinite;'>REC 🔴</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><br><p style='color: #ff0000; font-family: VT323; font-size: 32px; text-align: center; text-shadow: 0 0 10px red;'>REC 🔴</p>", unsafe_allow_html=True)
 
 # --- 1. SECCIÓN HISTORIA ---
 if eleccion == "[ TRACK 1 ] Biblioteca Sangrienta":
@@ -194,6 +229,7 @@ elif eleccion == "[ TRACK 3 ] Psicofonías":
     st.markdown("<p class='vcr-text'>CINTAS DE CASSETTE ENCONTRADAS EN EL SÓTANO.</p>", unsafe_allow_html=True)
     
     st.markdown("<div class='vhs-box'><h3>CINTA A: Lluvia y Neón</h3><p style='color:#cc4444;'>TRACKING...</p></div>", unsafe_allow_html=True)
+    # La barra ahora será roja con un flujo animado
     st.progress(15) 
     
     st.markdown("<br><div class='vhs-box'><h3>CINTA B: Tema Principal (Distorsionado)</h3><p style='color:#cc4444;'>TRACKING...</p></div>", unsafe_allow_html=True)
@@ -261,7 +297,7 @@ elif eleccion == "[ TRACK 5 ] Pacto de Sangre":
         
         st.markdown(f"""
         <div class="vhs-box" style="border-color: #ff0000; text-align: center; margin-top: 30px;">
-            <h2 style="color: #ff0000; animation: none; text-shadow: 2px 2px 10px #aa0000; font-size: 4rem;">[ PREDICCIÓN ACEPTADA ]</h2>
+            <h2 style="color: #ff0000; animation: none; text-shadow: 2px 2px 15px #aa0000; font-size: 4rem;">[ PREDICCIÓN ACEPTADA ]</h2>
             <p style="font-size: 38px; font-family: 'Creepster', cursive; color: #ffcccc; margin-top: 20px; line-height: 1.2;">{prediccion}</p>
         </div>
         """, unsafe_allow_html=True)
