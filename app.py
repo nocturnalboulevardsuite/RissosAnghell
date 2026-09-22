@@ -41,7 +41,7 @@ if (!parentDoc.getElementById('sfx_initialized')) {
 """
 st.components.v1.html(re_sound_js, height=0, width=0)
 
-# --- CSS EXTREMO: SHADER F.E.A.R. 3, MENÚ PS2 Y FUENTES LIMPIAS ---
+# --- CSS EXTREMO: SHADER VHS ROJO, F.E.A.R. 3 TEXT Y MENÚ PS2 ---
 css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&family=Share+Tech+Mono&display=swap');
@@ -50,44 +50,66 @@ css_vhs = """
 
 /* Fondo base CRT */
 .stApp {
-    background-color: #050000;
+    background-color: #040000;
     font-size: 28px;
 }
 
-/* EFECTO F.E.A.R. 3: Viñeta pulsante de sangre y oscuridad (No ensucia las letras) */
+/* EFECTO F.E.A.R. 3: Viñeta oscura de fondo */
 .stApp::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: radial-gradient(circle at center, transparent 30%, rgba(60, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.95) 100%);
+    background: radial-gradient(circle at center, transparent 30%, rgba(40, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0.95) 100%);
     pointer-events: none;
-    z-index: 9997;
-    animation: fear_pulse 5s infinite alternate ease-in-out;
+    z-index: 9996;
 }
 
-@keyframes fear_pulse {
-    0% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-/* Scanlines sutiles para el toque VHS */
+/* SHADER VHS GRANULADO ROJO (Película Antigua) */
 .stApp::after {
     content: " ";
     display: block;
     position: fixed;
     top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
-    background-size: 100% 4px;
+    /* Genera ruido y líneas horizontales intercaladas con un tinte rojo */
+    background: 
+        url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E'),
+        linear-gradient(rgba(18, 0, 0, 0) 50%, rgba(20, 0, 0, 0.3) 50%),
+        rgba(30, 0, 0, 0.15);
+    background-size: auto, 100% 4px, auto;
+    opacity: 0.35;
     z-index: 9998;
     pointer-events: none;
+    mix-blend-mode: color-dodge;
+    animation: vhs_red_grain 0.15s infinite;
 }
 
-/* Letras Blancas Nítidas (Legibles) */
+@keyframes vhs_red_grain {
+    0% { transform: translate(0, 0); opacity: 0.30; }
+    50% { transform: translate(1px, -1px); opacity: 0.40; }
+    100% { transform: translate(-1px, 1px); opacity: 0.35; }
+}
+
+/* LETRAS BLANCAS EFECTO F.E.A.R. 3 (Aberración Cromática + Glitch) */
 p, .vcr-text, div[data-baseweb="input"] input, div[data-baseweb="select"] {
     font-family: 'Share Tech Mono', monospace !important;
-    color: #f0f0f0 !important;
-    text-shadow: 2px 2px 4px #000000; /* Sombra negra dura para contraste, no difuminada */
-    letter-spacing: 1px;
+    color: #ffffff !important;
+    letter-spacing: 1.5px;
+    /* Sombra dividida en rojo y cian para simular el fallo de cámara/HUD */
+    text-shadow: 
+        2.5px 0px 0px rgba(255, 0, 0, 0.85), 
+        -2.5px 0px 0px rgba(0, 255, 255, 0.6),
+        0px 0px 8px rgba(255, 255, 255, 0.3);
+    animation: fear3_glitch 4s infinite linear alternate-reverse;
+}
+
+@keyframes fear3_glitch {
+    0%, 100% { text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.8), -2px 0px 0px rgba(0, 255, 255, 0.6); transform: skew(0deg); }
+    10% { text-shadow: 3px 0px 0px rgba(255, 0, 0, 0.9), -3px 0px 0px rgba(0, 255, 255, 0.7); }
+    11% { text-shadow: -2px 0px 0px rgba(255, 0, 0, 0.9), 3px 0px 0px rgba(0, 255, 255, 0.7); transform: skew(-3deg); }
+    12% { transform: skew(0deg); }
+    50% { text-shadow: 1px 0px 0px rgba(255, 0, 0, 0.7), -1px 0px 0px rgba(0, 255, 255, 0.5); }
+    52% { text-shadow: 5px 1px 0px rgba(255, 0, 0, 1), -5px -1px 0px rgba(0, 255, 255, 0.8); transform: scale(1.02); }
+    53% { transform: scale(1); }
 }
 
 /* Títulos Sangrientos (Creepster) */
@@ -113,7 +135,7 @@ h1, h2, h3 {
 /* Barra Lateral Oscura */
 [data-testid="stSidebar"] {
     background-color: #030000 !important;
-    border-right: 2px solid #330000;
+    border-right: 2px solid #4a0000;
 }
 
 /* ========================================= */
@@ -132,21 +154,24 @@ div[role="radiogroup"] > label {
 }
 
 div[role="radiogroup"] > label p { 
-    color: #999999 !important; /* Texto inactivo apagado */
+    color: #888888 !important; /* Texto inactivo apagado */
     font-size: 22px !important; 
     line-height: 1.2 !important;
     white-space: nowrap !important;
+    /* Reducir efecto FEAR en botones inactivos para mejor lectura */
+    text-shadow: 1px 0px 0px rgba(100, 0, 0, 0.5), -1px 0px 0px rgba(0, 100, 100, 0.3) !important;
+    animation: none !important;
 }
 
 div[role="radiogroup"] > label:hover p { 
     color: #ffffff !important; 
-    text-shadow: 0 0 5px rgba(255,255,255,0.5) !important;
+    text-shadow: 2px 0px 0px rgba(255,0,0,0.8), -2px 0px 0px rgba(0,255,255,0.6) !important;
 }
 
 /* Opción Seleccionada */
 div[role="radiogroup"] > label[data-checked="true"] p { 
     color: #ff2222 !important; 
-    text-shadow: 0 0 8px #ff0000, 2px 2px 4px #000 !important; 
+    text-shadow: 0 0 10px #ff0000, 2px 2px 4px #000 !important; 
     font-size: 22px !important; 
 }
 
@@ -158,7 +183,7 @@ div[role="radiogroup"] > label[data-checked="true"] span[data-baseweb="radio"] d
 button {
     border: 1px solid #550000 !important;
     background: rgba(20, 0, 0, 0.9) !important;
-    color: #e8e8e8 !important;
+    color: #ffffff !important;
     font-family: 'Share Tech Mono', monospace !important;
     font-size: 22px !important;
     text-transform: uppercase;
@@ -166,7 +191,6 @@ button {
 }
 button:hover {
     background: #440000 !important;
-    color: #ffffff !important;
     box-shadow: 0 0 15px rgba(255,0,0,0.6);
     border-color: #ff0000 !important;
 }
@@ -190,7 +214,7 @@ st.sidebar.markdown("<hr style='border: 1px solid #440000; margin-top:0;'>", uns
 
 menu = ["[ TRACK 1 ] Biblioteca Sangrienta", "[ TRACK 2 ] Archivos Encontrados", "[ TRACK 3 ] Psicofonías", "[ TRACK 4 ] Videoclub de Culto", "[ TRACK 5 ] Pacto de Sangre"]
 eleccion = st.sidebar.radio("CANALES", menu, label_visibility="collapsed")
-st.sidebar.markdown("<br><p style='color: #ff0000; font-family: VT323; font-size: 32px; text-align: center; text-shadow: 0 0 10px red;'>REC 🔴</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><p style='color: #ff0000; font-family: VT323; font-size: 32px; text-align: center; text-shadow: 0 0 10px red; animation: none;'>REC 🔴</p>", unsafe_allow_html=True)
 
 # --- 1. SECCIÓN HISTORIA ---
 if eleccion == "[ TRACK 1 ] Biblioteca Sangrienta":
@@ -245,7 +269,7 @@ elif eleccion == "[ TRACK 3 ] Psicofonías":
     st.markdown("""
     <div class='vhs-box'>
         <h3>CINTA A: Lluvia y Neón</h3>
-        <p style='color:#ff5555; font-size: 1.1rem; margin-bottom: 5px;'>TRACKING...</p>
+        <p style='color:#ff5555 !important; animation: none; text-shadow: none;'>TRACKING...</p>
         <div style="width:100%; background:#1a0000; border:1px solid #550000; height:15px;">
             <div style="width:15%; height:100%; background: linear-gradient(90deg, #880000, #ff0000);"></div>
         </div>
@@ -253,7 +277,7 @@ elif eleccion == "[ TRACK 3 ] Psicofonías":
     <br>
     <div class='vhs-box'>
         <h3>CINTA B: Tema Principal (Distorsionado)</h3>
-        <p style='color:#ff5555; font-size: 1.1rem; margin-bottom: 5px;'>TRACKING...</p>
+        <p style='color:#ff5555 !important; animation: none; text-shadow: none;'>TRACKING...</p>
         <div style="width:100%; background:#1a0000; border:1px solid #550000; height:15px;">
             <div style="width:45%; height:100%; background: linear-gradient(90deg, #880000, #ff0000);"></div>
         </div>
@@ -269,7 +293,7 @@ elif eleccion == "[ TRACK 4 ] Videoclub de Culto":
     with col1:
         st.markdown("""<div class='vhs-box' style='text-align:center;'>
         <h3>SILENT HILL</h3>
-        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000; font-size:24px;'>[COVER]</p></div>
+        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000 !important; animation: none; text-shadow: none;'>[COVER]</p></div>
         </div>""", unsafe_allow_html=True)
         with st.expander("DECODIFICAR INFO"):
             st.write("Niebla, ceniza, y traumas que toman forma física.")
@@ -277,7 +301,7 @@ elif eleccion == "[ TRACK 4 ] Videoclub de Culto":
     with col2:
         st.markdown("""<div class='vhs-box' style='text-align:center;'>
         <h3>EVANGELION</h3>
-        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000; font-size:24px;'>[COVER]</p></div>
+        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000 !important; animation: none; text-shadow: none;'>[COVER]</p></div>
         </div>""", unsafe_allow_html=True)
         with st.expander("DECODIFICAR INFO"):
             st.write("Mechas gigantes, crisis existenciales y ángeles apocalípticos.")
@@ -285,7 +309,7 @@ elif eleccion == "[ TRACK 4 ] Videoclub de Culto":
     with col3:
         st.markdown("""<div class='vhs-box' style='text-align:center;'>
         <h3>MR. ROBOT</h3>
-        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000; font-size:24px;'>[COVER]</p></div>
+        <div style='height:220px; background:#1a0000; margin:15px 0; border: 1px solid #550000; display:flex; align-items:center; justify-content:center;'><p style='color:#ff0000 !important; animation: none; text-shadow: none;'>[COVER]</p></div>
         </div>""", unsafe_allow_html=True)
         with st.expander("DECODIFICAR INFO"):
             st.write("Hacking realista, ansiedad y caída del sistema.")
@@ -318,6 +342,6 @@ elif eleccion == "[ TRACK 5 ] Pacto de Sangre":
         st.markdown(f"""
         <div class="vhs-box" style="border-color: #ff0000; text-align: center; margin-top: 30px;">
             <h2 style="color: #ff0000; text-shadow: 2px 2px 10px #aa0000; font-size: 3rem;">[ PREDICCIÓN ACEPTADA ]</h2>
-            <p style="font-size: 28px; color: #f0f0f0; margin-top: 20px;">{random.choice(respuestas)}</p>
+            <p style="font-size: 28px; margin-top: 20px;">{random.choice(respuestas)}</p>
         </div>
         """, unsafe_allow_html=True)
