@@ -41,7 +41,7 @@ if (!parentDoc.getElementById('sfx_initialized')) {
 """
 st.components.v1.html(re_sound_js, height=0, width=0)
 
-# --- CSS EXTREMO: SHADER VHS ROJO, F.E.A.R. 3 TEXT Y MENÚ PS2 ---
+# --- CSS EXTREMO: SHADER TV CRT ROJO Y GLITCH ROJO/NEGRO ---
 css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&family=Share+Tech+Mono&display=swap');
@@ -50,66 +50,105 @@ css_vhs = """
 
 /* Fondo base CRT */
 .stApp {
-    background-color: #040000;
+    background-color: #030000;
     font-size: 28px;
 }
 
-/* EFECTO F.E.A.R. 3: Viñeta oscura de fondo */
+/* EFECTO TV ANTIGUA 1: Viñeta cóncava CRT + Parpadeo sutil de tubocatódico */
 .stApp::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: radial-gradient(circle at center, transparent 30%, rgba(40, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0.95) 100%);
+    background: radial-gradient(circle at center, rgba(30, 0, 0, 0.1) 30%, rgba(15, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0.98) 100%);
     pointer-events: none;
     z-index: 9996;
+    animation: tv_flicker 0.15s infinite;
 }
 
-/* SHADER VHS GRANULADO ROJO (Película Antigua) */
+@keyframes tv_flicker {
+    0% { opacity: 0.92; }
+    50% { opacity: 1; }
+    100% { opacity: 0.95; }
+}
+
+/* EFECTO TV ANTIGUA 2: Barrido de líneas CRT + Granulado de interferencia rojo/negro */
 .stApp::after {
     content: " ";
     display: block;
     position: fixed;
     top: 0; left: 0; bottom: 0; right: 0;
-    /* Genera ruido y líneas horizontales intercaladas con un tinte rojo */
     background: 
-        url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E'),
-        linear-gradient(rgba(18, 0, 0, 0) 50%, rgba(20, 0, 0, 0.3) 50%),
-        rgba(30, 0, 0, 0.15);
-    background-size: auto, 100% 4px, auto;
-    opacity: 0.35;
+        /* Interferencia estática fractal */
+        url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E'),
+        /* Líneas de escaneo horizontales de TV */
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.65),
+            rgba(0, 0, 0, 0.65) 1px,
+            transparent 1px,
+            transparent 3px
+        ),
+        /* Filtro de tinte rojo oscuro analógico */
+        linear-gradient(180deg, rgba(80, 0, 0, 0.2) 0%, rgba(10, 0, 0, 0.5) 100%);
+    background-size: auto, 100% 3px, auto;
+    opacity: 0.42;
     z-index: 9998;
     pointer-events: none;
-    mix-blend-mode: color-dodge;
-    animation: vhs_red_grain 0.15s infinite;
+    mix-blend-mode: overlay;
+    animation: tv_scanlines_scroll 12s linear infinite, red_noise_jump 0.12s infinite;
 }
 
-@keyframes vhs_red_grain {
-    0% { transform: translate(0, 0); opacity: 0.30; }
-    50% { transform: translate(1px, -1px); opacity: 0.40; }
-    100% { transform: translate(-1px, 1px); opacity: 0.35; }
+@keyframes tv_scanlines_scroll {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 0 0, 0 100%, 0 0; }
 }
 
-/* LETRAS BLANCAS EFECTO F.E.A.R. 3 (Aberración Cromática + Glitch) */
+@keyframes red_noise_jump {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, 1px); }
+}
+
+/* LETRAS BLANCAS EFECTO GLITCH ROJO Y NEGRO (EXCLUSIVO ROJO/NEGRO) */
 p, .vcr-text, div[data-baseweb="input"] input, div[data-baseweb="select"] {
     font-family: 'Share Tech Mono', monospace !important;
     color: #ffffff !important;
     letter-spacing: 1.5px;
-    /* Sombra dividida en rojo y cian para simular el fallo de cámara/HUD */
+    /* Sombras únicamente en tonos de rojo brillante, rojo oscuro y negro */
     text-shadow: 
-        2.5px 0px 0px rgba(255, 0, 0, 0.85), 
-        -2.5px 0px 0px rgba(0, 255, 255, 0.6),
-        0px 0px 8px rgba(255, 255, 255, 0.3);
-    animation: fear3_glitch 4s infinite linear alternate-reverse;
+        3px 0px 0px rgba(255, 0, 0, 0.9), 
+        -3px 0px 0px rgba(40, 0, 0, 0.95),
+        0px 0px 6px rgba(200, 0, 0, 0.4);
+    animation: red_black_glitch 3.5s infinite linear alternate-reverse;
 }
 
-@keyframes fear3_glitch {
-    0%, 100% { text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.8), -2px 0px 0px rgba(0, 255, 255, 0.6); transform: skew(0deg); }
-    10% { text-shadow: 3px 0px 0px rgba(255, 0, 0, 0.9), -3px 0px 0px rgba(0, 255, 255, 0.7); }
-    11% { text-shadow: -2px 0px 0px rgba(255, 0, 0, 0.9), 3px 0px 0px rgba(0, 255, 255, 0.7); transform: skew(-3deg); }
-    12% { transform: skew(0deg); }
-    50% { text-shadow: 1px 0px 0px rgba(255, 0, 0, 0.7), -1px 0px 0px rgba(0, 255, 255, 0.5); }
-    52% { text-shadow: 5px 1px 0px rgba(255, 0, 0, 1), -5px -1px 0px rgba(0, 255, 255, 0.8); transform: scale(1.02); }
-    53% { transform: scale(1); }
+@keyframes red_black_glitch {
+    0%, 100% { 
+        text-shadow: 2.5px 0px 0px #ff0000, -2.5px 0px 0px #330000, 0 0 5px #ff0000; 
+        transform: skew(0deg); 
+    }
+    10% { 
+        text-shadow: 3.5px 0px 0px #cc0000, -3.5px 0px 0px #1a0000, 0 0 8px #990000; 
+    }
+    11% { 
+        text-shadow: -3px 0px 0px #ff0000, 3px 0px 0px #000000, 0 0 10px #ff2222; 
+        transform: skew(-2.5deg); 
+    }
+    12% { 
+        transform: skew(0deg); 
+    }
+    50% { 
+        text-shadow: 1.5px 0px 0px #880000, -1.5px 0px 0px #111111; 
+    }
+    52% { 
+        text-shadow: 5px 0px 0px #ff0000, -4px 0px 0px #220000, 0 0 12px #ff0000; 
+        transform: scale(1.015); 
+    }
+    53% { 
+        transform: scale(1); 
+    }
 }
 
 /* Títulos Sangrientos (Creepster) */
@@ -158,14 +197,13 @@ div[role="radiogroup"] > label p {
     font-size: 22px !important; 
     line-height: 1.2 !important;
     white-space: nowrap !important;
-    /* Reducir efecto FEAR en botones inactivos para mejor lectura */
-    text-shadow: 1px 0px 0px rgba(100, 0, 0, 0.5), -1px 0px 0px rgba(0, 100, 100, 0.3) !important;
+    text-shadow: 1.5px 0px 0px rgba(120, 0, 0, 0.6), -1.5px 0px 0px rgba(0, 0, 0, 0.9) !important;
     animation: none !important;
 }
 
 div[role="radiogroup"] > label:hover p { 
     color: #ffffff !important; 
-    text-shadow: 2px 0px 0px rgba(255,0,0,0.8), -2px 0px 0px rgba(0,255,255,0.6) !important;
+    text-shadow: 2.5px 0px 0px #ff0000, -2.5px 0px 0px #330000 !important;
 }
 
 /* Opción Seleccionada */
