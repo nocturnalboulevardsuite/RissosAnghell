@@ -101,7 +101,13 @@ css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&family=Share+Tech+Mono&display=swap');
 
-#MainMenu, header, footer, .stDeployButton {visibility: hidden; display: none;}
+/* Se removió 'header' para que el botón de colapsar la barra lateral siga visible */
+#MainMenu, footer, .stDeployButton {visibility: hidden; display: none;}
+
+/* Estilizar el header superior y el botón de la barra lateral para que no rompa la estética */
+header { background-color: transparent !important; }
+[data-testid="collapsedControl"] svg { color: #ff0000 !important; }
+[data-testid="collapsedControl"]:hover { background-color: rgba(255, 0, 0, 0.1) !important; }
 
 /* Fondo base CRT */
 .stApp {
