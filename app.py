@@ -5,7 +5,7 @@ from datetime import datetime
 # Configuración inicial oculta
 st.set_page_config(page_title="V H S _ V A M P I R E", layout="wide", initial_sidebar_state="expanded")
 
-# --- INYECCIÓN DE SONIDOS Y ATMÓSFERA AMBIENTAL (RE OUTBREAK + OBSCURE + RUIDO BLANCO + CRUJIDOS) ---
+# --- INYECCIÓN DE SONIDOS Y ATMÓSFERA AMBIENTAL (RUIDO BLANCO + EVENTOS RANDOMS) ---
 re_sound_js = """
 <script>
 const parentDoc = window.parent.document;
@@ -15,12 +15,17 @@ if (!parentDoc.getElementById('sfx_initialized')) {
     flag.style.display = 'none';
     parentDoc.body.appendChild(flag);
 
-    // SFX Botones (RE Outbreak)
+    // SFX Botones y Menú
     const btnSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3';
-    // SFX Tracks Menú Lateral (Obscure - Eco metálico)
     const trackSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2864/2864-preview.mp3'; 
-    // SFX Crujido de dientes / hueso / estática terrorífica
-    const crunchSoundUrl = 'https://assets.mixkit.co/active_storage/sfx/2458/2458-preview.mp3';
+    
+    // SFX Randoms para la atmósfera (Crujidos, Disparos lejanos, Fuego, Ecos)
+    const ambientEvents = [
+        'https://assets.mixkit.co/active_storage/sfx/2458/2458-preview.mp3', // Crujido / Dientes
+        'https://assets.mixkit.co/active_storage/sfx/214/214-preview.mp3',   // Disparo lejano
+        'https://assets.mixkit.co/active_storage/sfx/2463/2463-preview.mp3', // Fuego crepitante
+        'https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3'  // Eco metálico / Zombie
+    ];
 
     let audioCtx = null;
     let ambientStarted = false;
@@ -55,12 +60,15 @@ if (!parentDoc.getElementById('sfx_initialized')) {
             gainNode.connect(audioCtx.destination);
             whiteNoise.start(0);
 
-            // Disparador aleatorio de crujido cada ~30 segundos
+            // Disparador aleatorio de eventos ambientales cada 30 segundos
             setInterval(() => {
-                let crunch = new Audio(crunchSoundUrl);
-                crunch.volume = 0.45;
-                crunch.play().catch(e => console.log('Crunch audio error:', e));
+                let randomSfx = ambientEvents[Math.floor(Math.random() * ambientEvents.length)];
+                let eventAudio = new Audio(randomSfx);
+                // Si es el disparo, bajarle un poco más el volumen para que suene a lo lejos
+                eventAudio.volume = randomSfx.includes('214') ? 0.25 : 0.45;
+                eventAudio.play().catch(e => console.log('Event audio error:', e));
             }, 30000);
+            
         } catch(e) { 
             console.log('Audio Context error:', e); 
         }
@@ -88,7 +96,7 @@ if (!parentDoc.getElementById('sfx_initialized')) {
 """
 st.components.v1.html(re_sound_js, height=0, width=0)
 
-# --- CSS EXTREMO: SHADER TV CRT ROJO Y GLITCH ROJO/NEGRO + ESTILOS CASSETTE ---
+# --- CSS EXTREMO: SHADER TV CRT ROJO Y GLITCH ROJO/NEGRO ---
 css_vhs = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&family=Share+Tech+Mono&display=swap');
@@ -101,7 +109,7 @@ css_vhs = """
     font-size: 28px;
 }
 
-/* EFECTO TV ANTIGUA 1: Viñeta cóncava CRT + Parpadeo sutil de tubo catódico */
+/* EFECTO TV ANTIGUA 1: Viñeta cóncava CRT + Parpadeo sutil de tubocatódico */
 .stApp::before {
     content: "";
     position: fixed;
@@ -155,7 +163,7 @@ css_vhs = """
     100% { transform: translate(1px, 1px); }
 }
 
-/* LETRAS BLANCAS EFECTO GLITCH ROJO Y NEGRO */
+/* LETRAS BLANCAS EFECTO GLITCH ROJO Y NEGRO (EXCLUSIVO ROJO/NEGRO) */
 p, .vcr-text, div[data-baseweb="input"] input, div[data-baseweb="select"] {
     font-family: 'Share Tech Mono', monospace !important;
     color: #ffffff !important;
@@ -172,26 +180,12 @@ p, .vcr-text, div[data-baseweb="input"] input, div[data-baseweb="select"] {
         text-shadow: 2.5px 0px 0px #ff0000, -2.5px 0px 0px #330000, 0 0 5px #ff0000; 
         transform: skew(0deg); 
     }
-    10% { 
-        text-shadow: 3.5px 0px 0px #cc0000, -3.5px 0px 0px #1a0000, 0 0 8px #990000; 
-    }
-    11% { 
-        text-shadow: -3px 0px 0px #ff0000, 3px 0px 0px #000000, 0 0 10px #ff2222; 
-        transform: skew(-2.5deg); 
-    }
-    12% { 
-        transform: skew(0deg); 
-    }
-    50% { 
-        text-shadow: 1.5px 0px 0px #880000, -1.5px 0px 0px #111111; 
-    }
-    52% { 
-        text-shadow: 5px 0px 0px #ff0000, -4px 0px 0px #220000, 0 0 12px #ff0000; 
-        transform: scale(1.015); 
-    }
-    53% { 
-        transform: scale(1); 
-    }
+    10% { text-shadow: 3.5px 0px 0px #cc0000, -3.5px 0px 0px #1a0000, 0 0 8px #990000; }
+    11% { text-shadow: -3px 0px 0px #ff0000, 3px 0px 0px #000000, 0 0 10px #ff2222; transform: skew(-2.5deg); }
+    12% { transform: skew(0deg); }
+    50% { text-shadow: 1.5px 0px 0px #880000, -1.5px 0px 0px #111111; }
+    52% { text-shadow: 5px 0px 0px #ff0000, -4px 0px 0px #220000, 0 0 12px #ff0000; transform: scale(1.015); }
+    53% { transform: scale(1); }
 }
 
 /* Títulos Sangrientos (Creepster) */
@@ -236,7 +230,7 @@ div[role="radiogroup"] > label {
 }
 
 div[role="radiogroup"] > label p { 
-    color: #888888 !important;
+    color: #888888 !important; 
     font-size: 22px !important; 
     line-height: 1.2 !important;
     white-space: nowrap !important;
@@ -276,7 +270,7 @@ button:hover {
     border-color: #ff0000 !important;
 }
 
-/* Contenedores */
+/* Contenedores y Cassettes */
 .vhs-box {
     border: 2px solid #440000;
     background: rgba(10, 0, 0, 0.7);
@@ -285,9 +279,6 @@ button:hover {
     box-shadow: inset 0 0 20px #000;
 }
 
-/* ========================================= */
-/* ESTILOS REPRODUCTOR CASSETTE INTERACTIVO   */
-/* ========================================= */
 .cassette-card {
     border: 2px solid #550000;
     background: radial-gradient(circle at center, #180202 0%, #050000 100%);
@@ -368,7 +359,7 @@ st.sidebar.markdown("<br><p style='color: #ff0000; font-family: VT323; font-size
 # --- 1. SECCIÓN HISTORIA ---
 if eleccion == "[ TRACK 1 ] Biblioteca Sangrienta":
     st.markdown("<h1>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='vcr-text'>'ANGHELL' COLLECTION....</p>", unsafe_allow_html=True)
+    st.markdown("<p class='vcr-text'>'ANGHELL' COLLECTION...</p>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
@@ -410,56 +401,51 @@ elif eleccion == "[ TRACK 2 ] Archivos Encontrados":
     with col2:
         st.markdown("<div class='vhs-box' style='height: 300px; display: flex; align-items: center; justify-content: center;'><h3 style='color:#aa0000;'>STATIC.MP4</h3></div>", unsafe_allow_html=True)
 
-# --- 3. SECCIÓN AUDIOLOGÍA (REPRODUCTORES INTERACTIVOS DE CASSETTE) ---
+# --- 3. SECCIÓN AUDIOLOGÍA (CASSETTES CON SPINNERS E INTERFAZ NUEVA) ---
 elif eleccion == "[ TRACK 3 ] Psicofonías":
     st.markdown("<h1>FRECUENCIAS MUERTAS</h1>", unsafe_allow_html=True)
     st.markdown("<p class='vcr-text'>CINTAS DE CASSETTE ENCONTRADAS EN EL SÓTANO.</p>", unsafe_allow_html=True)
     
-    # Cassette A
-    st.markdown("""
+    html_cintas = """
     <div class="cassette-card">
+        <h3 style="color: #ff3333; font-size: 24px; margin-bottom: 10px;">[ CINTA A: Lluvia y Neón ]</h3>
         <div class="cassette-body">
             <div class="cassette-label-box">
-                <h3 style="margin:0; font-size: 26px; color:#ffaaaa;">CINTA A: Lluvia y Neón</h3>
-                <span style="font-size:14px; color:#ff6666;">[ REGISTRO ANALÓGICO 1994 // EVIDENCIA #01 ]</span>
+                <span style="font-family: 'Share Tech Mono'; color: #fff; letter-spacing: 2px;">TDK D60 - VOICES.WAV</span>
             </div>
-            <div class="cassette-reels-window" id="reels-tape-a">
+            
+            <div id="reels-A" class="cassette-reels-window">
                 <div class="cassette-reel"></div>
-                <span style="color:#880000; font-family:'Share Tech Mono'; font-weight:bold; font-size:16px;">PLAYING</span>
                 <div class="cassette-reel"></div>
             </div>
-            <audio controls 
-                   onplay="document.getElementById('reels-tape-a').classList.add('spinning')"
-                   onpause="document.getElementById('reels-tape-a').classList.remove('spinning')"
-                   onended="document.getElementById('reels-tape-a').classList.remove('spinning')">
-                <source src="https://assets.mixkit.co/active_storage/sfx/2689/2689-preview.mp3" type="audio/mp3">
+
+            <audio id="audio-A" controls onplay="document.getElementById('reels-A').classList.add('spinning')" onpause="document.getElementById('reels-A').classList.remove('spinning')">
+                <source src="https://assets.mixkit.co/active_storage/sfx/2859/2859-preview.mp3" type="audio/mpeg">
+                Navegador incompatible.
             </audio>
         </div>
     </div>
-    """, unsafe_allow_html=True)
-    
-    # Cassette B
-    st.markdown("""
+
     <div class="cassette-card">
+        <h3 style="color: #ff3333; font-size: 24px; margin-bottom: 10px;">[ CINTA B: Tema Principal (Distorsionado) ]</h3>
         <div class="cassette-body">
             <div class="cassette-label-box">
-                <h3 style="margin:0; font-size: 26px; color:#ffaaaa;">CINTA B: Tema Principal (Distorsionado)</h3>
-                <span style="font-size:14px; color:#ff6666;">[ REGISTRO ANALÓGICO 1998 // EVIDENCIA #02 ]</span>
+                <span style="font-family: 'Share Tech Mono'; color: #fff; letter-spacing: 2px;">MAXELL UR90 - MAIN_THEME.WAV</span>
             </div>
-            <div class="cassette-reels-window" id="reels-tape-b">
+            
+            <div id="reels-B" class="cassette-reels-window">
                 <div class="cassette-reel"></div>
-                <span style="color:#880000; font-family:'Share Tech Mono'; font-weight:bold; font-size:16px;">PLAYING</span>
                 <div class="cassette-reel"></div>
             </div>
-            <audio controls 
-                   onplay="document.getElementById('reels-tape-b').classList.add('spinning')"
-                   onpause="document.getElementById('reels-tape-b').classList.remove('spinning')"
-                   onended="document.getElementById('reels-tape-b').classList.remove('spinning')">
-                <source src="https://assets.mixkit.co/active_storage/sfx/2864/2864-preview.mp3" type="audio/mp3">
+
+            <audio id="audio-B" controls onplay="document.getElementById('reels-B').classList.add('spinning')" onpause="document.getElementById('reels-B').classList.remove('spinning')">
+                <source src="https://assets.mixkit.co/active_storage/sfx/2864/2864-preview.mp3" type="audio/mpeg">
+                Navegador incompatible.
             </audio>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.components.v1.html(html_cintas, height=650)
 
 # --- 4. SECCIÓN PELÍCULAS Y SERIES ---
 elif eleccion == "[ TRACK 4 ] Videoclub de Culto":
