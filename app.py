@@ -256,8 +256,8 @@ st.sidebar.markdown("<br><p style='color: #ff0000; font-family: VT323; font-size
 
 # --- 1. SECCIÓN HISTORIA ---
 if eleccion == "[ TRACK 1 ] Biblioteca Sangrienta":
-    st.markdown("<h1>ARCHIVO DE MANUSCRITOS</h1>", unsafe_allow_html=True)
-    st.markdown("<p class='vcr-text'>SELECCIONA UNA CINTA PARA DESATAR LA HISTORIA...</p>", unsafe_allow_html=True)
+    st.markdown("<h1>EL RINCÓN DE RISSOS</h1>", unsafe_allow_html=True)
+    st.markdown("<p class='vcr-text'>'ANGHELL' COLLECTION...</p>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
