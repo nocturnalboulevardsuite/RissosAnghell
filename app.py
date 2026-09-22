@@ -21,7 +21,7 @@ if (!parentDoc.getElementById('sfx_initialized')) {
     
     // SFX Randoms para la atmósfera (Crujidos, Disparos lejanos, Fuego, Ecos)
     const ambientEvents = [
-        'https://assets.mixkit.co/active_storage/sfx/2458/2458-preview.mp3', // Crujido / Dientes
+        'https://pixabay.com/sound-effects/film-special-effects-distant-war-377958/', // TIROS LEJANOS
         'https://assets.mixkit.co/active_storage/sfx/214/214-preview.mp3',   // Disparo lejano
         'https://assets.mixkit.co/active_storage/sfx/2463/2463-preview.mp3', // Fuego crepitante
         'https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3'  // Eco metálico / Zombie
