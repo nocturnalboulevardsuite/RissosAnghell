@@ -3,7 +3,9 @@ EL RINCÓN DE RISSOS — Blog personal estilo lost media / VHS / años 80.
 
 Estructura:
   - Inicio: escena animada (callejón de ladrillos + terraza en llamas) y últimas entradas.
-  - Historias: relatos propios con lector tipo expediente.
+  - Historias: relatos propios con lector tipo expediente. Cada historia puede tener
+    su propio escenario animado: liminal (backrooms), naturaleza abandonada,
+    castillo maldito o arañas (que además caminan por toda la página).
   - Canciones: reproductor de cassette con carretes que giran.
   - Metraje: videos e imágenes en marco VHS.
   - Videoclub: recomendaciones de películas/series.
@@ -98,6 +100,131 @@ SECCION_POR_TIPO = {
 }
 MESES = ["ENE.", "FEB.", "MAR.", "ABR.", "MAY.", "JUN.", "JUL.", "AGO.", "SEP.", "OCT.", "NOV.", "DIC."]
 
+
+HISTORIAS_DEMO = [
+    {
+        "id": "demo-nivel0",
+        "tipo": "historia",
+        "titulo": "Nivel 0",
+        "fecha": "2026-10-20",
+        "extra": "Archivo liminal",
+        "escena": "liminal",
+        "resumen": "Me apoyé en una pared del supermercado y la pared no estaba.",
+        "contenido": (
+            "Me apoyé en una pared del supermercado y la pared no estaba.\n\n"
+            "Caí sobre una alfombra húmeda. Olía a cartón mojado y a algo dulce, como fruta olvidada en una bolsa. "
+            "Arriba, los tubos fluorescentes zumbaban todos en la misma nota, una nota que se te mete detrás de los dientes.\n\n"
+            "El papel mural era amarillo. No amarillo limón: amarillo de diente viejo, de foto expuesta al sol. "
+            "Un pasillo terminaba en una sala, la sala en tres pasillos, y los tres pasillos en la misma sala de antes, "
+            "solo que la mancha del techo había cambiado de forma.\n\n"
+            "Conté las luces para no perder la cabeza. En la luz 400 encontré la cámara.\n\n"
+            "Era una videograbadora de hombro, de esas de los ochenta, apoyada contra un zócalo. La cinta seguía dentro. "
+            "En el visor, la fecha decía OCT. 31 1987 y el contador avanzaba solo. Le di play. Era este pasillo. "
+            "Era yo, de espaldas, contando luces en voz baja.\n\n"
+            "Nadie sostenía la cámara.\n\n"
+            "Al fondo de la imagen, donde el amarillo se vuelve niebla, había algo alto y delgado que no se movía. "
+            "Cuando levanté la vista del visor, seguía ahí. Un poco más cerca.\n\n"
+            "Ahora escribo esto en la pared con la uña, por si alguien más cae. Reglas que aprendí: no corras, porque el "
+            "zumbido te sigue. No duermas bajo una luz que parpadea. Y si encuentras una cámara grabando, no mires lo que "
+            "hay detrás de ti en la pantalla.\n\n"
+            "Voy en la luz 612. Lo escucho caminar sobre la alfombra mojada."
+        ),
+        "etiquetas": ["backrooms", "liminal", "found footage"],
+        "archivo": "", "url": "", "portada": "",
+    },
+    {
+        "id": "demo-ceniza",
+        "tipo": "historia",
+        "titulo": "Lo que crece en Puerto Ceniza",
+        "fecha": "2026-10-18",
+        "extra": "Zona de cuarentena",
+        "escena": "naturaleza",
+        "resumen": "Veinte años después de la evacuación, el bosque terminó lo que el virus empezó.",
+        "contenido": (
+            "Veinte años después de la evacuación, volví a Puerto Ceniza con una mochila, una linterna y la radio de mi papá.\n\n"
+            "El bosque había terminado lo que el virus empezó. Las enredaderas bajaban por los edificios como cortinas "
+            "mojadas. Un árbol había crecido a través de un bus escolar y lo levantaba del suelo, con las ventanas llenas "
+            "de helechos. En la avenida principal, los autos seguían en fila, esperando un semáforo que se apagó en 2006. "
+            "El musgo los cubría hasta las manillas.\n\n"
+            "Todo estaba en silencio, salvo los cuervos y el letrero del hotel, que todavía chispeaba: H_TEL, H_TEL, "
+            "como un corazón que no se rinde.\n\n"
+            "La radio captó una transmisión en la frecuencia de emergencia. Una voz de mujer leía nombres. "
+            "Reconocí el de mi papá. Reconocí el mío.\n\n"
+            "En la plaza, el pasto me llegaba a la cintura. Ahí vi la primera figura: alguien parado entre los arbustos, "
+            "de espaldas, cubierto de hojas. Pensé que era una estatua hasta que dio un paso. Arrastraba un pie. "
+            "El musgo le crecía por el cuello, por las orejas, por dentro de la boca abierta.\n\n"
+            "No era uno. Eran cientos, quietos entre los árboles, enraizados a medias, girando la cabeza despacio hacia "
+            "mi linterna como girasoles hacia el sol.\n\n"
+            "Apagué la luz. Corrí.\n\n"
+            "Desde entonces siento algo en la planta de los pies, una picazón suave, como raíces buscando tierra. "
+            "La radio sigue leyendo nombres cada noche. Ya no lee el mío.\n\n"
+            "Creo que es porque ya llegué."
+        ),
+        "etiquetas": ["survival horror", "naturaleza", "ciudad abandonada"],
+        "archivo": "", "url": "", "portada": "",
+    },
+    {
+        "id": "demo-velmora",
+        "tipo": "historia",
+        "titulo": "El castillo de Velmora",
+        "fecha": "2026-10-15",
+        "extra": "Noche de brujas",
+        "escena": "castillo",
+        "resumen": "La invitación decía: ven disfrazado de lo que más temes. Yo no llevé disfraz.",
+        "contenido": (
+            "La invitación llegó en un sobre morado, sellado con cera verde: *Ven disfrazado de lo que más temes. "
+            "Velmora, 31 de octubre, medianoche.*\n\n"
+            "El castillo estaba en la colina que todos en el pueblo fingen no ver. Subí por un camino de calabazas "
+            "talladas. Ninguna tenía vela: las caras ardían con un fuego verde que no daba calor, y todas giraban los "
+            "ojos para seguirme.\n\n"
+            "Los árboles de la colina estaban muertos desde antes de que yo naciera. Aun así, sus ramas se cerraban "
+            "detrás de mí, como una puerta.\n\n"
+            "Adentro había música de órgano y cientos de invitados con máscaras. Bailaban sin hacer ruido con los pies. "
+            "Un mayordomo muy alto me preguntó de qué venía disfrazado. Le dije que no llevaba disfraz.\n\n"
+            "—Perfecto —dijo—. Entonces usted es lo que el castillo más teme.\n\n"
+            "No entendí hasta que vi los espejos. Los invitados no se reflejaban. Las máscaras sí: flotaban solas, vacías, "
+            "sobre vestidos que nadie llenaba. El único reflejo de carne y hueso en todo el salón era el mío.\n\n"
+            "Las ventanas se encendieron de verde, una por una, como si el castillo contara a sus huéspedes. "
+            "Cuando llegó a mí, la luz se puso morada.\n\n"
+            "Las puertas se cerraron. Los invitados se giraron, todos a la vez, y por primera vez escuché sus pasos.\n\n"
+            "No sé cuántos años llevo aquí. Cada 31 de octubre, el castillo manda invitaciones nuevas. "
+            "Yo ayudo a tallar las calabazas.\n\n"
+            "La tuya ya tiene cara."
+        ),
+        "etiquetas": ["halloween", "castillo", "gótico"],
+        "archivo": "", "url": "", "portada": "",
+    },
+    {
+        "id": "demo-viuda",
+        "tipo": "historia",
+        "titulo": "La viuda negra",
+        "fecha": "2026-10-13",
+        "extra": "Anghell",
+        "escena": "aranas",
+        "resumen": "Heredé el departamento de mi abuela con todo adentro. También con las arañas.",
+        "contenido": (
+            "Las patas crujen en la oscuridad.\n\n"
+            "Heredé el departamento de mi abuela con todo adentro: los muebles con plástico, el reloj detenido a las 3:17 "
+            "y las arañas. Ella nunca las mataba. Decía que las arañas cuidan las casas donde alguien murió solo.\n\n"
+            "La primera noche conté siete. Una tarántula del tamaño de mi mano dormía dentro de la zapatera. "
+            "Una araña saltarina me miraba desde el espejo con sus dos ojos negros enormes, siguiendo cada movimiento "
+            "de mi cepillo de dientes. Las de patas largas temblaban en las esquinas del techo como si alguien soplara.\n\n"
+            "Y en el centro de la sala, entre la lámpara y la ventana, había una tela perfecta. En el medio, una viuda "
+            "negra con el reloj de arena rojo brillando como una brasa.\n\n"
+            "Cada noche baja un poco más. El hilo de seda es café, manchado de óxido, y huele a hierro. Cada mañana hay "
+            "más arañas: en las tazas, en los bolsillos de los abrigos, dentro del reloj detenido.\n\n"
+            "Anoche no pude dormir. Las escuché caminar por el techo, cientos de patas pequeñas, como lluvia que cae "
+            "hacia arriba. Encendí la luz y estaban todas quietas, mirando la tela.\n\n"
+            "La viuda había tejido algo nuevo. No era un círculo. Eran letras.\n\n"
+            "Era mi nombre.\n\n"
+            "Ahora entiendo lo que decía la abuela. Las arañas no cuidan la casa. Cuidan que nadie se vaya.\n\n"
+            "Si estás leyendo esto, mira tu pantalla con atención. No todas están en el dibujo."
+        ),
+        "etiquetas": ["anghell", "arañas"],
+        "archivo": "", "url": "", "portada": "",
+    },
+]
+
 DB_INICIAL = {
     "ajustes": {
         "titulo": "El Rincón de Rissos",
@@ -108,26 +235,9 @@ DB_INICIAL = {
             "Todo lo que hay aquí lo hice yo, de noche, con la tele encendida sin señal."
         ),
     },
+    "demos_v2": True,
     "entradas": [
-        {
-            "id": "demo-viuda",
-            "tipo": "historia",
-            "titulo": "La viuda negra",
-            "fecha": "2026-10-13",
-            "extra": "Anghell",
-            "resumen": "Algo baja desde el techo cada noche. El hilo está manchado de óxido.",
-            "contenido": (
-                "Las patas crujen en la oscuridad.\n\n"
-                "El hilo de seda baja desde el techo, manchado de óxido, y se detiene "
-                "a la altura de mis ojos. Cada noche baja un poco más. Cada noche el "
-                "cuarto huele más a hierro.\n\n"
-                "*Texto de ejemplo: edítalo o bórralo desde la Sala de edición.*"
-            ),
-            "etiquetas": ["anghell", "arañas"],
-            "archivo": "",
-            "url": "",
-            "portada": "",
-        },
+        *HISTORIAS_DEMO,
         {
             "id": "demo-jardin",
             "tipo": "historia",
@@ -141,6 +251,7 @@ DB_INICIAL = {
                 "*Texto de ejemplo: edítalo o bórralo desde la Sala de edición.*"
             ),
             "etiquetas": ["anghell", "rosas"],
+            "escena": "",
             "archivo": "",
             "url": "",
             "portada": "",
@@ -234,7 +345,25 @@ def cargar_db():
     for k, v in DB_INICIAL["ajustes"].items():
         db["ajustes"].setdefault(k, v)
     db.setdefault("entradas", [])
+    if migrar_demos(db):
+        guardar_db(db)
     return db
+
+
+def migrar_demos(db):
+    """Agrega las historias con escenario a un archivo creado con la versión anterior (una sola vez)."""
+    if db.get("demos_v2"):
+        return False
+    ids = {e["id"] for e in db["entradas"]}
+    for demo in HISTORIAS_DEMO:
+        if demo["id"] == "demo-viuda" and demo["id"] in ids:
+            vieja = next(e for e in db["entradas"] if e["id"] == "demo-viuda")
+            if "Texto de ejemplo" in vieja.get("contenido", ""):  # solo si no la editaste
+                vieja.update(json.loads(json.dumps(demo)))
+        elif demo["id"] not in ids:
+            db["entradas"].append(json.loads(json.dumps(demo)))
+    db["demos_v2"] = True
+    return True
 
 
 def guardar_archivo(subida):
@@ -322,7 +451,7 @@ def ir_a(seccion, leyendo=None):
 # =============================================================================
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
 
 :root{
   --negro:#050203; --panel:#0d0607; --sangre:#b3060f; --sangre-viva:#e3141f;
@@ -394,6 +523,7 @@ header[data-testid="stHeader"]{background:transparent !important;}
 /* Texto OSD y etiquetas */
 .osd{font-family:'VT323',monospace; color:var(--ceniza); font-size:1.15rem; letter-spacing:.06em;}
 .osd b{color:var(--sangre-viva); font-weight:400;}
+.tag-escena{color:var(--sangre-viva) !important; border-color:var(--sangre) !important;}
 .tag{font-family:'VT323',monospace; font-size:1rem; color:var(--ceniza); border:1px solid var(--linea);
      padding:0 .45rem; margin-right:.35rem; display:inline-block;}
 
@@ -465,11 +595,11 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .caso-titulo{font-family:'Special Elite',monospace; font-size:1.6rem; color:var(--hueso); margin:.2rem 0 .3rem;}
 
 /* Lector */
-.st-key-lector{
+[class*="st-key-lector_"]{
   max-width:46rem; margin:0 auto; background:#0b0506; border:1px solid var(--linea);
   padding:2.4rem clamp(1.2rem, 4vw, 3rem) 2rem; box-shadow:0 0 60px rgba(0,0,0,.8) inset;
 }
-.st-key-lector p, .st-key-lector li{font-size:1.12rem; line-height:1.9; color:#e3d8cb;}
+[class*="st-key-lector_"] p, [class*="st-key-lector_"] li{font-size:1.12rem; line-height:1.9; color:#e3d8cb;}
 .lector-titulo{font-family:'Creepster',cursive; color:var(--sangre-viva); font-size:clamp(2.2rem,5vw,3.4rem); line-height:1.05; margin:.2rem 0 .6rem;}
 .fin{font-family:'VT323',monospace; text-align:center; color:var(--sangre-viva); font-size:1.4rem; letter-spacing:.3em; margin-top:2rem;}
 
@@ -934,6 +1064,643 @@ def incrustar(doc, alto):
         components.html(doc, height=alto)
 
 
+# =============================================================================
+# ESCENARIOS DE HISTORIAS (cada historia puede tener su propia página animada)
+# =============================================================================
+ESCENAS = {
+    "": "Clásico (sin escenario)",
+    "liminal": "Liminal (backrooms)",
+    "naturaleza": "Naturaleza abandonada",
+    "castillo": "Castillo maldito",
+    "aranas": "Arañas",
+}
+
+ESCENA_BASE = r"""
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
+html,body{margin:0;height:100%;background:#000;overflow:hidden;}
+#wrap{position:relative;height:100vh;overflow:hidden;background:#000;}
+canvas{display:block;width:100%;height:100%;object-fit:cover;filter:contrast(1.08) saturate(1.08) blur(.3px);}
+.fx{position:absolute;inset:0;pointer-events:none;z-index:4;}
+.scan{background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);}
+.noise{opacity:.09;animation:jit .12s steps(3) infinite;
+  background:url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');}
+.vig{background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.8) 100%);}
+.osd{position:absolute;font-family:'VT323',monospace;color:#f1ece6;font-size:clamp(16px,2.8vw,26px);letter-spacing:.06em;z-index:5;
+  text-shadow:2px 0 0 rgba(255,0,0,.5),-2px 0 0 rgba(0,120,255,.3);}
+.tl{top:16px;left:20px;} .tr{top:16px;right:20px;}
+.titulo{position:absolute;left:20px;bottom:16px;z-index:5;max-width:80%;}
+.titulo .meta{font-family:'VT323',monospace;font-size:clamp(15px,2.2vw,22px);letter-spacing:.08em;color:#e9dfd3;}
+.titulo h1{margin:.1em 0 0;font-weight:400;line-height:.95;font-size:clamp(32px,6vw,72px);}
+.ctl{position:absolute;left:20px;z-index:6;background:rgba(0,0,0,.45);color:#e9dfd3;border:1px solid rgba(255,255,255,.35);
+  font-family:'VT323',monospace;font-size:18px;padding:2px 10px;cursor:pointer;}
+.ctl:hover{background:rgba(255,255,255,.15);} .ctl:focus-visible{outline:2px solid #ff6a2a;}
+#snd{top:54px;} #ctl2{top:86px;}
+.rec{color:#e3141f;animation:blink 1.2s steps(1) infinite;}
+@keyframes blink{50%{opacity:0}}
+@keyframes jit{0%{transform:translate(0,0)}33%{transform:translate(-2px,1px)}66%{transform:translate(1px,-2px)}}
+@media (max-width:600px){.titulo{max-width:92%}}
+@media (prefers-reduced-motion: reduce){.noise,.rec{animation:none}}
+__TEMA_CSS__
+</style></head>
+<body>
+<div id="wrap">
+  <canvas id="cv" width="1000" height="600" role="img" aria-label="__ALT__"></canvas>
+  <div class="fx scan"></div><div class="fx noise"></div><div class="fx vig"></div>
+  <div class="osd tl">__OSD__</div>
+  <button id="snd" class="ctl" type="button">♪ Activar sonido</button>
+  <div class="osd tr"><span class="rec">●</span> <span id="clk">0:00:00</span></div>
+  <div class="titulo"><div class="meta">__META__</div><h1>__TITULO__</h1></div>
+</div>
+<script>
+(function(){
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d'), wrap=document.getElementById('wrap');
+const W=1000, H=600, reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let seed=__SEED__; function sr(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+function rnd(a,b){return a+Math.random()*(b-a);}
+function capa(w,h){const k=document.createElement('canvas');k.width=w||W;k.height=h||H;return k;}
+function poly(c,p){c.beginPath();c.moveTo(p[0][0],p[0][1]);for(let i=1;i<p.length;i++)c.lineTo(p[i][0],p[i][1]);c.closePath();c.fill();}
+function dd(n){return String(n).padStart(2,'0');}
+let t=0, seg=0;
+setInterval(()=>{seg++;document.getElementById('clk').textContent=`${Math.floor(seg/3600)}:${dd(Math.floor(seg/60)%60)}:${dd(seg%60)}`;},1000);
+
+/* --- audio sintetizado compartido --- */
+let ac=null, master=null, on=false, RB=null;
+function ruido(){if(!RB){const n=ac.sampleRate*3;RB=ac.createBuffer(1,n,ac.sampleRate);const d=RB.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;}return RB;}
+function lazo(tipo,freq,vol,q){const s=ac.createBufferSource();s.buffer=ruido();s.loop=true;const f=ac.createBiquadFilter();f.type=tipo;f.frequency.value=freq;if(q)f.Q.value=q;const g=ac.createGain();g.gain.value=vol;s.connect(f).connect(g).connect(master);s.start();return {f,g};}
+function tono(tipo,freq,vol){const o=ac.createOscillator();o.type=tipo;o.frequency.value=freq;const g=ac.createGain();g.gain.value=vol;o.connect(g).connect(master);o.start();return {o,g};}
+function lfo(param,rate,depth){const o=ac.createOscillator();o.frequency.value=rate;const g=ac.createGain();g.gain.value=depth;o.connect(g).connect(param);o.start();}
+function golpe(tipo,freq,vol,dur){if(!ac||!on)return;const n=ac.currentTime,s=ac.createBufferSource();s.buffer=ruido();const f=ac.createBiquadFilter();f.type=tipo;f.frequency.value=freq;const g=ac.createGain();g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(vol,n+Math.min(.02,dur*.2));g.gain.exponentialRampToValueAtTime(.0001,n+dur);s.connect(f).connect(g).connect(master);s.start(n,Math.random()*1.5,dur+.05);}
+function pitido(f0,f1,vol,dur,tipo){if(!ac||!on)return;const n=ac.currentTime,o=ac.createOscillator();o.type=tipo||'sine';o.frequency.setValueAtTime(f0,n);o.frequency.exponentialRampToValueAtTime(f1,n+dur);const g=ac.createGain();g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(vol,n+.01);g.gain.exponentialRampToValueAtTime(.0001,n+dur);o.connect(g).connect(master);o.start(n);o.stop(n+dur+.05);}
+const btnSnd=document.getElementById('snd');
+btnSnd.addEventListener('click',()=>{
+  if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=.7;master.connect(ac.destination);on=true;sonido();}
+  else if(on){ac.suspend();on=false;} else {ac.resume();on=true;}
+  btnSnd.textContent=on?'♪ Silenciar':'♪ Activar sonido';
+});
+function aCanvas(cx,cy){const r=cv.getBoundingClientRect(),sc=Math.max(r.width/W,r.height/H);return [(cx-r.left-(r.width-W*sc)/2)/sc,(cy-r.top-(r.height-H*sc)/2)/sc];}
+
+__JS__
+})();
+</script></body></html>
+"""
+
+# ----------------------------------------------------------------- LIMINAL ---
+JS_LIMINAL = r"""
+const F=430,VX=500,VY=285,XW=1.2,YC=-.8,YF=1,L=1.5,N=18,ZN=.32,FOG=[196,182,118];
+const WALL=[212,192,104],CEIL=[176,166,118],CARP=[124,106,58],DARK=[74,64,32];
+function pr(x,y,z){return [VX+x*F/z,VY+y*F/z];}
+function col(rgb,z,m){const k=1-Math.exp(-z*.13);m=m||1;return `rgb(${rgb[0]*m*(1-k)+FOG[0]*k|0},${rgb[1]*m*(1-k)+FOG[1]*k|0},${rgb[2]*m*(1-k)+FOG[2]*k|0})`;}
+function hs(n){const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+function quad(p,c){ctx.fillStyle=c;poly(ctx,p);}
+function linea(p1,p2){ctx.moveTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);}
+let cam=0, ent=null, entNext=500;
+function frame(){
+  t++; if(!reduce) cam+=.012;
+  const base=Math.floor(cam/L), off=cam-base*L;
+  ctx.fillStyle=`rgb(${FOG})`; ctx.fillRect(0,0,W,H);
+  ctx.save();
+  if(!reduce) ctx.translate(Math.sin(t*.021)*5,Math.sin(t*.06)*2.5);
+  const luces=[];
+  for(let i=N-1;i>=0;i--){
+    const idx=base+i, z0=i*L-off+ZN, z1=z0+L;
+    if(z1<=ZN) continue;
+    const a=Math.max(z0,ZN);
+    quad([pr(-XW,YC,a),pr(XW,YC,a),pr(XW,YC,z1),pr(-XW,YC,z1)],col(CEIL,a));
+    quad([pr(-XW,YF,a),pr(XW,YF,a),pr(XW,YF,z1),pr(-XW,YF,z1)],col(CARP,a));
+    const puerta=hs(idx)<.35, lado=hs(idx+9)<.5?-1:1;
+    for(const s of [-1,1]){
+      const x=s*XW, conPuerta=puerta&&s===lado, d0=z0+L*.35, d1=z0+L*.75, top=-.25;
+      if(conPuerta){
+        if(a<d0) quad([pr(x,YC,a),pr(x,YC,d0),pr(x,YF,d0),pr(x,YF,a)],col(WALL,a));
+        const b0=Math.max(d0,a);
+        if(b0<d1){
+          quad([pr(x,YC,b0),pr(x,YC,d1),pr(x,top,d1),pr(x,top,b0)],col(WALL,b0));
+          quad([pr(x,top,b0),pr(x,top,d1),pr(x,YF,d1),pr(x,YF,b0)],col(DARK,b0));
+          quad([pr(x*1.6,top,d1),pr(x,top,d1),pr(x,YF,d1),pr(x*1.6,YF,d1)],col(WALL,d1,.8));
+        }
+        const c0=Math.max(d1,a); if(c0<z1) quad([pr(x,YC,c0),pr(x,YC,z1),pr(x,YF,z1),pr(x,YF,c0)],col(WALL,c0));
+      } else quad([pr(x,YC,a),pr(x,YC,z1),pr(x,YF,z1),pr(x,YF,a)],col(WALL,a));
+      quad([pr(x,YF-.07,a),pr(x,YF-.07,z1),pr(x,YF,z1),pr(x,YF,a)],col(WALL,a,.7));
+      ctx.strokeStyle=col(WALL,a,.84); ctx.lineWidth=1; ctx.beginPath();
+      for(let k=0;k<6;k++){const z=z0+k*L/6; if(z<=ZN||(conPuerta&&z>d0&&z<d1)) continue; linea(pr(x,YC,z),pr(x,YF-.07,z));}
+      ctx.stroke();
+    }
+    ctx.strokeStyle=col(CEIL,a,.74); ctx.beginPath();
+    for(const zz of [z0,z0+L/2]) if(zz>ZN) linea(pr(-XW,YC,zz),pr(XW,YC,zz));
+    for(const xx of [-.6,0,.6]) linea(pr(xx,YC,a),pr(xx,YC,z1));
+    ctx.stroke();
+    const lz0=z0+L*.3, lz1=z0+L*.6;
+    if(lz1>ZN){
+      const la=Math.max(lz0,ZN); let br=1;
+      if(hs(idx+3)<.15) br=Math.random()<.12?.15:(Math.random()<.5?.7:1);
+      quad([pr(-.3,YC,la),pr(.3,YC,la),pr(.3,YC,lz1),pr(-.3,YC,lz1)],col([255,250,215],la,br));
+      luces.push({z:(la+lz1)/2,br});
+    }
+  }
+  // algo alto y delgado al fondo del pasillo
+  if(!reduce&&!ent&&--entNext<=0) ent={z:cam+N*L*.72,life:0};
+  if(ent){
+    ent.life++; const z=ent.z-cam;
+    if(z<4.5||ent.life>260){ent=null; entNext=900+Math.random()*1200;}
+    else if(Math.random()>.05){
+      const p=pr(0,YF,z), hpx=(YF+.6)*F/z, w=.12*F/z, k=1-Math.exp(-z*.13);
+      ctx.fillStyle=`rgba(28,22,10,${Math.min(.95,(1-k)*1.1+.1)})`;
+      const yt=p[1]-hpx;
+      ctx.beginPath(); ctx.ellipse(p[0],yt+w*.9,w*.55,w*.85,0,0,6.283); ctx.fill();
+      ctx.fillRect(p[0]-w/2,yt+w*1.6,w,hpx-w*1.6);
+      ctx.fillRect(p[0]-w*.85,yt+w*1.9,w*.25,hpx*.58); ctx.fillRect(p[0]+w*.6,yt+w*1.9,w*.25,hpx*.58);
+    }
+  }
+  ctx.globalCompositeOperation='lighter';
+  for(const l of luces){
+    const p=pr(0,YC,l.z), r=1.7*F/l.z, k=Math.exp(-l.z*.13);
+    const g=ctx.createRadialGradient(p[0],p[1],0,p[0],p[1],r);
+    g.addColorStop(0,`rgba(255,240,180,${.12*l.br*k})`); g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.fillRect(p[0]-r,p[1]-r,2*r,2*r);
+  }
+  ctx.globalCompositeOperation='source-over';
+  ctx.restore();
+  ctx.fillStyle=`rgba(255,235,150,${.04+.03*Math.sin(t*.013)})`; ctx.fillRect(0,0,W,H);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+function sonido(){
+  const o=ac.createOscillator(); o.type='sawtooth'; o.frequency.value=120;
+  const f=ac.createBiquadFilter(); f.type='bandpass'; f.frequency.value=480; f.Q.value=3;
+  const g=ac.createGain(); g.gain.value=.045; o.connect(f).connect(g).connect(master); o.start();
+  lfo(g.gain,.23,.015); tono('sine',60,.04); lazo('lowpass',450,.025);
+  setInterval(()=>{if(Math.random()<.25) golpe('bandpass',2400,.05,.04);},400);
+}
+"""
+
+# -------------------------------------------------------------- NATURALEZA ---
+JS_NATURALEZA = r"""
+const LW=1160;
+const lejos=capa(LW,H), medio=capa(LW,H), cerca=capa(LW,H);
+function rama(c,x,y,a,l,w,d){const x2=x+Math.cos(a)*l,y2=y+Math.sin(a)*l;c.lineWidth=w;c.beginPath();c.moveTo(x,y);c.lineTo(x2,y2);c.stroke();
+  if(d>0){rama(c,x2,y2,a-.35-sr()*.35,l*.72,w*.68,d-1);rama(c,x2,y2,a+.35+sr()*.35,l*.72,w*.68,d-1);}}
+function arbol(c,x,y,h,osc){c.strokeStyle='#1a170f';rama(c,x,y,-Math.PI/2+(sr()-.5)*.2,h*.34,h*.06,4);
+  for(let i=0;i<18;i++){c.fillStyle=`rgba(${(40+sr()*30)*osc|0},${(70+sr()*40)*osc|0},${(28+sr()*16)*osc|0},.88)`;
+    c.beginPath();c.arc(x+(sr()-.5)*h*.9,y-h*.62+(sr()-.5)*h*.5,8+sr()*h*.17,0,6.283);c.fill();}}
+function enredadera(c,x,y,len){c.strokeStyle='#26381c';c.lineWidth=2;c.beginPath();c.moveTo(x,y);let px=x,py=y;const pts=[];
+  for(let k=0;k<len;k+=8){px+=(sr()-.5)*8;py+=8;c.lineTo(px,py);pts.push([px,py]);}c.stroke();
+  for(const p of pts) if(sr()<.8){c.fillStyle=sr()<.5?'#3d6128':'#54803a';c.beginPath();c.ellipse(p[0]+(sr()-.5)*8,p[1],3+sr()*3,2+sr()*2,sr()*3,0,6.283);c.fill();}}
+function edificio(c,x,w,h,base){
+  const y=base-h; c.fillStyle='#2f3128'; c.fillRect(x,y,w,h);
+  for(let i=0;i<40;i++){c.fillStyle=`rgba(0,0,0,${sr()*.16})`;c.fillRect(x+sr()*w,y,2+sr()*4,h*sr());}
+  for(let wy=y+18;wy<base-40;wy+=34) for(let wx=x+12;wx<x+w-26;wx+=30){
+    const r=sr(); c.fillStyle=r<.5?'#0c0f0a':r<.8?'#1a2016':'#3a4a3a'; c.fillRect(wx,wy,16,22);
+    if(r<.3){c.fillStyle='rgba(160,180,170,.22)';c.beginPath();c.moveTo(wx,wy);c.lineTo(wx+16,wy);c.lineTo(wx+5,wy+10);c.fill();}}
+  c.globalCompositeOperation='destination-out';
+  c.beginPath();c.moveTo(x+w*.6,y-1);c.lineTo(x+w+1,y-1);c.lineTo(x+w+1,y+h*.18);c.lineTo(x+w*.82,y+h*.1);c.fill();
+  c.globalCompositeOperation='source-over';
+  for(let i=0;i<30;i++){c.fillStyle=`rgba(${60+sr()*30|0},${90+sr()*40|0},${40+sr()*20|0},${.3+sr()*.4})`;
+    c.beginPath();c.ellipse(x+sr()*w,y+(sr()<.5?sr()*h*.3:h*.7+sr()*h*.3),6+sr()*16,4+sr()*8,0,0,6.283);c.fill();}
+  for(let i=0;i<7;i++) enredadera(c,x+sr()*w,y+4,80+sr()*h*.7);
+  if(sr()<.7) arbol(c,x+w*.3,y+2,50+sr()*40,1);
+}
+function auto(c,x,y){
+  c.fillStyle='#24271f';
+  poly(c,[[x,y],[x+8,y-26],[x+55,y-30],[x+80,y-55],[x+165,y-55],[x+195,y-30],[x+235,y-24],[x+240,y]]);
+  c.fillStyle='#0b0c09'; poly(c,[[x+86,y-50],[x+120,y-50],[x+120,y-31],[x+66,y-31]]); poly(c,[[x+128,y-50],[x+160,y-50],[x+185,y-31],[x+128,y-31]]);
+  c.fillStyle='#0a0a08'; [x+50,x+190].forEach(wx=>{c.beginPath();c.ellipse(wx,y+2,20,13,0,0,6.283);c.fill();});
+  for(let i=0;i<30;i++){c.fillStyle=sr()<.5?`rgba(110,60,25,${.3+sr()*.3})`:`rgba(70,105,40,${.4+sr()*.4})`;
+    c.beginPath();c.ellipse(x+20+sr()*200,y-50+sr()*48,4+sr()*10,3+sr()*6,0,0,6.283);c.fill();}
+  for(let i=0;i<4;i++) enredadera(c,x+80+sr()*90,y-55,30+sr()*30);
+}
+(()=>{const c=lejos.getContext('2d'); let x=-10;
+  while(x<LW){const w=40+sr()*70,h=120+sr()*200; c.fillStyle='#3d4a37'; c.beginPath(); c.moveTo(x,440); c.lineTo(x,440-h);
+    for(let k=1;k<=4;k++) c.lineTo(x+w*k/4,440-h+(sr()-.3)*h*.25); c.lineTo(x+w,440); c.fill();
+    c.fillStyle='rgba(30,36,26,.7)'; for(let wy=440-h+20;wy<420;wy+=16) for(let wx=x+6;wx<x+w-8;wx+=12) if(sr()<.6) c.fillRect(wx,wy,5,7);
+    if(sr()<.4) arbol(c,x+w/2,440-h+10,40,1.1);
+    x+=w+sr()*10;}
+  c.globalCompositeOperation='source-atop'; c.fillStyle='rgba(95,110,80,.4)'; c.fillRect(0,0,LW,H);})();
+const letrero={x:318,y:228};
+(()=>{const c=medio.getContext('2d');
+  [[30,210,300],[290,170,230],[500,240,345],[790,190,270],[1000,150,210]].forEach(b=>edificio(c,b[0],b[1],b[2],470));
+  c.fillStyle='#262820'; c.fillRect(0,470,LW,22); c.fillStyle='#1c1e17'; for(let x=0;x<LW;x+=40) c.fillRect(x,470,2,22);
+  c.strokeStyle='#14160f'; c.lineWidth=5; c.beginPath(); c.moveTo(470,472); c.lineTo(520,330); c.lineTo(560,334); c.stroke();
+  enredadera(c,505,370,90);
+  c.fillStyle='#14150f'; c.fillRect(letrero.x-6,letrero.y-4,150,32);
+  c.globalCompositeOperation='source-atop'; c.fillStyle='rgba(60,72,50,.3)'; c.fillRect(0,0,LW,H);})();
+(()=>{const c=cerca.getContext('2d');
+  const g=c.createLinearGradient(0,490,0,H); g.addColorStop(0,'#2b2d23'); g.addColorStop(1,'#14150f'); c.fillStyle=g; c.fillRect(0,490,LW,H-490);
+  c.fillStyle='rgba(190,170,90,.22)'; for(let x=0;x<LW;x+=90) c.fillRect(x,545,50,4);
+  c.strokeStyle='#0f100b'; c.lineWidth=1.5;
+  for(let i=0;i<26;i++){let x=sr()*LW,y=495+sr()*100; c.beginPath(); c.moveTo(x,y);
+    for(let k=0;k<5;k++){x+=(sr()-.3)*30;y+=(sr()-.5)*8;c.lineTo(x,y);} c.stroke();
+    c.fillStyle='#3d5a26'; for(let k=0;k<6;k++) c.fillRect(x-10+sr()*20,y-6+sr()*6,2,5+sr()*6);}
+  auto(c,600,522);
+  c.fillStyle='#3a3626'; c.fillRect(150,500,140,14); c.fillRect(160,514,8,32); c.fillRect(272,514,8,32);
+  c.fillStyle='rgba(200,160,40,.55)'; for(let x=158;x<284;x+=24) poly(c,[[x,500],[x+12,500],[x+4,514],[x-8,514]]);
+  enredadera(c,165,500,40);
+  arbol(c,60,610,340,.55); arbol(c,1110,610,300,.55);
+  for(let i=0;i<40;i++){c.fillStyle=`rgba(${25+sr()*25|0},${45+sr()*35|0},${18+sr()*15|0},.95)`;c.beginPath();c.arc(sr()*LW,588+sr()*30,14+sr()*26,0,6.283);c.fill();}
+})();
+const niebla=[]; for(let i=0;i<7;i++) niebla.push({x:rnd(0,W),y:rnd(330,560),rx:rnd(180,380),ry:rnd(30,60),v:rnd(.1,.35),a:rnd(.05,.12)});
+function nuevaHoja(ini){return {x:rnd(0,W),y:ini?rnd(0,H):-10,vy:rnd(.4,1.1),vx:rnd(-.3,.6),r:rnd(0,6),vr:rnd(-.08,.08),s:rnd(3,6),c:['#6b7a2a','#8a6a24','#4f6b2c','#9a5a1c'][Math.random()*4|0],f:rnd(0,6)};}
+const hojas=[]; for(let i=0;i<(reduce?0:45);i++) hojas.push(nuevaHoja(true));
+const esporas=[]; for(let i=0;i<30;i++) esporas.push({x:rnd(0,W),y:rnd(250,600),f:rnd(0,6)});
+const pasto=[]; for(let i=0;i<170;i++) pasto.push({x:rnd(0,W),h:rnd(14,42),f:rnd(0,6),c:['#2f4a1f','#3d5e26','#4a6b2c'][Math.random()*3|0]});
+let zombi=null, zNext=300, bandada=null, bNext=600;
+function niebla_(desde,hasta){for(let i=desde;i<hasta;i++){const n=niebla[i]; if(!reduce){n.x+=n.v; if(n.x-n.rx>W) n.x=-n.rx;}
+  ctx.save(); ctx.translate(n.x,n.y); ctx.scale(1,n.ry/n.rx);
+  const g=ctx.createRadialGradient(0,0,0,0,0,n.rx); g.addColorStop(0,`rgba(170,185,150,${n.a})`); g.addColorStop(1,'rgba(170,185,150,0)');
+  ctx.fillStyle=g; ctx.fillRect(-n.rx,-n.rx,2*n.rx,2*n.rx); ctx.restore();}}
+function dibujarZombi(x,y,f){
+  const bob=Math.abs(Math.sin(f))*2.5; ctx.fillStyle='#0e110b'; ctx.save(); ctx.translate(x,y-bob); ctx.rotate(.12);
+  ctx.beginPath(); ctx.arc(3,-44,5,0,6.283); ctx.fill(); ctx.fillRect(-5,-38,10,20);
+  ctx.fillRect(4,-35,14,3); ctx.fillRect(4,-30,12,3);
+  const p=Math.sin(f)*5; ctx.fillRect(-4+p*.4,-18,4,18); ctx.fillRect(1-p*.4,-18,4,16); ctx.restore();}
+function frame(){
+  t++;
+  const pan=reduce?0:Math.sin(t*.0022)*70;
+  let g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#1b2219'); g.addColorStop(.5,'#3c4a35'); g.addColorStop(.75,'#6b7656'); g.addColorStop(1,'#2a3122');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  g=ctx.createRadialGradient(700,190,10,700,190,220); g.addColorStop(0,'rgba(220,225,170,.35)'); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  ctx.drawImage(lejos,-80+pan*.25,0);
+  niebla_(0,3);
+  const om=-80+pan*.55;
+  ctx.drawImage(medio,om,0);
+  // letrero de hotel que todavía chispea
+  ctx.font='bold 24px VT323, monospace'; ctx.textBaseline='top';
+  'HOTEL'.split('').forEach((ch,i)=>{
+    let encendida=true; if(i===1) encendida=Math.random()<.03; if(i===3) encendida=((t>>3)%7)!==0&&Math.random()>.05;
+    ctx.fillStyle=encendida?'#ff5a3c':'#3a1e18'; ctx.shadowColor='#ff5a3c'; ctx.shadowBlur=encendida?12:0;
+    ctx.fillText(ch,letrero.x+om+i*28,letrero.y);});
+  ctx.shadowBlur=0;
+  if(!reduce){ if(!zombi&&--zNext<=0) zombi={x:-30,f:0}; if(zombi){zombi.x+=.28; zombi.f+=.07; dibujarZombi(zombi.x+om,484,zombi.f); if(zombi.x>LW+30){zombi=null;zNext=1200+Math.random()*1200;}} }
+  niebla_(3,7);
+  ctx.drawImage(cerca,-80+pan,0);
+  const viento=Math.sin(t*.01)*3;
+  ctx.lineWidth=2;
+  for(const b of pasto){const s=reduce?0:Math.sin(t*.03+b.f)*5+viento; ctx.strokeStyle=b.c; ctx.beginPath(); ctx.moveTo(b.x,H); ctx.quadraticCurveTo(b.x+s*.3,H-b.h*.5,b.x+s,H-b.h); ctx.stroke();}
+  for(let i=0;i<hojas.length;i++){const h=hojas[i]; h.f+=.03; h.x+=h.vx+Math.sin(h.f)*.6+viento*.1; h.y+=h.vy; h.r+=h.vr;
+    if(h.y>H+10) hojas[i]=nuevaHoja(false);
+    ctx.save(); ctx.translate(h.x,h.y); ctx.rotate(h.r); ctx.fillStyle=h.c; ctx.beginPath(); ctx.ellipse(0,0,h.s,h.s*.45,0,0,6.283); ctx.fill(); ctx.restore();}
+  ctx.globalCompositeOperation='lighter';
+  for(const e of esporas){ if(!reduce){e.f+=.02; e.x+=Math.sin(e.f)*.3+.1; e.y-=.15; if(e.y<200){e.y=600;e.x=rnd(0,W);} if(e.x>W)e.x=0;}
+    const a=.25+.25*Math.sin(e.f*3); ctx.fillStyle=`rgba(190,255,140,${a*.25})`; ctx.beginPath(); ctx.arc(e.x,e.y,6,0,6.283); ctx.fill();
+    ctx.fillStyle=`rgba(220,255,180,${a})`; ctx.beginPath(); ctx.arc(e.x,e.y,1.6,0,6.283); ctx.fill();}
+  ctx.globalCompositeOperation='source-over';
+  if(!reduce){ if(!bandada&&--bNext<=0){bandada={x:-60,y:rnd(80,220),aves:[...Array(5)].map((_,i)=>({dx:-i*26+rnd(-8,8),dy:(i%2?1:-1)*i*9,f:rnd(0,6)}))};}
+    if(bandada){bandada.x+=2.2; ctx.strokeStyle='#0d0f0b'; ctx.lineWidth=2;
+      for(const a of bandada.aves){a.f+=.25; const x=bandada.x+a.dx, y=bandada.y+a.dy, w=Math.sin(a.f)*5;
+        ctx.beginPath(); ctx.moveTo(x-9,y-w); ctx.lineTo(x,y); ctx.lineTo(x+9,y-w); ctx.stroke();}
+      if(bandada.x>W+200){bandada=null;bNext=900+Math.random()*1500;}}}
+  ctx.fillStyle='rgba(40,60,30,.12)'; ctx.fillRect(0,0,W,H);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+function sonido(){
+  const v=lazo('bandpass',420,.07,.6); lfo(v.f.frequency,.07,220); lazo('lowpass',180,.03);
+  setInterval(()=>{if(!on)return; for(let i=0;i<3;i++) setTimeout(()=>pitido(4300,4100,.022,.05),i*90);},1100);
+  setInterval(()=>{if(!on||Math.random()>.35)return; pitido(420,300,.06,.28,'sawtooth'); setTimeout(()=>pitido(400,290,.05,.25,'sawtooth'),360);},6000);
+}
+"""
+
+# ---------------------------------------------------------------- CASTILLO ---
+JS_CASTILLO = r"""
+const estrellas=[]; for(let i=0;i<120;i++) estrellas.push({x:sr()*W,y:sr()*330,r:sr()*1.3+.3,f:sr()*6});
+const castillo=capa(), frente=capa(), ventanas=[];
+function arco(c,x,y,w,h){c.beginPath();c.moveTo(x,y+h);c.lineTo(x,y+w/2);c.arc(x+w/2,y+w/2,w/2,Math.PI,0);c.lineTo(x+w,y+h);c.closePath();}
+(()=>{const c=castillo.getContext('2d'), piedra='#1b0b2a', techo='#2a1240';
+  c.fillStyle='#0d0616'; c.beginPath(); c.moveTo(0,470); c.bezierCurveTo(250,420,330,372,500,366); c.bezierCurveTo(680,372,760,430,1000,460); c.lineTo(1000,H); c.lineTo(0,H); c.fill();
+  function torre(x,w,top,base,alto){
+    c.fillStyle=piedra; c.fillRect(x,top,w,base-top);
+    c.fillStyle=techo; poly(c,[[x-6,top],[x+w/2,top-alto],[x+w+6,top]]);
+    c.strokeStyle=techo; c.lineWidth=2; c.beginPath(); c.moveTo(x+w/2,top-alto); c.lineTo(x+w/2,top-alto-18); c.stroke();
+    c.fillStyle=techo; poly(c,[[x+w/2,top-alto-18],[x+w/2+14,top-alto-13],[x+w/2,top-alto-9]]);
+    for(let y=top+18;y<base-24;y+=34){const v={x:x+w/2-4,y,w:8,h:14,f:sr()*6,v:.5+sr()*2,morada:sr()<.25,apagada:sr()<.25}; ventanas.push(v); c.fillStyle='#07030c'; arco(c,v.x,v.y,v.w,v.h); c.fill();}
+  }
+  c.fillStyle=piedra; c.fillRect(270,300,460,85); for(let x=270;x<730;x+=20) c.fillRect(x,290,12,12);
+  torre(250,44,250,385,55); torre(706,44,240,385,55); torre(345,54,175,385,80); torre(600,58,155,385,90);
+  c.fillStyle=piedra; c.fillRect(420,215,160,170); for(let x=420;x<580;x+=18) c.fillRect(x,205,11,12);
+  torre(477,46,120,215,110);
+  for(let y=240;y<330;y+=36) for(let x=440;x<570;x+=30){const v={x,y,w:10,h:16,f:sr()*6,v:.5+sr()*2,morada:sr()<.2,apagada:sr()<.3}; ventanas.push(v); c.fillStyle='#07030c'; arco(c,x,y,10,16); c.fill();}
+  c.fillStyle='#050208'; c.beginPath(); c.moveTo(478,385); c.lineTo(478,345); c.quadraticCurveTo(500,322,522,345); c.lineTo(522,385); c.fill();
+  c.strokeStyle='#22102f'; c.lineWidth=1.5; for(let x=482;x<520;x+=6){c.beginPath(); c.moveTo(x,338); c.lineTo(x,385); c.stroke();}
+  c.strokeStyle='rgba(120,70,160,.25)'; c.lineWidth=6; c.beginPath(); c.moveTo(500,388); c.bezierCurveTo(420,430,600,470,470,560); c.lineTo(500,600); c.stroke();
+  c.globalCompositeOperation='source-atop'; const g=c.createLinearGradient(250,0,760,0); g.addColorStop(0,'rgba(0,0,0,.25)'); g.addColorStop(1,'rgba(120,255,140,.10)'); c.fillStyle=g; c.fillRect(0,0,W,H);
+})();
+function ramaM(c,x,y,a,l,w,d){const a2=a+(sr()-.5)*.5, x2=x+Math.cos(a2)*l, y2=y+Math.sin(a2)*l, cx=x+Math.cos(a)*l*.5+(sr()-.5)*l*.3, cy=y+Math.sin(a)*l*.5;
+  c.lineWidth=Math.max(1,w); c.beginPath(); c.moveTo(x,y); c.quadraticCurveTo(cx,cy,x2,y2); c.stroke();
+  if(d>0){const n=sr()<.3?3:2; for(let i=0;i<n;i++) ramaM(c,x2,y2,a2+(i-(n-1)/2)*(.55+sr()*.35),l*(.62+sr()*.15),w*.65,d-1);}}
+function arbolMuerto(c,x,y,h,incl){c.strokeStyle='#05020a'; c.lineCap='round'; ramaM(c,x,y,-Math.PI/2+incl,h*.38,h*.07,6);}
+(()=>{const c=frente.getContext('2d');
+  c.fillStyle='#07030d'; c.beginPath(); c.moveTo(0,520); c.bezierCurveTo(200,500,350,530,500,540); c.bezierCurveTo(700,550,850,505,1000,515); c.lineTo(1000,H); c.lineTo(0,H); c.fill();
+  c.fillStyle='#120a1c'; [[330,540],[380,548],[640,548],[700,540]].forEach(([x,y])=>{c.beginPath(); c.moveTo(x-10,y+12); c.lineTo(x-10,y-8); c.quadraticCurveTo(x,y-20,x+10,y-8); c.lineTo(x+10,y+12); c.fill();});
+  c.fillRect(430,520,4,26); c.fillRect(424,528,16,4);
+  arbolMuerto(c,95,565,200,-.08); arbolMuerto(c,915,565,220,.1); arbolMuerto(c,215,530,95,.05); arbolMuerto(c,790,526,85,-.06);
+})();
+const calabazas=[{x:170,y:556,s:22},{x:245,y:572,s:16},{x:520,y:582,s:20},{x:760,y:566,s:24},{x:845,y:582,s:17},{x:612,y:574,s:14}].map(p=>({...p,f:rnd(0,6)}));
+function calabaza(p){const s=p.s,x=p.x,y=p.y, fl=.7+.3*Math.sin(t*.2+p.f)+rnd(-.1,.1);
+  ctx.globalCompositeOperation='lighter';
+  const g=ctx.createRadialGradient(x,y,2,x,y,s*3.2); g.addColorStop(0,`rgba(150,255,90,${.25*fl})`); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(x-s*3.2,y-s*3.2,s*6.4,s*6.4);
+  ctx.globalCompositeOperation='source-over';
+  [[-.55,.62,'#6e2f10'],[.55,.62,'#6e2f10'],[-.25,.7,'#8c3e14'],[.25,.7,'#8c3e14'],[0,.72,'#a44c18']].forEach(([ox,rx,c])=>{ctx.fillStyle=c; ctx.beginPath(); ctx.ellipse(x+ox*s,y,rx*s,s*.78,0,0,6.283); ctx.fill();});
+  ctx.fillStyle='#2f4a1a'; ctx.fillRect(x-s*.08,y-s*.98,s*.16,s*.3);
+  ctx.fillStyle=`rgba(${170+fl*60|0},255,${90+fl*40|0},${Math.min(1,.75+.25*fl)})`;
+  poly(ctx,[[x-s*.45,y-s*.08],[x-s*.15,y-s*.08],[x-s*.3,y-s*.4]]); poly(ctx,[[x+s*.15,y-s*.08],[x+s*.45,y-s*.08],[x+s*.3,y-s*.4]]);
+  poly(ctx,[[x-s*.5,y+s*.15],[x-s*.3,y+s*.3],[x-s*.15,y+s*.18],[x,y+s*.35],[x+s*.15,y+s*.18],[x+s*.3,y+s*.3],[x+s*.5,y+s*.15],[x+s*.2,y+s*.48],[x-s*.2,y+s*.48]]);}
+const murcielagos=[]; for(let i=0;i<16;i++) murcielagos.push({a:rnd(0,6.28),r:rnd(90,280),cy:rnd(120,240),v:rnd(.004,.012)*(Math.random()<.5?-1:1),f:rnd(0,6),s:rnd(4,9),ry:rnd(.3,.55)});
+function murcielago(x,y,s,f){const ala=Math.sin(f)*s*.9; ctx.fillStyle='#05020a'; ctx.beginPath(); ctx.moveTo(x,y);
+  ctx.quadraticCurveTo(x-s*1.2,y-ala-s*.2,x-s*2.4,y-ala); ctx.lineTo(x-s*1.6,y-ala*.3+s*.2); ctx.lineTo(x-s*.9,y+s*.3); ctx.lineTo(x,y+s*.4);
+  ctx.lineTo(x+s*.9,y+s*.3); ctx.lineTo(x+s*1.6,y-ala*.3+s*.2); ctx.lineTo(x+s*2.4,y-ala); ctx.quadraticCurveTo(x+s*1.2,y-ala-s*.2,x,y); ctx.fill();
+  ctx.beginPath(); ctx.arc(x,y+s*.1,s*.35,0,6.283); ctx.fill();}
+const nubes=[]; for(let i=0;i<8;i++){const n={x:rnd(-200,W),y:rnd(40,300),v:rnd(.08,.25),p:[]}; for(let k=0;k<6;k++) n.p.push([rnd(-90,90),rnd(-18,18),rnd(30,70)]); nubes.push(n);}
+const nieblaV=[]; for(let i=0;i<6;i++) nieblaV.push({x:rnd(0,W),y:rnd(380,580),rx:rnd(160,320),v:rnd(.15,.4)*(Math.random()<.5?-1:1)});
+const fuegos=[]; for(let i=0;i<7;i++) fuegos.push({x:rnd(100,900),b:rnd(480,570),f:rnd(0,6)});
+let rayo=0, rayoNext=260, rayoPts=[];
+function trueno(){ if(!ac||!on) return; setTimeout(()=>golpe('lowpass',160,.6,2.4),600); }
+function frame(){
+  t++;
+  let g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#0b0313'); g.addColorStop(.45,'#2a0b3d'); g.addColorStop(.8,'#4b1559'); g.addColorStop(1,'#1a0726');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  for(const e of estrellas){ctx.fillStyle=`rgba(230,220,255,${.4+.4*Math.sin(t*.03+e.f)})`; ctx.fillRect(e.x,e.y,e.r,e.r);}
+  g=ctx.createRadialGradient(720,150,40,720,150,270); g.addColorStop(0,'rgba(150,255,140,.28)'); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#d6f5c4'; ctx.beginPath(); ctx.arc(720,150,68,0,6.283); ctx.fill();
+  ctx.fillStyle='rgba(120,170,110,.35)'; [[700,130,12],[745,165,9],[712,180,6],[750,128,5]].forEach(([x,y,r])=>{ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fill();});
+  for(const n of nubes){ if(!reduce){n.x-=n.v; if(n.x<-260) n.x=W+200;}
+    for(const p of n.p){ctx.fillStyle='rgba(60,20,82,.33)'; ctx.beginPath(); ctx.arc(n.x+p[0],n.y+p[1],p[2],0,6.283); ctx.fill();}}
+  if(!reduce&&--rayoNext<=0){rayo=14; rayoNext=420+Math.random()*700; rayoPts=[[rnd(150,850),0]]; let [x,y]=rayoPts[0]; while(y<330){x+=rnd(-40,40); y+=rnd(20,45); rayoPts.push([x,y]);} trueno();}
+  if(rayo>0){rayo--; ctx.fillStyle=`rgba(190,130,255,${rayo>10?.5:rayo/10*.22})`; ctx.fillRect(0,0,W,H);
+    if(rayo>8){ctx.strokeStyle='rgba(240,220,255,.95)'; ctx.lineWidth=3; ctx.shadowColor='#c77dff'; ctx.shadowBlur=20; ctx.beginPath();
+      rayoPts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); ctx.shadowBlur=0;}}
+  ctx.drawImage(castillo,0,0);
+  ctx.globalCompositeOperation='lighter';
+  for(const w of ventanas){
+    if(w.apagada&&Math.sin(t*.01+w.f)<.95) continue;
+    const b=Math.max(.1,.55+.45*Math.sin(t*.05*w.v+w.f)+rnd(-.08,.08)), c=w.morada?'199,125,255':'141,255,106';
+    ctx.fillStyle=`rgba(${c},${.75*b})`; arco(ctx,w.x,w.y,w.w,w.h); ctx.fill();
+    ctx.fillStyle=`rgba(${c},${.1*b})`; ctx.fillRect(w.x-8,w.y-8,w.w+16,w.h+16);}
+  ctx.globalCompositeOperation='source-over';
+  for(const b of murcielagos){ if(!reduce){b.a+=b.v; b.f+=.35;} murcielago(500+Math.cos(b.a)*b.r,b.cy+Math.sin(b.a)*b.r*b.ry,b.s,b.f);}
+  ctx.globalCompositeOperation='lighter';
+  for(const n of nieblaV){ if(!reduce){n.x+=n.v; if(n.x>W+n.rx) n.x=-n.rx; if(n.x<-n.rx) n.x=W+n.rx;}
+    ctx.save(); ctx.translate(n.x,n.y); ctx.scale(1,.18); const gg=ctx.createRadialGradient(0,0,0,0,0,n.rx);
+    gg.addColorStop(0,'rgba(110,255,130,.10)'); gg.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=gg; ctx.fillRect(-n.rx,-n.rx,2*n.rx,2*n.rx); ctx.restore();}
+  ctx.globalCompositeOperation='source-over';
+  ctx.drawImage(frente,0,0);
+  calabazas.forEach(calabaza);
+  ctx.globalCompositeOperation='lighter';
+  for(const f of fuegos){ if(!reduce) f.f+=.015; const x=f.x+Math.sin(f.f*1.3)*40, y=f.b+Math.sin(f.f*2.1)*12, a=.35+.25*Math.sin(f.f*5);
+    ctx.fillStyle=`rgba(141,255,106,${a*.25})`; ctx.beginPath(); ctx.arc(x,y,9,0,6.283); ctx.fill();
+    ctx.fillStyle=`rgba(220,255,200,${a})`; ctx.beginPath(); ctx.arc(x,y,2.4,0,6.283); ctx.fill();}
+  ctx.globalCompositeOperation='source-over';
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+function sonido(){
+  const v=lazo('bandpass',700,.05,7); lfo(v.f.frequency,.11,320);
+  tono('sine',55,.03); tono('sine',82.4,.018); tono('triangle',110,.006);
+  setInterval(()=>{if(on&&Math.random()<.3) pitido(1800,1500,.015,.08);},2500);
+}
+"""
+
+# ------------------------------------------------------------------ ARAÑAS ---
+JS_ARANAS = r"""
+const TA={
+  viuda:{c:'#060506',b:'rgba(255,255,255,.22)',ab:.95,l1:1.3,l2:1.5,lw:.09,marca:true,v:.8},
+  tarantula:{c:'#3b2617',b:'rgba(255,190,140,.14)',ab:.85,l1:1.1,l2:1.2,lw:.24,pelo:true,v:.45},
+  saltarina:{c:'#151215',b:'rgba(255,255,255,.22)',ab:.68,l1:.7,l2:.7,lw:.2,ojos:true,franjas:true,v:0,salto:true},
+  patas:{c:'#7a6a52',b:'rgba(255,255,255,.12)',ab:.42,l1:3,l2:3.4,lw:.05,v:.9},
+  lobo:{c:'#5e4731',b:'rgba(255,230,190,.14)',ab:.8,l1:1.45,l2:1.6,lw:.14,franjas:true,v:1.7},
+};
+const ANG=[.5,1.05,1.75,2.4];
+function dibujarArana(c,s){
+  const T=TA[s.tipo],k=s.k; c.save(); c.translate(s.x,s.y); c.rotate(s.ang);
+  c.shadowColor='rgba(255,70,70,.35)'; c.shadowBlur=4;
+  c.strokeStyle=T.c; c.lineCap='round'; c.lineJoin='round';
+  for(let lado=-1;lado<=1;lado+=2) for(let i=0;i<4;i++){
+    const grupo=(i+(lado>0?1:0))%2, sw=(s.mov||0)*Math.sin(s.fase+grupo*Math.PI)*.22;
+    const a=lado*(ANG[i]+sw), dob=lado*(i<2?-.6:.6);
+    const bx=Math.cos(a)*k*.3, by=Math.sin(a)*k*.3, kx=bx+Math.cos(a)*k*T.l1, ky=by+Math.sin(a)*k*T.l1;
+    const fx=kx+Math.cos(a+dob)*k*T.l2, fy=ky+Math.sin(a+dob)*k*T.l2;
+    c.lineWidth=Math.max(1,k*T.lw); c.beginPath(); c.moveTo(bx,by); c.lineTo(kx,ky); c.lineTo(fx,fy); c.stroke();
+    if(T.pelo){c.lineWidth=1; c.beginPath();
+      for(let h=1;h<6;h++){const u=h/6, px=bx+(kx-bx)*u, py=by+(ky-by)*u, qx=kx+(fx-kx)*u, qy=ky+(fy-ky)*u;
+        c.moveTo(px,py); c.lineTo(px-Math.sin(a)*k*.18,py+Math.cos(a)*k*.18); c.moveTo(qx,qy); c.lineTo(qx+Math.sin(a)*k*.15,qy-Math.cos(a)*k*.15);}
+      c.stroke();}
+  }
+  const ax=-k*(.5+T.ab*.62);
+  c.fillStyle=T.c; c.beginPath(); c.ellipse(ax,0,k*T.ab,k*T.ab*.8,0,0,6.283); c.fill();
+  c.beginPath(); c.ellipse(0,0,k*.5,k*.42,0,0,6.283); c.fill();
+  c.shadowBlur=0;
+  if(T.pelo){c.strokeStyle='rgba(120,80,50,.6)'; c.lineWidth=1; c.beginPath();
+    for(let h=0;h<14;h++){const a=h/14*6.283; c.moveTo(ax+Math.cos(a)*k*T.ab*.9,Math.sin(a)*k*T.ab*.72); c.lineTo(ax+Math.cos(a)*k*T.ab*1.15,Math.sin(a)*k*T.ab*.95);} c.stroke();}
+  if(T.franjas){c.fillStyle='rgba(225,210,185,.45)'; c.beginPath(); c.ellipse(ax,0,k*T.ab*.8,k*.07,0,0,6.283); c.fill(); c.beginPath(); c.ellipse(k*.05,0,k*.4,k*.06,0,0,6.283); c.fill();}
+  if(T.marca){c.fillStyle='#d4141a'; poly(c,[[ax-k*.32,-k*.22],[ax-k*.32,k*.22],[ax,0]]); poly(c,[[ax+k*.32,-k*.22],[ax+k*.32,k*.22],[ax,0]]);}
+  c.fillStyle=T.b; c.beginPath(); c.ellipse(ax-k*T.ab*.15,-k*T.ab*.32,k*T.ab*.38,k*T.ab*.18,-.3,0,6.283); c.fill();
+  if(T.ojos){for(const oy of [-1,1]){c.fillStyle='#000'; c.beginPath(); c.arc(k*.36,oy*k*.15,k*.16,0,6.283); c.fill();
+    c.fillStyle='rgba(255,255,255,.7)'; c.beginPath(); c.arc(k*.4,oy*k*.15-k*.05,k*.05,0,6.283); c.fill();}}
+  else {c.fillStyle='rgba(200,20,20,.85)'; for(const oy of [-1,1]){c.beginPath(); c.arc(k*.38,oy*k*.1,Math.max(.8,k*.05),0,6.283); c.fill();}}
+  c.strokeStyle=T.c; c.lineWidth=Math.max(1,k*.08); c.beginPath(); c.moveTo(k*.45,-k*.1); c.lineTo(k*.68,-k*.16); c.moveTo(k*.45,k*.1); c.lineTo(k*.68,k*.16); c.stroke();
+  c.restore();
+}
+function dif(a,b){let d=a-b; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; return d;}
+function moverArana(s,ancho,alto,mx,my){
+  const T=TA[s.tipo];
+  if(--s.timer<=0){s.parado=!s.parado&&Math.random()<.4; s.timer=s.parado?40+Math.random()*120:60+Math.random()*200; s.giro=(Math.random()-.5)*.05;}
+  let v=T.v*(.5+s.k/16), huye=false;
+  const d=Math.hypot(s.x-mx,s.y-my);
+  if(d<150){s.ang+=dif(Math.atan2(s.y-my,s.x-mx),s.ang)*.25; v=Math.max(v,1.2)*2.6; huye=true; s.parado=false;}
+  else s.ang+=s.giro;
+  if(T.salto){s.hop=(s.hop||0)-1; if(s.hop<=0){s.hop=45+Math.random()*90; s.imp=7+(huye?5:0);} s.imp=(s.imp||0)*.85; v=s.imp;}
+  const m=30; if(s.x<m||s.x>ancho-m||s.y<m||s.y>alto-m) s.ang+=dif(Math.atan2(alto/2-s.y,ancho/2-s.x),s.ang)*.1;
+  if(s.parado&&!huye) v=0;
+  s.x+=Math.cos(s.ang)*v; s.y+=Math.sin(s.ang)*v;
+  s.x=Math.max(-20,Math.min(ancho+20,s.x)); s.y=Math.max(-20,Math.min(alto+20,s.y));
+  s.mov=v>.05&&!T.salto?1:(T.salto&&v>.5?.4:0); s.fase+=.1+v*.3;
+}
+function nuevaArana(tipo,x,y){return {tipo,x,y,ang:Math.random()*6.28,k:{tarantula:16,patas:6,saltarina:8,viuda:10,lobo:10}[tipo],fase:0,mov:1,timer:0,parado:false,giro:0};}
+
+/* ---- escena: ático con telaraña gigante ---- */
+const fondo=capa();
+function esquina(c,x,y,sx,sy,r){c.strokeStyle='rgba(200,200,210,.18)'; c.lineWidth=1;
+  for(let i=0;i<=6;i++){const a=i/6*Math.PI/2; c.beginPath(); c.moveTo(x,y); c.lineTo(x+sx*Math.cos(a)*r,y+sy*Math.sin(a)*r); c.stroke();}
+  for(let k=1;k<=6;k++){const rr=r*k/6; c.beginPath(); for(let i=0;i<=6;i++){const a=i/6*Math.PI/2, px=x+sx*Math.cos(a)*rr*(i%2?.92:1), py=y+sy*Math.sin(a)*rr*(i%2?.92:1); i?c.lineTo(px,py):c.moveTo(px,py);} c.stroke();}}
+(()=>{const c=fondo.getContext('2d');
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,'#0b0707'); g.addColorStop(1,'#040202'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  for(let x=0;x<W;x+=26){c.fillStyle=`rgba(60,30,30,${.08+sr()*.06})`; c.fillRect(x,0,10,470);}
+  for(let i=0;i<14;i++){const x=sr()*W,y=sr()*H,r=30+sr()*90, gg=c.createRadialGradient(x,y,0,x,y,r); gg.addColorStop(0,'rgba(40,25,15,.25)'); gg.addColorStop(1,'rgba(0,0,0,0)'); c.fillStyle=gg; c.fillRect(x-r,y-r,2*r,2*r);}
+  c.fillStyle='#120a07'; poly(c,[[0,0],[W,0],[W,40],[0,60]]); c.fillStyle='#0e0806'; poly(c,[[0,60],[180,0],[230,0],[0,120]]); poly(c,[[W,40],[820,0],[770,0],[W,100]]);
+  c.fillStyle='#1b2430'; c.fillRect(70,100,110,140); c.fillStyle='#0a0606'; c.fillRect(122,100,6,140); c.fillRect(70,166,110,6);
+  c.fillStyle='#0d0807'; c.fillRect(0,470,W,130); c.strokeStyle='#060404'; for(let y=482;y<H;y+=18){c.beginPath(); c.moveTo(0,y); c.lineTo(W,y); c.stroke();}
+  esquina(c,0,0,1,1,170); esquina(c,W,0,-1,1,190); esquina(c,0,470,1,-1,80); esquina(c,W,470,-1,-1,90);
+})();
+const CX=600,CY=250,R=240,NR=18,NS=16;
+const rad=[]; for(let i=0;i<NR;i++) rad.push(i/NR*Math.PI*2+(sr()-.5)*.12);
+const anclas=rad.map(()=>R*1.35+sr()*60);
+const rocio=[]; for(let i=0;i<60;i++) rocio.push({i:(sr()*NR)|0,k:1+((sr()*(NS-1))|0),f:sr()*6});
+function pw(a,r){const w=reduce?0:(Math.sin(t*.012)*6+Math.sin(t*.031)*2)*(r/R); return [CX+Math.cos(a)*r+w,CY+Math.sin(a)*r+w*.3];}
+function telar(){
+  ctx.strokeStyle='rgba(215,215,225,.32)'; ctx.lineWidth=1; ctx.beginPath();
+  for(let i=0;i<NR;i++){const p=pw(rad[i],anclas[i]); ctx.moveTo(CX,CY); ctx.lineTo(p[0],p[1]);}
+  for(let k=1;k<=NS;k++){const r=R*Math.pow(k/NS,1.1);
+    for(let i=0;i<NR;i++){const a0=rad[i], a1=rad[(i+1)%NR]+(i+1===NR?Math.PI*2:0), p0=pw(a0,r), p1=pw(a1,r), m=pw((a0+a1)/2,r*.94);
+      if(i===0) ctx.moveTo(p0[0],p0[1]); ctx.quadraticCurveTo(m[0],m[1],p1[0],p1[1]);}}
+  ctx.stroke();
+  ctx.fillStyle='rgba(225,215,200,.55)';
+  [[rad[3],R*1.12],[rad[11],R*1.05]].forEach(([a,r])=>{const p=pw(a,r); ctx.beginPath(); ctx.ellipse(p[0],p[1],9,12,0,0,6.283); ctx.fill();});
+  ctx.globalCompositeOperation='lighter';
+  for(const d of rocio){const p=pw(rad[d.i],R*Math.pow(d.k/NS,1.1)), b=Math.pow(Math.max(0,Math.sin(t*.04+d.f)),6);
+    ctx.fillStyle=`rgba(200,220,255,${.25+.75*b})`; ctx.beginPath(); ctx.arc(p[0],p[1],1.2+b*1.5,0,6.283); ctx.fill();}
+  ctx.globalCompositeOperation='source-over';
+}
+const reina={tipo:'viuda',x:CX,y:CY,ang:-Math.PI/2,k:22,fase:0,mov:0}; let tiembla=0;
+const colgantes=[{x:180,tipo:'patas',k:6,f:0},{x:330,tipo:'viuda',k:9,f:2},{x:880,tipo:'saltarina',k:9,f:4},{x:960,tipo:'lobo',k:8,f:1}];
+const andantes=['tarantula','lobo','saltarina','patas'].map(tp=>nuevaArana(tp,rnd(100,900),rnd(480,580)));
+const polvo=[]; for(let i=0;i<40;i++) polvo.push({x:rnd(70,420),y:rnd(100,470),f:rnd(0,6)});
+let mx=-999,my=-999;
+document.addEventListener('mousemove',e=>{[mx,my]=aCanvas(e.clientX,e.clientY);});
+document.addEventListener('mouseleave',()=>{mx=my=-999;});
+function frame(){
+  t++;
+  ctx.drawImage(fondo,0,0);
+  ctx.globalCompositeOperation='lighter';
+  const lg=ctx.createLinearGradient(120,100,380,470); lg.addColorStop(0,'rgba(120,150,190,.10)'); lg.addColorStop(1,'rgba(120,150,190,0)');
+  ctx.fillStyle=lg; poly(ctx,[[70,100],[180,100],[470,470],[200,470]]);
+  for(const p of polvo){ if(!reduce){p.f+=.01; p.x+=Math.sin(p.f)*.15; p.y+=Math.cos(p.f*.7)*.1;} ctx.fillStyle=`rgba(200,210,230,${.15+.15*Math.sin(p.f*4)})`; ctx.fillRect(p.x,p.y,1.5,1.5);}
+  ctx.globalCompositeOperation='source-over';
+  telar();
+  if(!reduce&&Math.random()<.004) tiembla=40;
+  if(tiembla>0){tiembla--; reina.mov=1; reina.fase+=.4;} else reina.mov=0;
+  dibujarArana(ctx,reina);
+  for(const c of colgantes){
+    const len=reduce?200:200+Math.sin(t*.006+c.f)*170, sw=reduce?0:Math.sin(t*.02+c.f)*10, x=c.x+sw, y=len+30;
+    ctx.strokeStyle='rgba(215,215,225,.35)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(c.x,0); ctx.lineTo(x,y-c.k); ctx.stroke();
+    dibujarArana(ctx,{tipo:c.tipo,x,y,ang:Math.PI/2,k:c.k,fase:t*.1,mov:.3});
+  }
+  for(const s of andantes){ if(!reduce) moverArana(s,W,H,mx,my); dibujarArana(ctx,s); }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---- arañas caminando por toda la página ---- */
+(function invasion(){
+  if(reduce) return;
+  let P, D; try{P=window.parent; D=P.document; D.body;}catch(e){return;}
+  const vieja=D.getElementById('aranas-overlay'); if(vieja) vieja.remove();
+  if(P.__aranasMove) D.removeEventListener('mousemove',P.__aranasMove);
+  const ov=D.createElement('canvas'); ov.id='aranas-overlay';
+  ov.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9989;';
+  D.body.appendChild(ov);
+  const oc=ov.getContext('2d');
+  let px=-999, py=-999;
+  const mover=e=>{px=e.clientX; py=e.clientY;}; P.__aranasMove=mover; D.addEventListener('mousemove',mover);
+  document.addEventListener('mousemove',e=>{const r=window.frameElement?window.frameElement.getBoundingClientRect():{left:0,top:0}; px=e.clientX+r.left; py=e.clientY+r.top;});
+  function ajustar(){const r=P.devicePixelRatio||1; ov.width=P.innerWidth*r; ov.height=P.innerHeight*r; oc.setTransform(r,0,0,r,0,0);}
+  ajustar(); P.addEventListener('resize',ajustar);
+  const lista=['viuda','tarantula','saltarina','patas','lobo','viuda','lobo','saltarina','patas'].map(tp=>nuevaArana(tp,Math.random()*P.innerWidth,Math.random()*P.innerHeight));
+  let visible=true;
+  const b=document.createElement('button'); b.id='ctl2'; b.className='ctl'; b.type='button'; b.textContent='✕ Espantar arañas';
+  b.onclick=()=>{visible=!visible; ov.style.display=visible?'block':'none'; b.textContent=visible?'✕ Espantar arañas':'🕷 Dejarlas salir';};
+  wrap.appendChild(b);
+  function bucle(){
+    if(!window.frameElement||!window.frameElement.isConnected||!ov.isConnected){
+      ov.remove(); D.removeEventListener('mousemove',mover); P.removeEventListener('resize',ajustar); return;}
+    oc.clearRect(0,0,P.innerWidth,P.innerHeight);
+    if(visible) for(const s of lista){moverArana(s,P.innerWidth,P.innerHeight,px,py); dibujarArana(oc,s);}
+    P.requestAnimationFrame(bucle);
+  }
+  P.requestAnimationFrame(bucle);
+})();
+function sonido(){
+  tono('sine',40,.04); lazo('lowpass',300,.015);
+  setInterval(()=>{if(!on||Math.random()>.4)return; const n=3+Math.random()*6|0; for(let i=0;i<n;i++) setTimeout(()=>golpe('highpass',3000+Math.random()*3000,.05,.015),i*(25+Math.random()*30));},700);
+}
+"""
+
+ESCENA_CFG = {
+    "liminal": {
+        "js": JS_LIMINAL, "osd": "CAM 03 &nbsp;▮▮▮▯", "seed": 3001,
+        "alt": "Pasillo infinito de paredes amarillas, alfombra húmeda y tubos fluorescentes que parpadean.",
+        "css": ".titulo h1{font-family:'VT323',monospace;font-size:clamp(40px,8vw,96px);color:#2a230e;"
+               "text-shadow:0 0 14px rgba(255,250,200,.7);} .titulo .meta{color:#3b3214;text-shadow:none;}"
+               " .osd{color:#2a230e;text-shadow:0 0 6px rgba(255,250,200,.6);} .vig{background:radial-gradient(ellipse at center,transparent 55%,rgba(40,30,0,.55) 100%);}",
+    },
+    "naturaleza": {
+        "js": JS_NATURALEZA, "osd": "PLAY ► &nbsp;CH 04", "seed": 4242,
+        "alt": "Ciudad abandonada tragada por la vegetación: edificios con enredaderas, un auto con musgo y niebla verde.",
+        "css": "canvas{object-position:50% 88%;} .titulo h1{font-family:'Special Elite',monospace;text-transform:uppercase;letter-spacing:.04em;color:#e6ecd6;"
+               "font-size:clamp(28px,5vw,60px);text-shadow:0 0 18px rgba(120,160,80,.5),2px 2px 0 #0b1007;}"
+               " .titulo .meta{color:#c8d6a8;}",
+    },
+    "castillo": {
+        "js": JS_CASTILLO, "osd": "PLAY ► &nbsp;SP", "seed": 3131,
+        "alt": "Castillo gigante morado en una colina bajo una luna verde, con árboles muertos, murciélagos y calabazas encendidas.",
+        "css": "canvas{object-position:50% 88%;} .titulo h1{font-family:'UnifrakturMaguntia',serif;color:#8dff6a;"
+               "text-shadow:0 0 18px rgba(141,255,106,.5),3px 3px 0 #3a1052;} .titulo .meta{color:#d8c4ff;}",
+    },
+    "aranas": {
+        "js": JS_ARANAS, "osd": "PLAY ► &nbsp;SLP", "seed": 8888,
+        "alt": "Ático oscuro con una telaraña gigante, una viuda negra en el centro y arañas de varios tipos colgando y caminando.",
+        "css": "canvas{object-position:50% 88%;} .titulo h1{font-family:'Creepster',cursive;color:#ff2a2a;text-shadow:0 0 16px rgba(255,0,0,.4),3px 0 0 #2a0000;}",
+    },
+}
+
+# Estilo de la página de lectura para cada escenario.
+TEMA_CSS = {
+    "liminal": """<style>
+:root{--sangre:#8a7a2a; --sangre-viva:#d8c25a; --linea:#4a4320; --hueso:#efe6c4; --ceniza:#a89c6a;}
+.stApp{background:radial-gradient(ellipse at 50% 0%, #3a3414 0%, #12100a 60%) fixed !important;}
+.st-key-lector_liminal{background:#d9cc8c !important; border:1px solid #8a7a2a !important; box-shadow:inset 0 0 80px rgba(120,100,20,.35) !important;}
+.st-key-lector_liminal p, .st-key-lector_liminal li, .st-key-lector_liminal em{color:#2b2410 !important;}
+.st-key-lector_liminal .osd, .st-key-lector_liminal .osd b{color:#5a4e22 !important;}
+.st-key-lector_liminal .fin{color:#6b5a1a;}
+.st-key-lector_liminal .tag{color:#4a3f18; border-color:#8a7a2a;}
+</style>""",
+    "naturaleza": """<style>
+:root{--sangre:#4f6b2c; --sangre-viva:#9cc25a; --linea:#2a3a1e; --hueso:#dfe3cf; --ceniza:#8e9a7a;}
+.stApp{background:radial-gradient(ellipse at 50% 0%, #1c2616 0%, #070a05 60%) fixed !important;}
+.st-key-lector_naturaleza{background:linear-gradient(180deg,#121a0e,#0a0f07) !important; border:1px solid #2f4520 !important; border-left:4px solid #6f8f3a !important;}
+.st-key-lector_naturaleza p, .st-key-lector_naturaleza li{color:#dfe3cf !important;}
+</style>""",
+    "castillo": """<style>
+:root{--sangre:#5b2a86; --sangre-viva:#8dff6a; --linea:#2e1846; --hueso:#e8defa; --ceniza:#9b8fb3;}
+.stApp{background:radial-gradient(ellipse at 50% 0%, #2a0f3f 0%, #07030c 60%) fixed !important;}
+.st-key-lector_castillo{background:#0f0618 !important; border:1px solid #4a2470 !important;
+  box-shadow:0 0 40px rgba(141,255,106,.08), inset 0 0 60px #000 !important;}
+.st-key-lector_castillo p, .st-key-lector_castillo li{color:#e8defa !important;}
+.st-key-lector_castillo [data-testid="stMarkdownContainer"] > p:first-child::first-letter{
+  font-family:'UnifrakturMaguntia',serif; font-size:3.4em; float:left; line-height:.8; color:#8dff6a; padding:.08em .08em 0 0;}
+</style>""",
+    "aranas": """<style>
+:root{--sangre:#8a0a0a; --sangre-viva:#ff2a2a;}
+.stApp{background:radial-gradient(ellipse at 50% 0%, #1a0505 0%, #020101 60%) fixed !important;}
+.st-key-lector_aranas{position:relative; background:#080505 !important; border:1px solid #3a1010 !important;}
+.st-key-lector_aranas::before{content:""; position:absolute; top:0; right:0; width:180px; height:180px; pointer-events:none; opacity:.35;
+  background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="%23ddd" stroke-width=".6"%3E%3Cpath d="M100 0L0 0M100 0L10 40M100 0L30 75M100 0L60 95M100 0L100 100"/%3E%3Cpath d="M80 0Q82 8 92 6Q96 15 100 20M60 0Q62 16 80 13Q88 30 100 40M40 0Q44 24 68 20Q78 44 100 60M20 0Q26 32 56 27Q68 58 100 80"/%3E%3C/svg%3E') no-repeat top right / contain;}
+</style>""",
+}
+
+# Si el visitante sale de la historia de arañas, se borran las que quedaron en la página.
+LIMPIEZA_ARANAS_JS = """
+<script>
+try{const D=window.parent.document, o=D.getElementById('aranas-overlay'); if(o) o.remove();
+if(window.parent.__aranasMove){D.removeEventListener('mousemove',window.parent.__aranasMove); window.parent.__aranasMove=null;}}catch(e){}
+</script>
+"""
+
+
+def escena_historia(entrada):
+    cfg = ESCENA_CFG[entrada["escena"]]
+    meta = "  ".join(x for x in [(entrada.get("extra") or "").upper(), fecha_vhs(entrada["fecha"])] if x)
+    return (
+        ESCENA_BASE.replace("__JS__", cfg["js"])
+        .replace("__TEMA_CSS__", cfg["css"])
+        .replace("__OSD__", cfg["osd"])
+        .replace("__SEED__", str(cfg["seed"]))
+        .replace("__ALT__", esc(cfg["alt"]))
+        .replace("__META__", esc(meta))
+        .replace("__TITULO__", esc(entrada["titulo"]))
+    )
+
+
 def es_youtube(url):
     return bool(url) and ("youtube.com" in url or "youtu.be" in url)
 
@@ -1005,13 +1772,19 @@ def pagina_inicio(db):
 def lector(db, entrada):
     historias = por_tipo(db, "historia")
     idx = next((i for i, h in enumerate(historias) if h["id"] == entrada["id"]), 0)
+    tema = entrada.get("escena") if entrada.get("escena") in ESCENA_CFG else ""
     st.button("◄ Volver a las historias", on_click=ir_a, args=("Historias", None))
-    with st.container(key="lector"):
+    if tema:
+        st.markdown(TEMA_CSS[tema], unsafe_allow_html=True)
+        incrustar(escena_historia(entrada), 520)
+        st.write("")
+    with st.container(key=f"lector_{tema or 'clasico'}"):
         meta = f"{fecha_vhs(entrada['fecha'])} &nbsp; {minutos_lectura(entrada.get('contenido'))} min de lectura"
         if entrada.get("extra"):
             meta = f"<b>{esc(entrada['extra'].upper())}</b> &nbsp; " + meta
-        st.markdown(f"<div class='osd'>{meta}</div><div class='lector-titulo'>{esc(entrada['titulo'])}</div>"
-                    f"{html_etiquetas(entrada.get('etiquetas'))}", unsafe_allow_html=True)
+        titulo = "" if tema else f"<div class='lector-titulo'>{esc(entrada['titulo'])}</div>"
+        st.markdown(f"<div class='osd'>{meta}</div>{titulo}{html_etiquetas(entrada.get('etiquetas'))}",
+                    unsafe_allow_html=True)
         portada = ruta_media(entrada.get("portada"))
         if portada:
             st.image(str(portada), use_container_width=True)
@@ -1055,7 +1828,9 @@ def pagina_historias(db):
             st.markdown(
                 f"<div class='osd'>{coleccion}{fecha_vhs(h['fecha'])} &nbsp; {minutos_lectura(h.get('contenido'))} min</div>"
                 f"<div class='caso-titulo'>{esc(h['titulo'])}</div>"
-                f"<p>{esc(h.get('resumen'))}</p>{html_etiquetas(h.get('etiquetas'))}",
+                f"<p>{esc(h.get('resumen'))}</p>{html_etiquetas(h.get('etiquetas'))}"
+                + (f"<span class='tag tag-escena'>Escenario: {esc(ESCENAS[h['escena']])}</span>"
+                   if h.get("escena") in ESCENA_CFG else ""),
                 unsafe_allow_html=True,
             )
             st.button("Leer historia", key=f"leer_{h['id']}", on_click=ir_a, args=("Historias", h["id"]))
@@ -1168,6 +1943,8 @@ def formulario_nueva(db):
         c1, c2 = st.columns(2)
         fecha = c1.date_input("Fecha", value=date.today(), min_value=date(1900, 1, 1))
         extra = c2.text_input(cfg["extra"]) if cfg["extra"] else ""
+        escena = (st.selectbox("Escenario de la página", list(ESCENAS), format_func=ESCENAS.get)
+                  if tipo == "historia" else "")
         resumen = st.text_area("Resumen corto (se ve en las listas)", height=80)
         contenido = st.text_area(cfg["contenido"], height=320 if tipo == "historia" else 150)
         etiquetas = st.text_input("Etiquetas, separadas por comas")
@@ -1192,6 +1969,7 @@ def formulario_nueva(db):
         "titulo": titulo.strip(),
         "fecha": fecha.isoformat(),
         "extra": extra.strip(),
+        "escena": escena,
         "resumen": resumen.strip(),
         "contenido": contenido.strip(),
         "etiquetas": [t.strip() for t in etiquetas.split(",") if t.strip()],
@@ -1225,6 +2003,10 @@ def archivo_existente(db):
                     f_val = date.today()
                 fecha = c1.date_input("Fecha", value=f_val, min_value=date(1900, 1, 1))
                 extra = c2.text_input(cfg["extra"], value=e.get("extra", "")) if cfg["extra"] else ""
+                opciones = list(ESCENAS)
+                escena = (st.selectbox("Escenario de la página", opciones, format_func=ESCENAS.get,
+                                       index=opciones.index(e.get("escena", "")) if e.get("escena", "") in opciones else 0)
+                          if e["tipo"] == "historia" else "")
                 resumen = st.text_area("Resumen corto", value=e.get("resumen", ""), height=80)
                 contenido = st.text_area(cfg["contenido"], value=e.get("contenido", ""),
                                          height=260 if e["tipo"] == "historia" else 130)
@@ -1237,6 +2019,7 @@ def archivo_existente(db):
                     "titulo": titulo.strip() or e["titulo"],
                     "fecha": fecha.isoformat(),
                     "extra": extra.strip(),
+                    "escena": escena,
                     "resumen": resumen.strip(),
                     "contenido": contenido.strip(),
                     "etiquetas": [t.strip() for t in etiquetas.split(",") if t.strip()],
@@ -1313,6 +2096,11 @@ def main():
     db = cargar_db()
     st.session_state.setdefault("nav", "Inicio")
     st.session_state.setdefault("leyendo", None)
+
+    leyendo = next((e for e in db["entradas"] if e["id"] == st.session_state.leyendo), None)
+    en_aranas = st.session_state.nav == "Historias" and leyendo is not None and leyendo.get("escena") == "aranas"
+    if not en_aranas:
+        incrustar(LIMPIEZA_ARANAS_JS, 0)
 
     with st.sidebar:
         st.markdown("<div class='logo'><div class='cinta'>TAPE 01</div><div class='modo'>PLAY ► SP</div></div>",
