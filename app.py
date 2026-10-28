@@ -9,6 +9,8 @@ Estructura:
   - Canciones: reproductor de cassette con carretes que giran.
   - Metraje: videos e imágenes en marco VHS.
   - Videoclub: recomendaciones de películas/series.
+  - Creaciones: mis apps web, apps y código. Cada creación tiene su pantalla (captura),
+    una ficha de detalle con enlace "Ir a la App Web" y un tutorial con fotos paso a paso.
   - Oráculo: el pacto con la estrella negra.
   - Sala de edición: panel privado para publicar, editar y borrar.
 
@@ -88,16 +90,26 @@ TIPOS = {
         "ext": None,
         "portada": True,
     },
+    "proyecto": {
+        "nombre": "Creación",
+        "contenido": "Descripción completa (admite Markdown)",
+        "extra": "Tipo y tecnología (ej. App web · Streamlit · Python)",
+        "ext": None,
+        "portada": True,
+        "enlace": True,
+    },
 }
 
-SECCIONES = ["Inicio", "Historias", "Canciones", "Metraje", "Videoclub", "Oráculo", "Sala de edición"]
+SECCIONES = ["Inicio", "Historias", "Canciones", "Metraje", "Videoclub", "Creaciones", "Oráculo", "Sala de edición"]
 SECCION_POR_TIPO = {
     "historia": "Historias",
     "cancion": "Canciones",
     "video": "Metraje",
     "imagen": "Metraje",
     "recomendacion": "Videoclub",
+    "proyecto": "Creaciones",
 }
+CON_DETALLE = ("historia", "proyecto")  # tipos que se abren en su propia ficha
 MESES = ["ENE.", "FEB.", "MAR.", "ABR.", "MAY.", "JUN.", "JUL.", "AGO.", "SEP.", "OCT.", "NOV.", "DIC."]
 
 
@@ -225,6 +237,39 @@ HISTORIAS_DEMO = [
     },
 ]
 
+CREACIONES_DEMO = [
+    {
+        "id": "demo-musicnow",
+        "tipo": "proyecto",
+        "titulo": "MusicNow",
+        "fecha": "2026-10-28",
+        "extra": "App web · Streamlit · Python",
+        "escena": "",
+        "mock": "vinilo",  # pantalla de vinilo mientras no subas una captura real
+        "resumen": "Busca, reproduce y organiza tu música desde YouTube Music, con playlists que se comparten por QR.",
+        "contenido": (
+            "**MusicNow** es una plataforma web interactiva diseñada para buscar, reproducir y organizar tu música "
+            "favorita de forma rápida, sencilla y sin interrupciones. Conectada a la vasta biblioteca de YouTube Music, "
+            "la aplicación te permite explorar catálogos completos y construir listas de reproducción dinámicas en "
+            "tiempo real mediante una interfaz moderna e intuitiva.\n\n"
+            "🎧 Pensada tanto para el uso diario como para animar reuniones sociales, la plataforma integra funciones "
+            "colaborativas como la generación automática de códigos QR para compartir tu playlist activa al instante. "
+            "Su diseño combina la estética clásica del disco de vinilo con una experiencia fluida, directa y accesible "
+            "para mantener la música sonando siempre."
+        ),
+        "etiquetas": ["streamlit", "python", "youtube music", "códigos QR"],
+        "archivo": "",
+        "url": "https://musicnowcl.streamlit.app/",
+        "portada": "",
+        "pasos": [
+            {"texto": "Ingresa el nombre de la canción en el buscador.", "imagen": ""},
+            {"texto": "Selecciona la canción que quieres de la lista de resultados.", "imagen": ""},
+            {"texto": "La canción se reproduce y queda sonando en la playlist.", "imagen": ""},
+            {"texto": "Tienes un tiempo de espera de 2 minutos para poner otra canción. ¡Disfruta!!", "imagen": ""},
+        ],
+    },
+]
+
 DB_INICIAL = {
     "ajustes": {
         "titulo": "El Rincón de Rissos",
@@ -236,8 +281,10 @@ DB_INICIAL = {
         ),
     },
     "demos_v2": True,
+    "creaciones_v1": True,
     "entradas": [
         *HISTORIAS_DEMO,
+        *CREACIONES_DEMO,
         {
             "id": "demo-jardin",
             "tipo": "historia",
@@ -345,7 +392,9 @@ def cargar_db():
     for k, v in DB_INICIAL["ajustes"].items():
         db["ajustes"].setdefault(k, v)
     db.setdefault("entradas", [])
-    if migrar_demos(db):
+    cambio_historias = migrar_demos(db)
+    cambio_creaciones = migrar_creaciones(db)
+    if cambio_historias or cambio_creaciones:
         guardar_db(db)
     return db
 
@@ -366,6 +415,18 @@ def migrar_demos(db):
     return True
 
 
+def migrar_creaciones(db):
+    """Agrega MusicNow a un archivo creado antes de que existiera la sección Creaciones (una sola vez)."""
+    if db.get("creaciones_v1"):
+        return False
+    ids = {e["id"] for e in db["entradas"]}
+    for demo in CREACIONES_DEMO:
+        if demo["id"] not in ids:
+            db["entradas"].append(json.loads(json.dumps(demo)))
+    db["creaciones_v1"] = True
+    return True
+
+
 def guardar_archivo(subida):
     if subida is None:
         return ""
@@ -383,10 +444,31 @@ def ruta_media(nombre):
 
 
 def borrar_media(entrada):
-    for campo in ("archivo", "portada"):
-        ruta = ruta_media(entrada.get(campo, ""))
+    nombres = [entrada.get("archivo", ""), entrada.get("portada", "")]
+    nombres += [paso.get("imagen", "") for paso in entrada.get("pasos") or []]
+    for nombre in nombres:
+        ruta = ruta_media(nombre)
         if ruta:
             ruta.unlink(missing_ok=True)
+
+
+def orden_natural(nombre):
+    return [int(t) if t.isdigit() else t.lower() for t in re.split(r"(\d+)", nombre)]
+
+
+def armar_pasos(texto, fotos, anteriores=None):
+    """Une las líneas del tutorial con sus fotos. Si no se suben fotos nuevas, conserva las anteriores."""
+    lineas = [l.strip() for l in (texto or "").splitlines() if l.strip()]
+    fotos = sorted(fotos or [], key=lambda f: orden_natural(f.name))
+    anteriores = anteriores or []
+    pasos = []
+    for i in range(max(len(lineas), len(fotos))):
+        if fotos:
+            imagen = guardar_archivo(fotos[i]) if i < len(fotos) else ""
+        else:
+            imagen = anteriores[i].get("imagen", "") if i < len(anteriores) else ""
+        pasos.append({"texto": lineas[i] if i < len(lineas) else "", "imagen": imagen})
+    return pasos
 
 
 def data_uri(ruta):
@@ -622,6 +704,64 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .caratula .sticker{position:absolute; top:2.6rem; right:-.4rem; background:#f2d53c; color:#111; transform:rotate(6deg);
   font-family:'VT323',monospace; font-size:.95rem; padding:.1rem .5rem; line-height:1.1; max-width:8rem; text-align:center;}
 
+/* Creaciones: pantallas clicables */
+[class*="st-key-app_"]{
+  position:relative; background:#0b0506; border:1px solid var(--linea); padding:.8rem .8rem 1rem; margin-bottom:1rem;
+  transition:border-color .15s, box-shadow .15s, transform .15s;
+}
+[class*="st-key-app_"]:hover{border-color:var(--sangre-viva); box-shadow:0 0 26px rgba(227,20,31,.28); transform:translateY(-3px);}
+[class*="st-key-app_"]:hover .app-ver span:first-child{color:var(--sangre-viva);}
+[class*="st-key-verapp_"]{position:absolute !important; inset:0; z-index:6; margin:0 !important;}
+[class*="st-key-verapp_"] .stButton, [class*="st-key-verapp_"] .stButton > button{width:100% !important; height:100% !important;}
+[class*="st-key-verapp_"] .stButton > button, [class*="st-key-verapp_"] .stButton > button:hover{
+  background:transparent !important; border:none !important; color:transparent !important; cursor:pointer;
+}
+[class*="st-key-verapp_"] .stButton > button p{color:transparent !important;}
+.monitor{position:relative; aspect-ratio:16/10; background:#000; border:1px solid #241010; overflow:hidden;
+  box-shadow:inset 0 0 40px #000;}
+.monitor > img{width:100%; height:100%; object-fit:cover; object-position:top; display:block; filter:contrast(1.06) saturate(.92);}
+.monitor::after{content:""; position:absolute; inset:0; pointer-events:none; z-index:3;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px),
+             radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,.55) 100%);}
+.monitor .ch{position:absolute; top:.35rem; right:.6rem; z-index:4; font-family:'VT323',monospace; font-size:1.2rem;
+  color:#fff; text-shadow:0 0 6px rgba(0,0,0,.9), 0 0 2px #000;}
+.mock{position:absolute; inset:0; display:flex; flex-direction:column;
+  background:radial-gradient(circle at 75% 60%, #2a0a12 0%, #08030a 70%);}
+.mock .barra{display:flex; align-items:center; gap:.3rem; padding:.35rem .55rem; background:#140809;
+  border-bottom:1px solid var(--linea); font-family:'VT323',monospace; font-size:1rem; color:var(--ceniza);}
+.mock .barra i{width:.55rem; height:.55rem; border-radius:50%; background:#3a1414; display:inline-block;}
+.mock .barra .url{margin-left:.4rem; margin-right:3rem; flex:1; background:#0a0405; padding:0 .5rem;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.mock .cuerpo{flex:1; position:relative; display:flex; align-items:center; padding:0 7%; overflow:hidden;}
+.mock .texto{position:relative; z-index:2; max-width:62%;}
+.mock .nombre-app{font-family:'Creepster',cursive; color:var(--hueso); font-size:clamp(1.6rem,3.4vw,2.8rem); line-height:1;
+  text-shadow:0 0 16px rgba(227,20,31,.45);}
+.mock .buscador{margin-top:.7rem; font-family:'VT323',monospace; font-size:1.05rem; color:var(--ceniza);
+  border:1px solid var(--linea); background:rgba(0,0,0,.55); padding:.1rem .6rem;}
+.vinilo{position:absolute; right:-10%; top:50%; width:60%; aspect-ratio:1; border-radius:50%;
+  background:
+    radial-gradient(circle, #050203 0 2.5%, var(--sangre-viva) 3% 15%, #111 15.5% 17%, transparent 17.5%),
+    conic-gradient(from 30deg, rgba(255,255,255,.10), transparent 12%, transparent 50%, rgba(255,255,255,.07) 62%, transparent 75%),
+    repeating-radial-gradient(circle, #0c0c0c 0 2px, #1a1a1a 2px 4px);
+  box-shadow:0 0 34px rgba(0,0,0,.9); animation:girar 5s linear infinite;}
+@keyframes girar{from{transform:translateY(-50%) rotate(0deg)} to{transform:translateY(-50%) rotate(360deg)}}
+.app-nombre{font-family:'Creepster',cursive; color:var(--sangre-viva); font-size:clamp(1.8rem,3vw,2.4rem); line-height:1; margin:.8rem 0 .2rem;}
+.app-resumen{color:var(--ceniza) !important; font-size:.98rem; margin:.3rem 0 .4rem !important;}
+.app-ver{display:flex; justify-content:space-between; border-top:1px dashed var(--linea); padding-top:.45rem;
+  font-family:'VT323',monospace; font-size:1.2rem; color:var(--hueso); letter-spacing:.05em;}
+.app-ver span:last-child{color:var(--ceniza);}
+.btn-app{display:inline-block; margin:.6rem 0 .3rem; font-family:'VT323',monospace; font-size:1.55rem; letter-spacing:.06em;
+  background:var(--sangre); color:#fff !important; text-decoration:none !important; padding:.3rem 1.4rem;
+  border:1px solid var(--sangre-viva); box-shadow:0 0 18px rgba(227,20,31,.35); transition:background .12s, box-shadow .12s;}
+.btn-app:hover{background:var(--sangre-viva); box-shadow:0 0 28px rgba(227,20,31,.6);}
+.btn-app:focus-visible{outline:2px solid var(--brasa); outline-offset:2px;}
+.paso{background:#0b0506; border:1px solid var(--linea); padding:.6rem .6rem .8rem; height:100%;}
+.paso-num{font-family:'VT323',monospace; font-size:1.3rem; color:var(--sangre-viva); letter-spacing:.15em; margin-bottom:.35rem;}
+.paso-foto{aspect-ratio:4/3; background:#000; border:1px solid #241010; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.paso-foto img{width:100%; height:100%; object-fit:contain; display:block;}
+.paso-vacio{font-size:2.6rem; opacity:.85; filter:grayscale(.2);}
+.paso-texto{font-size:1rem !important; margin:.55rem 0 0 !important;}
+
 /* Oráculo */
 .condena{border:1px solid var(--sangre); background:rgba(179,6,15,.08); padding:1.6rem; text-align:center; margin-top:1.2rem;}
 .condena .osd{font-size:1.4rem; color:var(--sangre-viva);}
@@ -632,7 +772,8 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .vacio .osd{font-size:1.6rem; color:var(--sangre-viva);}
 
 @media (prefers-reduced-motion: reduce){
-  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec{animation:none !important;}
+  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo{animation:none !important;}
+  [class*="st-key-app_"]:hover{transform:none;}
 }
 </style>
 """
@@ -1752,7 +1893,7 @@ def pagina_inicio(db):
                 c2.markdown(f"<p class='fila-titulo'>{esc(e['titulo'])}</p><p class='fila-resumen'>{esc(e.get('resumen'))}</p>",
                             unsafe_allow_html=True)
                 c3.button("Abrir", key=f"abrir_{e['id']}", on_click=ir_a,
-                          args=(SECCION_POR_TIPO[e["tipo"]], e["id"] if e["tipo"] == "historia" else None),
+                          args=(SECCION_POR_TIPO[e["tipo"]], e["id"] if e["tipo"] in CON_DETALLE else None),
                           use_container_width=True)
 
     with der:
@@ -1762,10 +1903,11 @@ def pagina_inicio(db):
         cuenta = {k: len(por_tipo(db, k)) for k in TIPOS}
         st.markdown(
             f"<p class='osd'>En el archivo: {cuenta['historia']} historias, {cuenta['cancion']} canciones, "
-            f"{cuenta['video'] + cuenta['imagen']} piezas de metraje y {cuenta['recomendacion']} cintas en el videoclub.</p>",
+            f"{cuenta['video'] + cuenta['imagen']} piezas de metraje, {cuenta['recomendacion']} cintas en el videoclub "
+            f"y {cuenta['proyecto']} creaciones en el laboratorio.</p>",
             unsafe_allow_html=True,
         )
-        for sec in ["Historias", "Canciones", "Metraje"]:
+        for sec in ["Historias", "Canciones", "Metraje", "Creaciones"]:
             st.button(f"Ir a {sec.lower()}", key=f"ir_{sec}", on_click=ir_a, args=(sec,), use_container_width=True)
 
 
@@ -1909,6 +2051,116 @@ def pagina_videoclub(db):
             st.write("")
 
 
+ICONOS_PASO = ["🔎", "🎵", "▶️", "⏳", "✨", "🎧", "📲", "💾"]
+
+
+def url_segura(url):
+    url = (url or "").strip()
+    return url if url.lower().startswith(("http://", "https://")) else ""
+
+
+def dominio(url):
+    return re.sub(r"^https?://", "", url or "").rstrip("/")
+
+
+def html_pantalla(entrada, canal=1):
+    """Captura de la app dentro de un monitor CRT. Sin captura, dibuja una pantalla de ejemplo."""
+    titulo = esc(entrada["titulo"])
+    ch = f"<div class='ch'>CH {canal:02d}</div>"
+    portada = ruta_media(entrada.get("portada"))
+    if portada:
+        return f"<div class='monitor'>{ch}<img src='{data_uri(portada)}' alt='Captura de {titulo}'></div>"
+    url = url_segura(entrada.get("url"))
+    es_vinilo = entrada.get("mock") == "vinilo"
+    disco = "<div class='vinilo'></div>" if es_vinilo else ""
+    buscador = "🔎 Buscar canción…" if es_vinilo else "► EN LÍNEA"
+    sitio = esc(dominio(url) or "localhost")
+    return (
+        f"<div class='monitor'>{ch}<div class='mock'>"
+        f"<div class='barra'><i></i><i></i><i></i><span class='url'>{sitio}</span></div>"
+        f"<div class='cuerpo'>{disco}"
+        f"<div class='texto'><div class='nombre-app'>{titulo}</div>"
+        f"<div class='buscador'>{buscador}</div></div>"
+        f"</div></div></div>"
+    )
+
+
+def html_paso(paso, n):
+    ruta = ruta_media(paso.get("imagen"))
+    if ruta:
+        foto = f"<img src='{data_uri(ruta)}' alt='Foto {n}: {esc(paso.get('texto'))}'>"
+    else:
+        foto = f"<div class='paso-vacio'>{ICONOS_PASO[(n - 1) % len(ICONOS_PASO)]}</div>"
+    return (f"<div class='paso'><div class='paso-num'>FOTO {n}</div><div class='paso-foto'>{foto}</div>"
+            f"<p class='paso-texto'>{esc(paso.get('texto'))}</p></div>")
+
+
+def detalle_creacion(entrada):
+    st.button("◄ Volver a creaciones", on_click=ir_a, args=("Creaciones", None))
+    encabezado(entrada["titulo"], entrada.get("extra", ""))
+    izq, der = st.columns([3, 2], gap="large")
+    with izq:
+        st.markdown(html_pantalla(entrada), unsafe_allow_html=True)
+    with der:
+        st.markdown(f"<div class='osd'>{fecha_vhs(entrada['fecha'])}</div>{html_etiquetas(entrada.get('etiquetas'))}",
+                    unsafe_allow_html=True)
+        st.markdown(entrada.get("contenido") or entrada.get("resumen") or "_Sin descripción todavía._")
+        url = url_segura(entrada.get("url"))
+        if url:
+            st.markdown(
+                f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>"
+                f"<div class='osd'>{esc(dominio(url))}</div>",
+                unsafe_allow_html=True,
+            )
+
+    pasos = [p for p in entrada.get("pasos") or [] if p.get("texto") or p.get("imagen")]
+    if pasos:
+        st.write("")
+        st.markdown("## Cómo se usa")
+        st.markdown("<p class='osd'>Tutorial paso a paso. Sigue las fotos en orden.</p>", unsafe_allow_html=True)
+        for inicio in range(0, len(pasos), 4):
+            cols = st.columns(4, gap="medium")
+            for j, paso in enumerate(pasos[inicio:inicio + 4]):
+                with cols[j]:
+                    st.markdown(html_paso(paso, inicio + j + 1), unsafe_allow_html=True)
+        if url:
+            st.write("")
+            st.markdown(
+                f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>",
+                unsafe_allow_html=True,
+            )
+
+
+def pagina_creaciones(db):
+    leyendo = st.session_state.get("leyendo")
+    entrada = next((e for e in db["entradas"] if e["id"] == leyendo and e["tipo"] == "proyecto"), None)
+    if entrada:
+        detalle_creacion(entrada)
+        return
+
+    encabezado("Laboratorio de creaciones",
+               "Apps web, código y experimentos hechos por mí. Haz clic en una pantalla para ver el detalle.")
+    proyectos = por_tipo(db, "proyecto")
+    if not proyectos:
+        st.markdown("<div class='vacio'><div class='osd'>LABORATORIO VACÍO</div>"
+                    "<p>Agrega tu primera creación desde la Sala de edición.</p></div>", unsafe_allow_html=True)
+        return
+    cols = st.columns(2, gap="large")
+    for i, p in enumerate(proyectos):
+        with cols[i % 2]:
+            with st.container(key=f"app_{p['id']}"):
+                st.markdown(
+                    html_pantalla(p, i + 1)
+                    + f"<div class='app-nombre'>{esc(p['titulo'])}</div>"
+                    + (f"<div class='osd'>{esc(p['extra'])}</div>" if p.get("extra") else "")
+                    + f"<p class='app-resumen'>{esc(p.get('resumen'))}</p>"
+                    + f"<div class='app-ver'><span>► VER DETALLE</span><span>{fecha_vhs(p['fecha'])}</span></div>",
+                    unsafe_allow_html=True,
+                )
+                st.button(f"Ver detalle de {p['titulo']}", key=f"verapp_{p['id']}", on_click=ir_a,
+                          args=("Creaciones", p["id"]), use_container_width=True)
+
+
 def pagina_oraculo(_db):
     encabezado("Pacto con la estrella negra", "Escribe tu nombre y tu fecha de origen. La cinta dirá el resto.")
     with st.form("oraculo"):
@@ -1952,7 +2204,17 @@ def formulario_nueva(db):
         if cfg["ext"]:
             archivo = st.file_uploader(f"Archivo ({', '.join(cfg['ext'])})", type=cfg["ext"])
             url = st.text_input("…o pega un enlace (YouTube, mp3, imagen)")
-        portada = st.file_uploader("Portada (opcional)", type=EXT_IMAGEN) if cfg["portada"] else None
+        elif cfg.get("enlace"):
+            url = st.text_input("Enlace a la app web o al código (https://…)")
+        etiqueta_portada = "Captura de pantalla de la app (se ve como su foto)" if tipo == "proyecto" else "Portada (opcional)"
+        portada = st.file_uploader(etiqueta_portada, type=EXT_IMAGEN) if cfg["portada"] else None
+        pasos_txt, fotos_pasos = "", []
+        if tipo == "proyecto":
+            pasos_txt = st.text_area("Tutorial: un paso por línea", height=120,
+                                     placeholder="Ingresa el nombre de la canción\nSelecciona la canción\n…")
+            fotos_pasos = st.file_uploader("Fotos del tutorial (una por paso)", type=EXT_IMAGEN,
+                                           accept_multiple_files=True,
+                                           help="Se ordenan por nombre: llámalas 1.png, 2.png, 3.png…") or []
         publicar = st.form_submit_button("Publicar")
 
     if not publicar:
@@ -1977,11 +2239,13 @@ def formulario_nueva(db):
         "url": url.strip(),
         "portada": guardar_archivo(portada),
     }
+    if tipo == "proyecto":
+        entrada["pasos"] = armar_pasos(pasos_txt, fotos_pasos)
     db["entradas"].append(entrada)
     guardar_db(db)
     st.success(f"Publicado: {entrada['titulo']}")
     st.button(f"Ver en {SECCION_POR_TIPO[tipo]}", on_click=ir_a,
-              args=(SECCION_POR_TIPO[tipo], entrada["id"] if tipo == "historia" else None))
+              args=(SECCION_POR_TIPO[tipo], entrada["id"] if tipo in CON_DETALLE else None))
 
 
 def archivo_existente(db):
@@ -2011,8 +2275,18 @@ def archivo_existente(db):
                 contenido = st.text_area(cfg["contenido"], value=e.get("contenido", ""),
                                          height=260 if e["tipo"] == "historia" else 130)
                 etiquetas = st.text_input("Etiquetas", value=", ".join(e.get("etiquetas", [])))
-                url = st.text_input("Enlace", value=e.get("url", "")) if cfg["ext"] else ""
-                portada = st.file_uploader("Reemplazar portada", type=EXT_IMAGEN) if cfg["portada"] else None
+                url = st.text_input("Enlace", value=e.get("url", "")) if cfg["ext"] or cfg.get("enlace") else ""
+                es_proyecto = e["tipo"] == "proyecto"
+                portada = (st.file_uploader("Reemplazar captura" if es_proyecto else "Reemplazar portada", type=EXT_IMAGEN)
+                           if cfg["portada"] else None)
+                pasos_txt, fotos_pasos = "", []
+                if es_proyecto:
+                    pasos_txt = st.text_area("Tutorial: un paso por línea", height=120,
+                                             value="\n".join(p.get("texto", "") for p in e.get("pasos") or []))
+                    fotos_pasos = st.file_uploader("Reemplazar fotos del tutorial (todas, una por paso)", type=EXT_IMAGEN,
+                                                   accept_multiple_files=True,
+                                                   help="Si no subes nada se mantienen las fotos actuales. "
+                                                        "Se ordenan por nombre: 1.png, 2.png…") or []
                 guardar = st.form_submit_button("Guardar cambios")
             if guardar:
                 e.update({
@@ -2025,6 +2299,15 @@ def archivo_existente(db):
                     "etiquetas": [t.strip() for t in etiquetas.split(",") if t.strip()],
                     "url": url.strip(),
                 })
+                if es_proyecto:
+                    viejos = e.get("pasos") or []
+                    nuevos = armar_pasos(pasos_txt, fotos_pasos, viejos)
+                    usadas = {p["imagen"] for p in nuevos}
+                    for p in viejos:
+                        sobrante = ruta_media(p.get("imagen")) if p.get("imagen") not in usadas else None
+                        if sobrante:
+                            sobrante.unlink(missing_ok=True)
+                    e["pasos"] = nuevos
                 if portada is not None:
                     vieja = ruta_media(e.get("portada"))
                     if vieja:
@@ -2122,6 +2405,7 @@ def main():
         "Canciones": pagina_canciones,
         "Metraje": pagina_metraje,
         "Videoclub": pagina_videoclub,
+        "Creaciones": pagina_creaciones,
         "Oráculo": pagina_oraculo,
         "Sala de edición": pagina_admin,
     }
