@@ -533,7 +533,7 @@ def ir_a(seccion, leyendo=None):
 # =============================================================================
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Creepster&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
 
 :root{
   --negro:#050203; --panel:#0d0607; --sangre:#b3060f; --sangre-viva:#e3141f;
@@ -734,7 +734,8 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .mock .cuerpo{flex:1; position:relative; display:flex; align-items:center; padding:0 7%; overflow:hidden;}
 .mock .texto{position:relative; z-index:2; max-width:62%;}
-.mock .nombre-app{font-family:'Creepster',cursive; color:var(--hueso); font-size:clamp(1.6rem,3.4vw,2.8rem); line-height:1;
+.mock .nombre-app{font-family:'Cinzel',Georgia,serif; font-weight:900; letter-spacing:.06em; color:var(--hueso);
+  font-size:clamp(1.4rem,3vw,2.5rem); line-height:1.05;
   text-shadow:0 0 16px rgba(227,20,31,.45);}
 .mock .buscador{margin-top:.7rem; font-family:'VT323',monospace; font-size:1.05rem; color:var(--ceniza);
   border:1px solid var(--linea); background:rgba(0,0,0,.55); padding:.1rem .6rem;}
@@ -745,8 +746,11 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
     repeating-radial-gradient(circle, #0c0c0c 0 2px, #1a1a1a 2px 4px);
   box-shadow:0 0 34px rgba(0,0,0,.9); animation:girar 5s linear infinite;}
 @keyframes girar{from{transform:translateY(-50%) rotate(0deg)} to{transform:translateY(-50%) rotate(360deg)}}
-.app-nombre{font-family:'Creepster',cursive; color:var(--sangre-viva); font-size:clamp(1.8rem,3vw,2.4rem); line-height:1; margin:.8rem 0 .2rem;}
-.app-resumen{color:var(--ceniza) !important; font-size:.98rem; margin:.3rem 0 .4rem !important;}
+.app-nombre{font-family:'Cinzel',Georgia,serif; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--sangre-viva); font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.1; margin:.8rem 0 .25rem;
+  text-shadow:0 0 14px rgba(227,20,31,.4);}
+.app-resumen{font-family:'Crimson Pro',Georgia,serif !important; color:#b9ada5 !important; font-size:1.08rem;
+  line-height:1.5 !important; margin:.3rem 0 .4rem !important;}
 .app-ver{display:flex; justify-content:space-between; border-top:1px dashed var(--linea); padding-top:.45rem;
   font-family:'VT323',monospace; font-size:1.2rem; color:var(--hueso); letter-spacing:.05em;}
 .app-ver span:last-child{color:var(--ceniza);}
@@ -760,7 +764,17 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .paso-foto{aspect-ratio:4/3; background:#000; border:1px solid #241010; display:flex; align-items:center; justify-content:center; overflow:hidden;}
 .paso-foto img{width:100%; height:100%; object-fit:contain; display:block;}
 .paso-vacio{font-size:2.6rem; opacity:.85; filter:grayscale(.2);}
-.paso-texto{font-size:1rem !important; margin:.55rem 0 0 !important;}
+.paso-texto{font-family:'Crimson Pro',Georgia,serif !important; font-size:1.08rem !important; line-height:1.45 !important;
+  margin:.55rem 0 0 !important;}
+
+/* Ficha de una creación: imagen, botón y descripción en una sola columna */
+.st-key-ficha_app{max-width:52rem; margin:0 auto;}
+.btn-app.ancho{display:block; text-align:center; margin:.9rem 0 .2rem;}
+.dominio{text-align:center; margin-bottom:1rem;}
+.st-key-ficha_info{border-left:3px solid var(--sangre); padding:.2rem 0 .2rem 1.1rem; margin-top:.4rem;}
+.st-key-ficha_info p, .st-key-ficha_info li{font-family:'Crimson Pro',Georgia,serif !important; font-size:1.02rem !important;
+  line-height:1.65 !important; color:#cfc4b8 !important;}
+.st-key-ficha_info strong{color:var(--hueso); font-weight:600;}
 
 /* Oráculo */
 .condena{border:1px solid var(--sangre); background:rgba(179,6,15,.08); padding:1.6rem; text-align:center; margin-top:1.2rem;}
@@ -2051,6 +2065,21 @@ def pagina_videoclub(db):
             st.write("")
 
 
+CSS_CREACIONES = """
+<style>
+.sec-head h1{
+  font-family:'Cinzel',Georgia,serif !important; font-weight:900 !important; text-transform:uppercase;
+  letter-spacing:.1em; font-size:clamp(1.9rem, 4.6vw, 3.2rem) !important; line-height:1.1 !important;
+}
+.sec-sub{font-family:'Crimson Pro',Georgia,serif !important; font-style:italic; font-size:1.2rem !important;}
+.stApp h2{
+  font-family:'Cinzel',Georgia,serif !important; font-weight:700 !important; text-transform:uppercase;
+  letter-spacing:.1em; font-size:1.55rem !important; color:var(--sangre-viva) !important;
+  text-shadow:0 0 12px rgba(227,20,31,.35);
+}
+</style>
+"""
+
 ICONOS_PASO = ["🔎", "🎵", "▶️", "⏳", "✨", "🎧", "📲", "💾"]
 
 
@@ -2098,20 +2127,22 @@ def html_paso(paso, n):
 def detalle_creacion(entrada):
     st.button("◄ Volver a creaciones", on_click=ir_a, args=("Creaciones", None))
     encabezado(entrada["titulo"], entrada.get("extra", ""))
-    izq, der = st.columns([3, 2], gap="large")
-    with izq:
+    url = url_segura(entrada.get("url"))
+    with st.container(key="ficha_app"):
+        # 1) Foto de la app
         st.markdown(html_pantalla(entrada), unsafe_allow_html=True)
-    with der:
-        st.markdown(f"<div class='osd'>{fecha_vhs(entrada['fecha'])}</div>{html_etiquetas(entrada.get('etiquetas'))}",
-                    unsafe_allow_html=True)
-        st.markdown(entrada.get("contenido") or entrada.get("resumen") or "_Sin descripción todavía._")
-        url = url_segura(entrada.get("url"))
+        # 2) Botón justo debajo de la foto
         if url:
             st.markdown(
-                f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>"
-                f"<div class='osd'>{esc(dominio(url))}</div>",
+                f"<a class='btn-app ancho' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>"
+                f"<div class='osd dominio'>{esc(dominio(url))}</div>",
                 unsafe_allow_html=True,
             )
+        # 3) Información de la app, más pequeña
+        st.markdown(f"<div class='osd'>{fecha_vhs(entrada['fecha'])}</div>{html_etiquetas(entrada.get('etiquetas'))}",
+                    unsafe_allow_html=True)
+        with st.container(key="ficha_info"):
+            st.markdown(entrada.get("contenido") or entrada.get("resumen") or "_Sin descripción todavía._")
 
     pasos = [p for p in entrada.get("pasos") or [] if p.get("texto") or p.get("imagen")]
     if pasos:
@@ -2132,6 +2163,7 @@ def detalle_creacion(entrada):
 
 
 def pagina_creaciones(db):
+    st.markdown(CSS_CREACIONES, unsafe_allow_html=True)
     leyendo = st.session_state.get("leyendo")
     entrada = next((e for e in db["entradas"] if e["id"] == leyendo and e["tipo"] == "proyecto"), None)
     if entrada:
