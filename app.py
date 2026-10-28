@@ -252,7 +252,7 @@ CREACIONES_DEMO = [
             "favorita de forma rápida, sencilla y sin interrupciones. Conectada a la vasta biblioteca de YouTube Music, "
             "la aplicación te permite explorar catálogos completos y construir listas de reproducción dinámicas en "
             "tiempo real mediante una interfaz moderna e intuitiva.\n\n"
-            "🎧 Pensada tanto para el uso diario como para animar reuniones sociales, la plataforma integra funciones "
+            "Pensada tanto para el uso diario como para animar reuniones sociales, la plataforma integra funciones "
             "colaborativas como la generación automática de códigos QR para compartir tu playlist activa al instante. "
             "Su diseño combina la estética clásica del disco de vinilo con una experiencia fluida, directa y accesible "
             "para mantener la música sonando siempre."
@@ -417,8 +417,13 @@ def migrar_demos(db):
 
 def migrar_creaciones(db):
     """Agrega MusicNow a un archivo creado antes de que existiera la sección Creaciones (una sola vez)."""
+    musicnow = next((e for e in db["entradas"] if e["id"] == "demo-musicnow"), None)
+    limpiado = False
+    if musicnow and "🎧 " in musicnow.get("contenido", ""):
+        musicnow["contenido"] = musicnow["contenido"].replace("🎧 ", "")
+        limpiado = True
     if db.get("creaciones_v1"):
-        return False
+        return limpiado
     ids = {e["id"] for e in db["entradas"]}
     for demo in CREACIONES_DEMO:
         if demo["id"] not in ids:
@@ -533,7 +538,7 @@ def ir_a(seccion, leyendo=None):
 # =============================================================================
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Creepster&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Creepster&family=Playfair+Display:wght@700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap');
 
 :root{
   --negro:#050203; --panel:#0d0607; --sangre:#b3060f; --sangre-viva:#e3141f;
@@ -732,45 +737,64 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .mock .barra i{width:.55rem; height:.55rem; border-radius:50%; background:#3a1414; display:inline-block;}
 .mock .barra .url{margin-left:.4rem; margin-right:3rem; flex:1; background:#0a0405; padding:0 .5rem;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.mock .cuerpo{flex:1; position:relative; display:flex; align-items:center; padding:0 7%; overflow:hidden;}
-.mock .texto{position:relative; z-index:2; max-width:62%;}
-.mock .nombre-app{font-family:'Cinzel',Georgia,serif; font-weight:900; letter-spacing:.06em; color:var(--hueso);
-  font-size:clamp(1.4rem,3vw,2.5rem); line-height:1.05;
-  text-shadow:0 0 16px rgba(227,20,31,.45);}
-.mock .buscador{margin-top:.7rem; font-family:'VT323',monospace; font-size:1.05rem; color:var(--ceniza);
-  border:1px solid var(--linea); background:rgba(0,0,0,.55); padding:.1rem .6rem;}
-.vinilo{position:absolute; right:-10%; top:50%; width:60%; aspect-ratio:1; border-radius:50%;
+.mock .cuerpo{flex:1; position:relative; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:.55rem; padding:.6rem 6%; overflow:hidden; text-align:center;}
+.mock .texto{position:relative; z-index:2; display:flex; flex-direction:column; align-items:center;}
+.mock .nombre-app{font-family:'Playfair Display',Georgia,serif; font-weight:900; letter-spacing:.01em; white-space:nowrap;
+  color:var(--hueso); font-size:clamp(1.5rem,3.4vw,2.6rem); line-height:1;
+  text-shadow:0 0 16px rgba(227,20,31,.55), 0 2px 0 #000;}
+.mock .buscador{margin-top:.55rem; font-family:'VT323',monospace; font-size:1.05rem; color:var(--ceniza);
+  border:1px solid var(--linea); background:rgba(0,0,0,.55); padding:.05rem 1.6rem;}
+.vinilo{position:relative; width:34%; max-width:11rem; aspect-ratio:1; border-radius:50%; flex:none;
   background:
     radial-gradient(circle, #050203 0 2.5%, var(--sangre-viva) 3% 15%, #111 15.5% 17%, transparent 17.5%),
     conic-gradient(from 30deg, rgba(255,255,255,.10), transparent 12%, transparent 50%, rgba(255,255,255,.07) 62%, transparent 75%),
     repeating-radial-gradient(circle, #0c0c0c 0 2px, #1a1a1a 2px 4px);
-  box-shadow:0 0 34px rgba(0,0,0,.9); animation:girar 5s linear infinite;}
-@keyframes girar{from{transform:translateY(-50%) rotate(0deg)} to{transform:translateY(-50%) rotate(360deg)}}
-.app-nombre{font-family:'Cinzel',Georgia,serif; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--sangre-viva); font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.1; margin:.8rem 0 .25rem;
+  box-shadow:0 0 34px rgba(0,0,0,.9), 0 0 0 1px #2a0c0c; animation:girar 5s linear infinite;}
+@keyframes girar{to{transform:rotate(360deg)}}
+.app-nombre{font-family:'Playfair Display',Georgia,serif; font-weight:900; letter-spacing:.01em; white-space:nowrap;
+  color:var(--sangre-viva); font-size:clamp(1.6rem,2.8vw,2.2rem); line-height:1.1; margin:.8rem 0 .25rem;
   text-shadow:0 0 14px rgba(227,20,31,.4);}
 .app-resumen{font-family:'Crimson Pro',Georgia,serif !important; color:#b9ada5 !important; font-size:1.08rem;
   line-height:1.5 !important; margin:.3rem 0 .4rem !important;}
 .app-ver{display:flex; justify-content:space-between; border-top:1px dashed var(--linea); padding-top:.45rem;
   font-family:'VT323',monospace; font-size:1.2rem; color:var(--hueso); letter-spacing:.05em;}
 .app-ver span:last-child{color:var(--ceniza);}
-.btn-app{display:inline-block; margin:.6rem 0 .3rem; font-family:'VT323',monospace; font-size:1.55rem; letter-spacing:.06em;
-  background:var(--sangre); color:#fff !important; text-decoration:none !important; padding:.3rem 1.4rem;
-  border:1px solid var(--sangre-viva); box-shadow:0 0 18px rgba(227,20,31,.35); transition:background .12s, box-shadow .12s;}
-.btn-app:hover{background:var(--sangre-viva); box-shadow:0 0 28px rgba(227,20,31,.6);}
-.btn-app:focus-visible{outline:2px solid var(--brasa); outline-offset:2px;}
+.btn-app{position:relative; display:inline-flex; align-items:center; gap:.55rem; overflow:hidden;
+  font-family:'VT323',monospace; font-size:1.22rem; letter-spacing:.12em; text-transform:uppercase;
+  background:linear-gradient(180deg, #c00812, var(--sangre)); color:#fff !important; text-decoration:none !important;
+  padding:.28rem 1.1rem; border:1px solid var(--sangre-viva);
+  box-shadow:0 0 12px rgba(227,20,31,.3), inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, letter-spacing .18s ease;}
+.btn-app .flecha{display:inline-block; transition:transform .18s ease;}
+/* Destello que barre el botón */
+.btn-app::before{content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; pointer-events:none;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-20deg);}
+.btn-app:hover{transform:translateY(-2px); letter-spacing:.16em; background:linear-gradient(180deg, #ff2a33, var(--sangre-viva));
+  animation:latido 1.3s ease-in-out infinite; text-shadow:-1px 0 rgba(0,255,255,.45), 1px 0 rgba(255,0,60,.6);}
+.btn-app:hover::before{animation:barrido .7s ease;}
+.btn-app:hover .flecha{transform:translateX(4px);}
+/* Clic: se hunde y hace un flash */
+.btn-app:active{transform:translateY(1px) scale(.95); animation:none; transition-duration:.05s;
+  background:#fff; color:var(--sangre) !important; box-shadow:0 0 40px rgba(255,60,60,.9);}
+.btn-app:focus-visible{outline:2px solid var(--brasa); outline-offset:3px;}
+@keyframes latido{0%,100%{box-shadow:0 0 14px rgba(227,20,31,.45)} 50%{box-shadow:0 0 30px rgba(227,20,31,.85)}}
+@keyframes barrido{from{left:-60%} to{left:130%}}
 .paso{background:#0b0506; border:1px solid var(--linea); padding:.6rem .6rem .8rem; height:100%;}
 .paso-num{font-family:'VT323',monospace; font-size:1.3rem; color:var(--sangre-viva); letter-spacing:.15em; margin-bottom:.35rem;}
 .paso-foto{aspect-ratio:4/3; background:#000; border:1px solid #241010; display:flex; align-items:center; justify-content:center; overflow:hidden;}
 .paso-foto img{width:100%; height:100%; object-fit:contain; display:block;}
-.paso-vacio{font-size:2.6rem; opacity:.85; filter:grayscale(.2);}
+.paso-vacio{width:34%; max-width:4rem; color:var(--sangre-viva); opacity:.8;}
+.paso-vacio svg{width:100%; height:auto; display:block;}
 .paso-texto{font-family:'Crimson Pro',Georgia,serif !important; font-size:1.08rem !important; line-height:1.45 !important;
   margin:.55rem 0 0 !important;}
 
 /* Ficha de una creación: imagen, botón y descripción en una sola columna */
-.st-key-ficha_app{max-width:52rem; margin:0 auto;}
-.btn-app.ancho{display:block; text-align:center; margin:.9rem 0 .2rem;}
-.dominio{text-align:center; margin-bottom:1rem;}
+.st-key-ficha_app{width:100% !important; max-width:46rem !important; margin-left:auto !important;
+  margin-right:auto !important; align-self:center !important;}
+.st-key-ficha_app .monitor{margin:0 auto;}
+.centro{text-align:center; margin:1rem 0 .2rem;}
+.dominio{text-align:center; margin-bottom:1rem; font-size:1rem !important;}
 .st-key-ficha_info{border-left:3px solid var(--sangre); padding:.2rem 0 .2rem 1.1rem; margin-top:.4rem;}
 .st-key-ficha_info p, .st-key-ficha_info li{font-family:'Crimson Pro',Georgia,serif !important; font-size:1.02rem !important;
   line-height:1.65 !important; color:#cfc4b8 !important;}
@@ -786,7 +810,7 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .vacio .osd{font-size:1.6rem; color:var(--sangre-viva);}
 
 @media (prefers-reduced-motion: reduce){
-  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo{animation:none !important;}
+  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo, .btn-app:hover, .btn-app:hover::before{animation:none !important;}
   [class*="st-key-app_"]:hover{transform:none;}
 }
 </style>
@@ -2072,6 +2096,11 @@ CSS_CREACIONES = """
   letter-spacing:.1em; font-size:clamp(1.9rem, 4.6vw, 3.2rem) !important; line-height:1.1 !important;
 }
 .sec-sub{font-family:'Crimson Pro',Georgia,serif !important; font-style:italic; font-size:1.2rem !important;}
+.st-key-titulo_app{text-align:center;}
+.st-key-titulo_app .sec-head h1{
+  font-family:'Playfair Display',Georgia,serif !important; text-transform:none; letter-spacing:.01em;
+  font-size:clamp(2.4rem, 6vw, 3.8rem) !important; white-space:nowrap;
+}
 .stApp h2{
   font-family:'Cinzel',Georgia,serif !important; font-weight:700 !important; text-transform:uppercase;
   letter-spacing:.1em; font-size:1.55rem !important; color:var(--sangre-viva) !important;
@@ -2080,7 +2109,16 @@ CSS_CREACIONES = """
 </style>
 """
 
-ICONOS_PASO = ["🔎", "🎵", "▶️", "⏳", "✨", "🎧", "📲", "💾"]
+_SVG = ("<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' "
+        "stroke-linecap='round' stroke-linejoin='round'>{}</svg>")
+ICONOS_PASO = [
+    _SVG.format("<circle cx='11' cy='11' r='6.5'/><path d='M16 16l4.5 4.5'/>"),                 # buscar
+    _SVG.format("<path d='M4 6h12M4 12h12M4 18h8'/><path d='M18 15l3 3-3 3'/>"),                # elegir de la lista
+    _SVG.format("<circle cx='12' cy='12' r='9'/><path d='M10 8.5v7l5.5-3.5z'/>"),               # reproducir
+    _SVG.format("<circle cx='12' cy='13' r='8'/><path d='M12 9v4l2.5 2M9.5 2.5h5'/>"),          # esperar
+    _SVG.format("<path d='M12 3v18M3 12h18'/>"),
+    _SVG.format("<rect x='4' y='4' width='16' height='16'/>"),
+]
 
 
 def url_segura(url):
@@ -2102,7 +2140,7 @@ def html_pantalla(entrada, canal=1):
     url = url_segura(entrada.get("url"))
     es_vinilo = entrada.get("mock") == "vinilo"
     disco = "<div class='vinilo'></div>" if es_vinilo else ""
-    buscador = "🔎 Buscar canción…" if es_vinilo else "► EN LÍNEA"
+    buscador = "Buscar canción…" if es_vinilo else "► EN LÍNEA"
     sitio = esc(dominio(url) or "localhost")
     return (
         f"<div class='monitor'>{ch}<div class='mock'>"
@@ -2124,9 +2162,15 @@ def html_paso(paso, n):
             f"<p class='paso-texto'>{esc(paso.get('texto'))}</p></div>")
 
 
+def boton_app(url):
+    return (f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>"
+            f"Ir a la App Web <span class='flecha'>►</span></a>")
+
+
 def detalle_creacion(entrada):
     st.button("◄ Volver a creaciones", on_click=ir_a, args=("Creaciones", None))
-    encabezado(entrada["titulo"], entrada.get("extra", ""))
+    with st.container(key="titulo_app"):
+        encabezado(entrada["titulo"], entrada.get("extra", ""))
     url = url_segura(entrada.get("url"))
     with st.container(key="ficha_app"):
         # 1) Foto de la app
@@ -2134,8 +2178,7 @@ def detalle_creacion(entrada):
         # 2) Botón justo debajo de la foto
         if url:
             st.markdown(
-                f"<a class='btn-app ancho' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>"
-                f"<div class='osd dominio'>{esc(dominio(url))}</div>",
+                f"<div class='centro'>{boton_app(url)}</div><div class='osd dominio'>{esc(dominio(url))}</div>",
                 unsafe_allow_html=True,
             )
         # 3) Información de la app, más pequeña
@@ -2156,10 +2199,7 @@ def detalle_creacion(entrada):
                     st.markdown(html_paso(paso, inicio + j + 1), unsafe_allow_html=True)
         if url:
             st.write("")
-            st.markdown(
-                f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>Ir a la App Web ►</a>",
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"<div class='centro'>{boton_app(url)}</div>", unsafe_allow_html=True)
 
 
 def pagina_creaciones(db):
