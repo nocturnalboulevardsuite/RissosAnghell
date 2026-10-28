@@ -268,6 +268,42 @@ CREACIONES_DEMO = [
             {"texto": "Tienes un tiempo de espera de 2 minutos para poner otra canción. ¡Disfruta!!", "imagen": ""},
         ],
     },
+    {
+        "id": "demo-starzio",
+        "tipo": "proyecto",
+        "titulo": "StarZ.io",
+        "fecha": "2026-10-28",
+        "extra": "Juego web · Streamlit · Python",
+        "escena": "",
+        "mock": "estrella",  # pantalla espacial mientras no subas una captura real
+        "resumen": "Juego de acción estilo .io: eres una estrella que absorbe materia, crece y pelea por el Top 10.",
+        "contenido": (
+            "**StarZ.io** es un juego que creé pensado para la acción rápida y directa al estilo .io, donde te "
+            "conviertes en una estrella que tiene que abrirse paso en medio de un universo bastante hostil. La idea "
+            "principal es bien simple pero adictiva: vas absorbiendo materia para crecer y te enfrentas en tiempo real "
+            "a otros jugadores para dominar la galaxia. A medida que sumas masa, vas desbloqueando mejoras como disparos "
+            "láser en varias direcciones, escudos, impulsos de velocidad y habilidades como el modo fantasma o el aura "
+            "de fuego, todo con la meta de meterte de lleno en el Top 10.\n\n"
+            "Además de las peleas entre estrellas, le sumé desafíos globales bien potentes para que la partida no te dé "
+            "tregua, como un Agujero Negro que te succiona si te descuidas y un jefe final colosal, la Luna Sangrienta, "
+            "que pasa a una segunda fase disparando un láser gigante. Le puse harto cariño también al apartado visual y "
+            "sonoro, integrando un menú retro con perillas mecánicas que suenan como caja fuerte al girarlas, buscando "
+            "entregar una experiencia arcade rápida, entretenida y muy desafiante desde el primer segundo."
+        ),
+        "etiquetas": ["juego", "estilo .io", "streamlit", "python"],
+        "archivo": "",
+        "url": "https://starzio.streamlit.app/",
+        "portada": "",
+        "pasos": [
+            {"texto": "Entra al juego y conviértete en una estrella dentro del universo.", "imagen": "", "icono": "play"},
+            {"texto": "Absorbe materia para crecer y enfréntate en tiempo real a otros jugadores.",
+             "imagen": "", "icono": "estrella"},
+            {"texto": "Al sumar masa desbloqueas mejoras: láser en varias direcciones, escudos, impulsos, "
+                      "modo fantasma y aura de fuego.", "imagen": "", "icono": "escudo"},
+            {"texto": "Escapa del Agujero Negro y sobrevive a la Luna Sangrienta para llegar al Top 10.",
+             "imagen": "", "icono": "luna"},
+        ],
+    },
 ]
 
 DB_INICIAL = {
@@ -281,7 +317,7 @@ DB_INICIAL = {
         ),
     },
     "demos_v2": True,
-    "creaciones_v1": True,
+    "creaciones_vistas": ["demo-musicnow", "demo-starzio"],
     "entradas": [
         *HISTORIAS_DEMO,
         *CREACIONES_DEMO,
@@ -416,20 +452,25 @@ def migrar_demos(db):
 
 
 def migrar_creaciones(db):
-    """Agrega MusicNow a un archivo creado antes de que existiera la sección Creaciones (una sola vez)."""
+    """Agrega las creaciones de ejemplo (MusicNow, StarZ.io) a un archivo que aún no las tenga."""
     musicnow = next((e for e in db["entradas"] if e["id"] == "demo-musicnow"), None)
     limpiado = False
     if musicnow and "🎧 " in musicnow.get("contenido", ""):
         musicnow["contenido"] = musicnow["contenido"].replace("🎧 ", "")
         limpiado = True
-    if db.get("creaciones_v1"):
-        return limpiado
+    # Cada creación de ejemplo se agrega una sola vez (si la borras, no vuelve a aparecer).
+    vistas = list(db.get("creaciones_vistas") or (["demo-musicnow"] if db.get("creaciones_v1") else []))
     ids = {e["id"] for e in db["entradas"]}
+    agregado = False
     for demo in CREACIONES_DEMO:
+        if demo["id"] in vistas:
+            continue
         if demo["id"] not in ids:
             db["entradas"].append(json.loads(json.dumps(demo)))
-    db["creaciones_v1"] = True
-    return True
+        vistas.append(demo["id"])
+        agregado = True
+    db["creaciones_vistas"] = vistas
+    return limpiado or agregado
 
 
 def guardar_archivo(subida):
@@ -752,6 +793,25 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
     repeating-radial-gradient(circle, #0c0c0c 0 2px, #1a1a1a 2px 4px);
   box-shadow:0 0 34px rgba(0,0,0,.9), 0 0 0 1px #2a0c0c; animation:girar 5s linear infinite;}
 @keyframes girar{to{transform:rotate(360deg)}}
+.mock.espacio{background:
+  radial-gradient(1px 1px at 12% 28%, #fff 50%, transparent 51%),
+  radial-gradient(1px 1px at 80% 20%, #ffe 50%, transparent 51%),
+  radial-gradient(1.5px 1.5px at 28% 78%, #fff 50%, transparent 51%),
+  radial-gradient(1px 1px at 90% 70%, #fff 50%, transparent 51%),
+  radial-gradient(1px 1px at 58% 14%, #fcc 50%, transparent 51%),
+  radial-gradient(1.5px 1.5px at 7% 62%, #fff 50%, transparent 51%),
+  radial-gradient(1px 1px at 70% 88%, #fff 50%, transparent 51%),
+  radial-gradient(circle at 50% 45%, #1e0b2c 0%, #05020a 70%);}
+.astro{position:relative; width:22%; max-width:7rem; aspect-ratio:1; flex:none; margin:.6rem 0 .2rem;
+  display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 0 14px rgba(255,170,60,.75));}
+.astro .nucleo{width:100%; aspect-ratio:1; animation:pulso 2.4s ease-in-out infinite;
+  background:radial-gradient(circle at 45% 40%, #fff 0%, #ffe27a 30%, #ff9a2a 65%, #e3141f 100%);
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.astro .orbita{position:absolute; inset:-28%; border:1px dashed rgba(255,190,120,.3); border-radius:50%;
+  animation:girar 8s linear infinite;}
+.astro .orbita i{position:absolute; top:-6%; left:50%; width:16%; aspect-ratio:1; margin-left:-8%; border-radius:50%;
+  background:var(--sangre-viva); box-shadow:0 0 10px var(--sangre-viva);}
+@keyframes pulso{50%{transform:scale(1.1)}}
 .app-nombre{font-family:'Playfair Display',Georgia,serif; font-weight:900; letter-spacing:.01em; white-space:nowrap;
   color:var(--sangre-viva); font-size:clamp(1.6rem,2.8vw,2.2rem); line-height:1.1; margin:.8rem 0 .25rem;
   text-shadow:0 0 14px rgba(227,20,31,.4);}
@@ -760,26 +820,72 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .app-ver{display:flex; justify-content:space-between; border-top:1px dashed var(--linea); padding-top:.45rem;
   font-family:'VT323',monospace; font-size:1.2rem; color:var(--hueso); letter-spacing:.05em;}
 .app-ver span:last-child{color:var(--ceniza);}
-.btn-app{position:relative; display:inline-flex; align-items:center; gap:.55rem; overflow:hidden;
+.btn-app{position:relative; display:inline-flex; align-items:center;
   font-family:'VT323',monospace; font-size:1.22rem; letter-spacing:.12em; text-transform:uppercase;
   background:linear-gradient(180deg, #c00812, var(--sangre)); color:#fff !important; text-decoration:none !important;
-  padding:.28rem 1.1rem; border:1px solid var(--sangre-viva);
+  padding:.28rem 1.1rem; border:1px solid var(--sangre-viva); transform-origin:top left;
   box-shadow:0 0 12px rgba(227,20,31,.3), inset 0 1px 0 rgba(255,255,255,.15);
-  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, letter-spacing .18s ease;}
+  transition:transform .2s ease, box-shadow .3s ease, border-color .3s ease, letter-spacing .2s ease;}
+.btn-app .txt{position:relative; z-index:3; display:inline-flex; align-items:center; gap:.55rem;}
 .btn-app .flecha{display:inline-block; transition:transform .18s ease;}
-/* Destello que barre el botón */
-.btn-app::before{content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%; pointer-events:none;
-  background:linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform:skewX(-20deg);}
-.btn-app:hover{transform:translateY(-2px); letter-spacing:.16em; background:linear-gradient(180deg, #ff2a33, var(--sangre-viva));
-  animation:latido 1.3s ease-in-out infinite; text-shadow:-1px 0 rgba(0,255,255,.45), 1px 0 rgba(255,0,60,.6);}
-.btn-app:hover::before{animation:barrido .7s ease;}
+/* Hover: la sangre inunda el botón desde arriba con borde irregular */
+.btn-app::before{content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, #2e0002 0%, #5c0006 45%, #870009 100%);
+  clip-path:polygon(0 -20%, 100% -20%, 100% -8%, 88% -22%, 74% -4%, 60% -26%, 46% -6%, 32% -18%, 18% -2%, 0 -14%);
+  transition:clip-path .55s cubic-bezier(.55,.05,.35,1);}
+.btn-app:hover::before{
+  clip-path:polygon(0 -20%, 100% -20%, 100% 112%, 88% 130%, 74% 104%, 60% 126%, 46% 108%, 32% 122%, 18% 102%, 0 118%);}
+/* Salpicaduras oscuras sobre el botón */
+.btn-app::after{content:""; position:absolute; inset:0; z-index:2; pointer-events:none; opacity:0;
+  transition:opacity .35s ease .25s;
+  background:
+    radial-gradient(circle at 14% 30%, rgba(15,0,0,.75) 0 2px, transparent 3px),
+    radial-gradient(circle at 22% 72%, rgba(15,0,0,.6) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 63% 22%, rgba(15,0,0,.6) 0 2.5px, transparent 3.5px),
+    radial-gradient(circle at 81% 68%, rgba(15,0,0,.7) 0 3px, transparent 4px),
+    radial-gradient(circle at 93% 30%, rgba(15,0,0,.55) 0 1.5px, transparent 2.5px);}
+.btn-app:hover::after{opacity:1;}
+.btn-app:hover{transform:translateY(-2px); letter-spacing:.15em; border-color:#4a0004;
+  text-shadow:0 0 8px rgba(255,30,30,.9), 0 1px 0 #000; animation:latido 1.4s ease-in-out infinite;}
 .btn-app:hover .flecha{transform:translateX(4px);}
-/* Clic: se hunde y hace un flash */
-.btn-app:active{transform:translateY(1px) scale(.95); animation:none; transition-duration:.05s;
-  background:#fff; color:var(--sangre) !important; box-shadow:0 0 40px rgba(255,60,60,.9);}
+/* Gotas que chorrean por debajo */
+.btn-app .gotas{position:absolute; left:0; right:0; top:100%; height:0; z-index:0; pointer-events:none;}
+.btn-app .gotas i{position:absolute; top:0; width:5px; height:0; background:#7a0008;
+  border-radius:0 0 3px 3px; opacity:0;}
+.btn-app .gotas i::after{content:""; position:absolute; bottom:-4px; left:50%; width:8px; height:8px; margin-left:-4px;
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:inherit;}
+.btn-app .gotas i:nth-child(1){left:12%;}
+.btn-app .gotas i:nth-child(2){left:31%; width:4px;}
+.btn-app .gotas i:nth-child(3){left:52%; width:6px;}
+.btn-app .gotas i:nth-child(4){left:71%; width:3px;}
+.btn-app .gotas i:nth-child(5){left:88%;}
+.btn-app:hover .gotas i{animation:gotear 1.9s cubic-bezier(.5,0,.8,.6) infinite;}
+.btn-app:hover .gotas i:nth-child(1){animation-delay:.35s;}
+.btn-app:hover .gotas i:nth-child(2){animation-delay:.9s; animation-duration:2.3s;}
+.btn-app:hover .gotas i:nth-child(3){animation-delay:.5s; animation-duration:1.7s;}
+.btn-app:hover .gotas i:nth-child(4){animation-delay:1.2s;}
+.btn-app:hover .gotas i:nth-child(5){animation-delay:.65s; animation-duration:2.1s;}
+@keyframes gotear{
+  0%{height:0; opacity:1;}
+  45%{height:9px; opacity:1;}
+  80%{height:22px; opacity:1;}
+  100%{height:30px; opacity:0;}
+}
+@keyframes latido{0%,100%{box-shadow:0 0 14px rgba(120,0,8,.6)} 50%{box-shadow:0 0 28px rgba(200,0,15,.85)}}
+/* Clic: el botón se descuelga de un lado y queda colgando unos segundos */
+.btn-app:active{transform:rotate(17deg) translateY(6px); transition:transform .12s cubic-bezier(.5,0,.9,.5);}
+.btn-app:focus:not(:focus-visible){animation:caida 2s cubic-bezier(.3,.7,.4,1);}
+@keyframes caida{
+  0%{transform:rotate(0)}
+  16%{transform:rotate(22deg) translateY(9px)}
+  30%{transform:rotate(11deg) translateY(5px)}
+  44%{transform:rotate(18deg) translateY(7px)}
+  58%{transform:rotate(13deg) translateY(6px)}
+  72%{transform:rotate(15deg) translateY(6px)}
+  88%{transform:rotate(15deg) translateY(6px)}
+  100%{transform:rotate(0) translateY(0)}
+}
 .btn-app:focus-visible{outline:2px solid var(--brasa); outline-offset:3px;}
-@keyframes latido{0%,100%{box-shadow:0 0 14px rgba(227,20,31,.45)} 50%{box-shadow:0 0 30px rgba(227,20,31,.85)}}
-@keyframes barrido{from{left:-60%} to{left:130%}}
 .paso{background:#0b0506; border:1px solid var(--linea); padding:.6rem .6rem .8rem; height:100%;}
 .paso-num{font-family:'VT323',monospace; font-size:1.3rem; color:var(--sangre-viva); letter-spacing:.15em; margin-bottom:.35rem;}
 .paso-foto{aspect-ratio:4/3; background:#000; border:1px solid #241010; display:flex; align-items:center; justify-content:center; overflow:hidden;}
@@ -793,7 +899,7 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .st-key-ficha_app{width:100% !important; max-width:46rem !important; margin-left:auto !important;
   margin-right:auto !important; align-self:center !important;}
 .st-key-ficha_app .monitor{margin:0 auto;}
-.centro{text-align:center; margin:1rem 0 .2rem;}
+.centro{text-align:center; margin:1rem 0 1.5rem;}
 .dominio{text-align:center; margin-bottom:1rem; font-size:1rem !important;}
 .st-key-ficha_info{border-left:3px solid var(--sangre); padding:.2rem 0 .2rem 1.1rem; margin-top:.4rem;}
 .st-key-ficha_info p, .st-key-ficha_info li{font-family:'Crimson Pro',Georgia,serif !important; font-size:1.02rem !important;
@@ -810,7 +916,9 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .vacio .osd{font-size:1.6rem; color:var(--sangre-viva);}
 
 @media (prefers-reduced-motion: reduce){
-  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo, .btn-app:hover, .btn-app:hover::before{animation:none !important;}
+  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo, .astro .nucleo, .astro .orbita, .btn-app:hover, .btn-app:focus,
+  .btn-app .gotas i{animation:none !important;}
+  .btn-app::before{transition:none;}
   [class*="st-key-app_"]:hover{transform:none;}
 }
 </style>
@@ -2111,14 +2219,17 @@ CSS_CREACIONES = """
 
 _SVG = ("<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' "
         "stroke-linecap='round' stroke-linejoin='round'>{}</svg>")
-ICONOS_PASO = [
-    _SVG.format("<circle cx='11' cy='11' r='6.5'/><path d='M16 16l4.5 4.5'/>"),                 # buscar
-    _SVG.format("<path d='M4 6h12M4 12h12M4 18h8'/><path d='M18 15l3 3-3 3'/>"),                # elegir de la lista
-    _SVG.format("<circle cx='12' cy='12' r='9'/><path d='M10 8.5v7l5.5-3.5z'/>"),               # reproducir
-    _SVG.format("<circle cx='12' cy='13' r='8'/><path d='M12 9v4l2.5 2M9.5 2.5h5'/>"),          # esperar
-    _SVG.format("<path d='M12 3v18M3 12h18'/>"),
-    _SVG.format("<rect x='4' y='4' width='16' height='16'/>"),
-]
+ICONOS = {
+    "buscar": _SVG.format("<circle cx='11' cy='11' r='6.5'/><path d='M16 16l4.5 4.5'/>"),
+    "lista": _SVG.format("<path d='M4 6h12M4 12h12M4 18h8'/><path d='M18 15l3 3-3 3'/>"),
+    "play": _SVG.format("<circle cx='12' cy='12' r='9'/><path d='M10 8.5v7l5.5-3.5z'/>"),
+    "reloj": _SVG.format("<circle cx='12' cy='13' r='8'/><path d='M12 9v4l2.5 2M9.5 2.5h5'/>"),
+    "estrella": _SVG.format("<path d='M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z'/>"),
+    "escudo": _SVG.format("<path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/>"),
+    "luna": _SVG.format("<path d='M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'/>"),
+    "mas": _SVG.format("<path d='M12 4v16M4 12h16'/>"),
+}
+ICONOS_PASO = ["buscar", "lista", "play", "reloj", "estrella", "escudo", "luna", "mas"]  # orden por defecto
 
 
 def url_segura(url):
@@ -2130,6 +2241,14 @@ def dominio(url):
     return re.sub(r"^https?://", "", url or "").rstrip("/")
 
 
+# Dibujo de cada pantalla de ejemplo: (figura, texto de la barra, clase de fondo)
+MOCKS = {
+    "vinilo": ("<div class='vinilo'></div>", "Buscar canción…", ""),
+    "estrella": ("<div class='astro'><div class='orbita'><i></i></div><div class='nucleo'></div></div>",
+                 "► JUGAR", "espacio"),
+}
+
+
 def html_pantalla(entrada, canal=1):
     """Captura de la app dentro de un monitor CRT. Sin captura, dibuja una pantalla de ejemplo."""
     titulo = esc(entrada["titulo"])
@@ -2138,12 +2257,11 @@ def html_pantalla(entrada, canal=1):
     if portada:
         return f"<div class='monitor'>{ch}<img src='{data_uri(portada)}' alt='Captura de {titulo}'></div>"
     url = url_segura(entrada.get("url"))
-    es_vinilo = entrada.get("mock") == "vinilo"
-    disco = "<div class='vinilo'></div>" if es_vinilo else ""
-    buscador = "Buscar canción…" if es_vinilo else "► EN LÍNEA"
+    figura, buscador, fondo = MOCKS.get(entrada.get("mock"), ("", "► EN LÍNEA", ""))
+    disco = figura
     sitio = esc(dominio(url) or "localhost")
     return (
-        f"<div class='monitor'>{ch}<div class='mock'>"
+        f"<div class='monitor'>{ch}<div class='mock {fondo}'>"
         f"<div class='barra'><i></i><i></i><i></i><span class='url'>{sitio}</span></div>"
         f"<div class='cuerpo'>{disco}"
         f"<div class='texto'><div class='nombre-app'>{titulo}</div>"
@@ -2157,14 +2275,16 @@ def html_paso(paso, n):
     if ruta:
         foto = f"<img src='{data_uri(ruta)}' alt='Foto {n}: {esc(paso.get('texto'))}'>"
     else:
-        foto = f"<div class='paso-vacio'>{ICONOS_PASO[(n - 1) % len(ICONOS_PASO)]}</div>"
+        icono = paso.get("icono") if paso.get("icono") in ICONOS else ICONOS_PASO[(n - 1) % len(ICONOS_PASO)]
+        foto = f"<div class='paso-vacio'>{ICONOS[icono]}</div>"
     return (f"<div class='paso'><div class='paso-num'>FOTO {n}</div><div class='paso-foto'>{foto}</div>"
             f"<p class='paso-texto'>{esc(paso.get('texto'))}</p></div>")
 
 
 def boton_app(url):
     return (f"<a class='btn-app' href='{esc(url)}' target='_blank' rel='noopener noreferrer'>"
-            f"Ir a la App Web <span class='flecha'>►</span></a>")
+            f"<span class='txt'>Ir a la App Web <span class='flecha'>►</span></span>"
+            f"<span class='gotas' aria-hidden='true'><i></i><i></i><i></i><i></i><i></i></span></a>")
 
 
 def detalle_creacion(entrada):
