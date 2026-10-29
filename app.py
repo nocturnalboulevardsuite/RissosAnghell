@@ -304,6 +304,44 @@ CREACIONES_DEMO = [
              "imagen": "", "icono": "luna"},
         ],
     },
+    {
+        "id": "demo-perfumetrending",
+        "tipo": "proyecto",
+        "titulo": "PerfumeTrending",
+        "fecha": "2026-10-28",
+        "extra": "App web · Streamlit · Python",
+        "escena": "",
+        "mock": "perfume",  # frasco de perfume dibujado mientras no subas una captura real
+        "resumen": "Comparador de precios de perfumes en Chile, con tendencias, remates y búsqueda por notas olfativas.",
+        "contenido": (
+            "**PerfumeTrending** es una plataforma web chilena diseñada para transformar y simplificar la forma en "
+            "que las personas buscan y eligen sus fragancias en Chile, reuniendo todo el mercado local en un solo "
+            "lugar. El sitio cuenta con un comparador de precios en tiempo real para encontrar las mejores opciones "
+            "entre distintas tiendas del país, un directorio de páginas de confianza para realizar compras seguras y "
+            "un apartado de remates con ofertas imperdibles. Además, integra la sección \"Trend del Hype\", un "
+            "espacio dedicado a mostrar los perfumes que se están volviendo virales y marcando tendencia en el mercado."
+            "\n\n"
+            "Para ofrecer una experiencia de búsqueda completa e intuitiva, la plataforma incorpora un módulo "
+            "especializado de esencias y un buscador avanzado por notas olfativas, ideal tanto para quienes ya "
+            "conocen su perfil aromático como para quienes desean explorar nuevas combinaciones. De forma "
+            "complementaria, PerfumeTrending permite a cada usuario crear su propio perfil y guardar sus fragancias "
+            "favoritas en una lista personalizada para hacerles seguimiento en cualquier momento, consolidándose como "
+            "una herramienta centralizada, transparente y muy práctica para el consumo inteligente."
+        ),
+        "etiquetas": ["perfumes", "comparador de precios", "streamlit", "python"],
+        "archivo": "",
+        "url": "https://perfumetrending-cl.streamlit.app/",
+        "portada": "",
+        "pasos": [
+            {"texto": "Busca tu perfume por nombre o marca.", "imagen": "", "icono": "buscar"},
+            {"texto": "Compara precios en tiempo real entre tiendas de Chile y revisa las páginas de confianza.",
+             "imagen": "", "icono": "etiqueta"},
+            {"texto": "Explora la Trend del Hype, los remates y el buscador por notas olfativas.",
+             "imagen": "", "icono": "gota"},
+            {"texto": "Crea tu perfil y guarda tus fragancias favoritas para hacerles seguimiento.",
+             "imagen": "", "icono": "corazon"},
+        ],
+    },
 ]
 
 DB_INICIAL = {
@@ -317,7 +355,7 @@ DB_INICIAL = {
         ),
     },
     "demos_v2": True,
-    "creaciones_vistas": ["demo-musicnow", "demo-starzio"],
+    "creaciones_vistas": ["demo-musicnow", "demo-starzio", "demo-perfumetrending"],
     "entradas": [
         *HISTORIAS_DEMO,
         *CREACIONES_DEMO,
@@ -452,7 +490,7 @@ def migrar_demos(db):
 
 
 def migrar_creaciones(db):
-    """Agrega las creaciones de ejemplo (MusicNow, StarZ.io) a un archivo que aún no las tenga."""
+    """Agrega las creaciones de ejemplo (MusicNow, StarZ.io, PerfumeTrending) a un archivo que aún no las tenga."""
     musicnow = next((e for e in db["entradas"] if e["id"] == "demo-musicnow"), None)
     limpiado = False
     if musicnow and "🎧 " in musicnow.get("contenido", ""):
@@ -812,6 +850,35 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .astro .orbita i{position:absolute; top:-6%; left:50%; width:16%; aspect-ratio:1; margin-left:-8%; border-radius:50%;
   background:var(--sangre-viva); box-shadow:0 0 10px var(--sangre-viva);}
 @keyframes pulso{50%{transform:scale(1.1)}}
+/* Frasco de perfume dibujado con CSS */
+.mock.perfumeria{background:radial-gradient(circle at 50% 42%, #2c0b1c 0%, #0a0309 72%);}
+.frasco{position:relative; height:clamp(4.6rem, 13vw, 6.8rem); aspect-ratio:.72; flex:none; margin-top:.3rem;
+  filter:drop-shadow(0 0 14px rgba(227,20,70,.35));}
+.frasco .atomizador{position:absolute; top:0; left:44%; width:12%; height:8%; background:#cdb98f; border-radius:2px 2px 0 0;}
+.frasco .tapa{position:absolute; top:7%; left:29%; width:42%; height:18%; border-radius:3px;
+  background:linear-gradient(90deg, #7a5a24, #e8c877 35%, #fff2c4 50%, #c9a24c 70%, #6b4d1c);}
+.frasco .cuello{position:absolute; top:25%; left:39%; width:22%; height:6%; background:linear-gradient(90deg, #6b4d1c, #d8b866, #6b4d1c);}
+.frasco .vidrio{position:absolute; top:31%; left:3%; width:94%; height:69%; overflow:hidden;
+  border-radius:16% / 12%; border:1px solid rgba(255,220,230,.35);
+  background:linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.03));
+  box-shadow:inset 0 0 12px rgba(255,255,255,.08), inset 0 -6px 14px rgba(0,0,0,.4);}
+.frasco .liquido{position:absolute; left:-10%; right:-10%; bottom:0; height:66%;
+  background:linear-gradient(180deg, #ff5c7d 0%, #c8123a 45%, #6e0018 100%);
+  border-radius:45% 55% 0 0 / 10% 10% 0 0; animation:vaiven 3.2s ease-in-out infinite;}
+.frasco .brillo{position:absolute; top:8%; left:10%; width:11%; height:76%; border-radius:999px;
+  background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));}
+.frasco .marca{position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); z-index:2;
+  font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:clamp(.6rem,1.4vw,.85rem); letter-spacing:.08em;
+  color:#2a0610; background:rgba(245,232,215,.92); padding:.05rem .4rem; border:1px solid #c9a24c;}
+.frasco .rocio{position:absolute; top:1%; left:58%; width:60%; height:10%;}
+.frasco .rocio i{position:absolute; left:0; top:40%; width:3px; height:3px; border-radius:50%;
+  background:rgba(255,200,215,.9); opacity:0; animation:rociar 2.4s ease-out infinite;}
+.frasco .rocio i:nth-child(2){animation-delay:.25s; top:10%;}
+.frasco .rocio i:nth-child(3){animation-delay:.5s; top:70%;}
+.frasco .rocio i:nth-child(4){animation-delay:.75s; top:30%; width:2px; height:2px;}
+@keyframes vaiven{0%,100%{transform:translateX(0) rotate(0)} 50%{transform:translateX(4%) rotate(-2deg)}}
+@keyframes rociar{0%{opacity:0; transform:translate(0,0)} 15%{opacity:1}
+  100%{opacity:0; transform:translate(clamp(1.6rem,5vw,2.8rem), -.5rem) scale(.4)}}
 .app-nombre{font-family:'Playfair Display',Georgia,serif; font-weight:900; letter-spacing:.01em; white-space:nowrap;
   color:var(--sangre-viva); font-size:clamp(1.6rem,2.8vw,2.2rem); line-height:1.1; margin:.8rem 0 .25rem;
   text-shadow:0 0 14px rgba(227,20,31,.4);}
@@ -916,7 +983,7 @@ button:focus-visible{outline:2px solid var(--brasa) !important; outline-offset:2
 .vacio .osd{font-size:1.6rem; color:var(--sangre-viva);}
 
 @media (prefers-reduced-motion: reduce){
-  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo, .astro .nucleo, .astro .orbita, .btn-app:hover, .btn-app:focus,
+  .stApp::before, .stApp::after, .glitch::before, .glitch::after, .pie .rec, .vinilo, .astro .nucleo, .astro .orbita, .frasco .liquido, .frasco .rocio i, .btn-app:hover, .btn-app:focus,
   .btn-app .gotas i{animation:none !important;}
   .btn-app::before{transition:none;}
   [class*="st-key-app_"]:hover{transform:none;}
@@ -2227,6 +2294,9 @@ ICONOS = {
     "estrella": _SVG.format("<path d='M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z'/>"),
     "escudo": _SVG.format("<path d='M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z'/>"),
     "luna": _SVG.format("<path d='M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'/>"),
+    "etiqueta": _SVG.format("<path d='M3 12V4h8l10 10-8 8z'/><circle cx='7.5' cy='8.5' r='1.5'/>"),
+    "gota": _SVG.format("<path d='M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z'/>"),
+    "corazon": _SVG.format("<path d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/>"),
     "mas": _SVG.format("<path d='M12 4v16M4 12h16'/>"),
 }
 ICONOS_PASO = ["buscar", "lista", "play", "reloj", "estrella", "escudo", "luna", "mas"]  # orden por defecto
@@ -2246,6 +2316,11 @@ MOCKS = {
     "vinilo": ("<div class='vinilo'></div>", "Buscar canción…", ""),
     "estrella": ("<div class='astro'><div class='orbita'><i></i></div><div class='nucleo'></div></div>",
                  "► JUGAR", "espacio"),
+    "perfume": ("<div class='frasco'><div class='atomizador'></div><div class='tapa'></div><div class='cuello'></div>"
+                "<div class='vidrio'><span class='liquido'></span><span class='brillo'></span>"
+                "<span class='marca'>PT</span></div>"
+                "<div class='rocio'><i></i><i></i><i></i><i></i></div></div>",
+                "Buscar perfume…", "perfumeria"),
 }
 
 
